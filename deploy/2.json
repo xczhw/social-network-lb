@@ -1,0 +1,116 @@
+{
+  "apiVersion": "v1",
+  "kind": "List",
+  "items": [
+    {
+      "apiVersion": "apps/v1",
+      "kind": "Deployment",
+      "metadata": {
+        "namespace": "social-network",
+        "name": "write-home-timeline-service"
+      },
+      "spec": {
+        "replicas": 1,
+        "selector": {
+          "matchLabels": {
+            "name": "write-home-timeline-service"
+          }
+        },
+        "template": {
+          "metadata": {
+            "name": "write-home-timeline-service",
+            "labels": {
+              "name": "write-home-timeline-service"
+            }
+          },
+          "spec": {
+            "containers": [
+              {
+                "name": "write-home-timeline-service",
+                "image": "xczhw/deathstarbench:latest@sha256:44bd2fb31741eaf5fb0940b89eecd524a73ec73bea629aa8d78ca6550d99f80f",
+                "command": [
+                  "WriteHomeTimelineService"
+                ]
+              }
+            ],
+            "restartPolicy": "Always",
+            "enableServiceLinks": false
+          }
+        }
+      }
+    },
+    {
+      "apiVersion": "v1",
+      "kind": "Service",
+      "metadata": {
+        "namespace": "social-network",
+        "name": "write-home-timeline-service"
+      },
+      "spec": {
+        "ports": [
+          {
+            "port": 9090
+          }
+        ],
+        "selector": {
+          "name": "write-home-timeline-service"
+        }
+      }
+    },
+    {
+      "apiVersion": "apps/v1",
+      "kind": "Deployment",
+      "metadata": {
+        "namespace": "social-network",
+        "name": "write-user-timeline-service"
+      },
+      "spec": {
+        "replicas": 1,
+        "selector": {
+          "matchLabels": {
+            "name": "write-user-timeline-service"
+          }
+        },
+        "template": {
+          "metadata": {
+            "name": "write-user-timeline-service",
+            "labels": {
+              "name": "write-user-timeline-service"
+            }
+          },
+          "spec": {
+            "containers": [
+              {
+                "name": "write-user-timeline-service",
+                "image": "xczhw/deathstarbench:latest@sha256:44bd2fb31741eaf5fb0940b89eecd524a73ec73bea629aa8d78ca6550d99f80f",
+                "command": [
+                  "WriteUserTimelineService"
+                ]
+              }
+            ],
+            "restartPolicy": "Always",
+            "enableServiceLinks": false
+          }
+        }
+      }
+    },
+    {
+      "apiVersion": "v1",
+      "kind": "Service",
+      "metadata": {
+        "namespace": "social-network",
+        "name": "write-user-timeline-service"
+      },
+      "spec": {
+        "ports": [
+          {
+            "port": 9090
+          }
+        ],
+        "selector": {
+          "name": "write-user-timeline-service"
+        }
+      }
+    }
+  ]
+}
