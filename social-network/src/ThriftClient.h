@@ -35,6 +35,7 @@ class ThriftClient : public GenericClient {
   ~ThriftClient() override;
 
   TThriftClient *GetClient() const;
+  std::string GetIp() const;
 
   void Connect() override;
   void Disconnect() override;
@@ -45,6 +46,7 @@ class ThriftClient : public GenericClient {
  private:
   TThriftClient *_client;
 
+  std::shared_ptr<TSocket> _tsocket;
   std::shared_ptr<TTransport> _socket;
   std::shared_ptr<TTransport> _transport;
   std::shared_ptr<TProtocol> _protocol;
@@ -57,7 +59,8 @@ ThriftClient<TThriftClient>::ThriftClient(
   _port = port;
   _keep_alive = keep_alive;
   if (_keep_alive)  KeepAlive(_keep_alive);
-  _socket = std::shared_ptr<TTransport>(new TSocket(addr, port));
+  _tsocket = std::shared_ptr<TSocket>(new TSocket(addr, port));
+  _socket = std::shared_ptr<TTransport>(_tsocket);
   _transport = std::shared_ptr<TTransport>(new TFramedTransport(_socket));
   _protocol = std::shared_ptr<TProtocol>(new TBinaryProtocol(_transport));
   _client = new TThriftClient(_protocol);
@@ -72,6 +75,11 @@ ThriftClient<TThriftClient>::~ThriftClient() {
 template<class TThriftClient>
 TThriftClient *ThriftClient<TThriftClient>::GetClient() const {
   return _client;
+}
+
+template<class TThriftClient>
+std::string ThriftClient<TThriftClient>::GetIp() const {
+  return _tsocket->getPeerAddress();
 }
 
 template<class TThriftClient>
