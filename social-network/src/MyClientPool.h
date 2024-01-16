@@ -4,12 +4,16 @@
 #include <vector>
 #include <mutex>
 #include <condition_variable>
+#include <cstdlib>
 #include <deque>
 #include <chrono>
 #include <map> 
 #include <string>
 
 #include "logger.h"
+#include "Algorithm/AlgorithmFactory.h"
+#include "Algorithm/IAlgorithm.h"
+
 
 namespace social_network {
 
@@ -31,7 +35,7 @@ class ClientPool {
 
  private:
   std::map<std::string, std::deque<TClient *> > _pool_map;
-  std::deque< std::deque<TClient *> > _pools;
+  std::vector<std::string> _ip_list;
   std::string _addr;
   std::string _client_type;
   int _port;
@@ -42,11 +46,22 @@ class ClientPool {
   int _keep_alive;
   std::mutex _mtx;
   std::condition_variable _cv;
+  IAlgorithm * _algorithm;
 
   TClient * GetClientFromPool();
   TClient * ProduceClient();
 
 };
+
+std::vector<std::string> get_ip_list(const std::string &ip_file) {
+  std::vector<std::string> ip_list;
+  std::ifstream infile(ip_file);
+  std::string ip;
+  while (infile >> ip) {
+    ip_list.push_back(ip);
+  }
+  return ip_list;
+}
 
 template<class TClient>
 ClientPool<TClient>::ClientPool(const std::string &client_type,
@@ -59,17 +74,26 @@ ClientPool<TClient>::ClientPool(const std::string &client_type,
   _timeout_ms = timeout_ms;
   _keep_alive = keep_alive;
   _client_type = client_type;
+  std::string algo = std::getenv("ALGORITHM");
+  _algorithm = AlgorithmFactory::GetAlgorithm(algo, addr);
+  _ip_list = get_ip_list(addr);
 
-  for (int i = 0; i < min_pool_size; ++i) {
-    TClient *client = new TClient(addr, port, _keep_alive);
-    std::string ip = client->GetIp();
-    if (_pool_map.find(ip) == _pool_map.end()) {
-      _pool_map[ip] = std::deque<TClient *>();
-      _pools.push_back(_pool_map[ip]);
-    }
-    _pool_map[ip].push_back(client);
+  int conn_num = 0;
+  for (auto &ip : _ip_list) {
+    _pool_map[ip] = std::deque<TClient *>();
+    _pools.push_back(_pool_map[ip]);
   }
-  _curr_pool_size = min_pool_size;
+
+  while (conn_num < min_pool_size) {
+    for (auto &ip : _ip_list) {
+      TClient *client = new TClient(ip, port, _keep_alive);
+      _pool_map[ip].push_back(client);
+      conn_num++;
+      if (conn_num >= min_pool_size)
+        break;
+    }
+  }
+  _curr_pool_size = conn_num;
 }
 
 template<class TClient>
