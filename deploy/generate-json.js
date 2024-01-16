@@ -95,6 +95,14 @@ function cpp(nodeName, name, command) {
         image: image_cpp,
         command: [command],
       },
+      {
+        name: 'side-car',
+        image: image_side_car,
+        env: env({
+          SERVICE_PORT: '5050',
+          ALGORITHM: 'round-robin',
+        }),
+      }
     ],
     ports: [
       {port: 9090},

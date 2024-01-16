@@ -7,7 +7,7 @@
 #include <cstdlib>
 #include <deque>
 #include <chrono>
-#include <map> 
+#include <map>
 #include <string>
 
 #include "logger.h"
@@ -19,7 +19,7 @@ namespace social_network {
 
 template<class TClient>
 class ClientPool {
- public:
+public:
   ClientPool(const std::string &client_type, const std::string &addr,
       int port, int min_size, int max_size, int timeout_ms, int keep_alive=0);
   ~ClientPool();
@@ -33,7 +33,7 @@ class ClientPool {
   void Push(TClient *);
   void Remove(TClient *);
 
- private:
+private:
   std::map<std::string, std::deque<TClient *> > _pool_map;
   std::vector<std::string> _ip_list;
   std::string _addr;
