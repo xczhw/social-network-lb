@@ -43,6 +43,7 @@ endif()
 #set_target_properties(tacopie PROPERTIES IMPORTED_LOCATION
 #    /usr/local/lib/libtacopie.a)
 
+include_directories(Algorithm)
 
 set(THRIFT_GEN_CPP_DIR ../../gen-cpp)
 
