@@ -43,6 +43,12 @@
                 ]
               }
             ],
+            "volumes": [
+              {
+                "name": "shared-data",
+                "emptyDir": {}
+              }
+            ],
             "restartPolicy": "Always",
             "enableServiceLinks": false
           }
@@ -112,6 +118,12 @@
                 ]
               }
             ],
+            "volumes": [
+              {
+                "name": "shared-data",
+                "emptyDir": {}
+              }
+            ],
             "restartPolicy": "Always",
             "enableServiceLinks": false
           }
@@ -163,10 +175,48 @@
             "containers": [
               {
                 "name": "compose-post-service",
-                "image": "xczhw/deathstarbench:latest@sha256:44bd2fb31741eaf5fb0940b89eecd524a73ec73bea629aa8d78ca6550d99f80f",
+                "image": "xczhw/deathstarbench:latest@sha256:926eb81a81444a58eabde202a67d3cc27d37cfd6b701fc11dbb08f6b1d1ecf73",
                 "command": [
                   "ComposePostService"
+                ],
+                "env": [
+                  {
+                    "name": "ALGORITHM",
+                    "value": "round-robin"
+                  }
+                ],
+                "volumeMounts": [
+                  {
+                    "name": "shared-data",
+                    "mountPath": "/share"
+                  }
                 ]
+              },
+              {
+                "name": "side-car",
+                "image": "xczhw/sidecar:latest@sha256:a766b054fc62c442b7227619588fa87a4b49d56f2d0b42ecaff981b0472f5722",
+                "env": [
+                  {
+                    "name": "SERVICE_PORT",
+                    "value": "5050"
+                  },
+                  {
+                    "name": "ALGORITHM",
+                    "value": "round-robin"
+                  }
+                ],
+                "volumeMounts": [
+                  {
+                    "name": "shared-data",
+                    "mountPath": "/share"
+                  }
+                ]
+              }
+            ],
+            "volumes": [
+              {
+                "name": "shared-data",
+                "emptyDir": {}
               }
             ],
             "restartPolicy": "Always",
@@ -226,6 +276,12 @@
                 ]
               }
             ],
+            "volumes": [
+              {
+                "name": "shared-data",
+                "emptyDir": {}
+              }
+            ],
             "restartPolicy": "Always",
             "enableServiceLinks": false
           }
@@ -275,10 +331,48 @@
             "containers": [
               {
                 "name": "home-timeline-service",
-                "image": "xczhw/deathstarbench:latest@sha256:44bd2fb31741eaf5fb0940b89eecd524a73ec73bea629aa8d78ca6550d99f80f",
+                "image": "xczhw/deathstarbench:latest@sha256:926eb81a81444a58eabde202a67d3cc27d37cfd6b701fc11dbb08f6b1d1ecf73",
                 "command": [
                   "HomeTimelineService"
+                ],
+                "env": [
+                  {
+                    "name": "ALGORITHM",
+                    "value": "round-robin"
+                  }
+                ],
+                "volumeMounts": [
+                  {
+                    "name": "shared-data",
+                    "mountPath": "/share"
+                  }
                 ]
+              },
+              {
+                "name": "side-car",
+                "image": "xczhw/sidecar:latest@sha256:a766b054fc62c442b7227619588fa87a4b49d56f2d0b42ecaff981b0472f5722",
+                "env": [
+                  {
+                    "name": "SERVICE_PORT",
+                    "value": "5050"
+                  },
+                  {
+                    "name": "ALGORITHM",
+                    "value": "round-robin"
+                  }
+                ],
+                "volumeMounts": [
+                  {
+                    "name": "shared-data",
+                    "mountPath": "/share"
+                  }
+                ]
+              }
+            ],
+            "volumes": [
+              {
+                "name": "shared-data",
+                "emptyDir": {}
               }
             ],
             "restartPolicy": "Always",
@@ -338,6 +432,12 @@
                 ]
               }
             ],
+            "volumes": [
+              {
+                "name": "shared-data",
+                "emptyDir": {}
+              }
+            ],
             "restartPolicy": "Always",
             "enableServiceLinks": false
           }
@@ -387,10 +487,48 @@
             "containers": [
               {
                 "name": "media-service",
-                "image": "xczhw/deathstarbench:latest@sha256:44bd2fb31741eaf5fb0940b89eecd524a73ec73bea629aa8d78ca6550d99f80f",
+                "image": "xczhw/deathstarbench:latest@sha256:926eb81a81444a58eabde202a67d3cc27d37cfd6b701fc11dbb08f6b1d1ecf73",
                 "command": [
                   "MediaService"
+                ],
+                "env": [
+                  {
+                    "name": "ALGORITHM",
+                    "value": "round-robin"
+                  }
+                ],
+                "volumeMounts": [
+                  {
+                    "name": "shared-data",
+                    "mountPath": "/share"
+                  }
                 ]
+              },
+              {
+                "name": "side-car",
+                "image": "xczhw/sidecar:latest@sha256:a766b054fc62c442b7227619588fa87a4b49d56f2d0b42ecaff981b0472f5722",
+                "env": [
+                  {
+                    "name": "SERVICE_PORT",
+                    "value": "5050"
+                  },
+                  {
+                    "name": "ALGORITHM",
+                    "value": "round-robin"
+                  }
+                ],
+                "volumeMounts": [
+                  {
+                    "name": "shared-data",
+                    "mountPath": "/share"
+                  }
+                ]
+              }
+            ],
+            "volumes": [
+              {
+                "name": "shared-data",
+                "emptyDir": {}
               }
             ],
             "restartPolicy": "Always",
@@ -442,10 +580,48 @@
             "containers": [
               {
                 "name": "post-storage-service",
-                "image": "xczhw/deathstarbench:latest@sha256:44bd2fb31741eaf5fb0940b89eecd524a73ec73bea629aa8d78ca6550d99f80f",
+                "image": "xczhw/deathstarbench:latest@sha256:926eb81a81444a58eabde202a67d3cc27d37cfd6b701fc11dbb08f6b1d1ecf73",
                 "command": [
                   "PostStorageService"
+                ],
+                "env": [
+                  {
+                    "name": "ALGORITHM",
+                    "value": "round-robin"
+                  }
+                ],
+                "volumeMounts": [
+                  {
+                    "name": "shared-data",
+                    "mountPath": "/share"
+                  }
                 ]
+              },
+              {
+                "name": "side-car",
+                "image": "xczhw/sidecar:latest@sha256:a766b054fc62c442b7227619588fa87a4b49d56f2d0b42ecaff981b0472f5722",
+                "env": [
+                  {
+                    "name": "SERVICE_PORT",
+                    "value": "5050"
+                  },
+                  {
+                    "name": "ALGORITHM",
+                    "value": "round-robin"
+                  }
+                ],
+                "volumeMounts": [
+                  {
+                    "name": "shared-data",
+                    "mountPath": "/share"
+                  }
+                ]
+              }
+            ],
+            "volumes": [
+              {
+                "name": "shared-data",
+                "emptyDir": {}
               }
             ],
             "restartPolicy": "Always",
@@ -510,6 +686,12 @@
                 ]
               }
             ],
+            "volumes": [
+              {
+                "name": "shared-data",
+                "emptyDir": {}
+              }
+            ],
             "restartPolicy": "Always",
             "enableServiceLinks": false
           }
@@ -566,6 +748,12 @@
                 ]
               }
             ],
+            "volumes": [
+              {
+                "name": "shared-data",
+                "emptyDir": {}
+              }
+            ],
             "restartPolicy": "Always",
             "enableServiceLinks": false
           }
@@ -615,10 +803,48 @@
             "containers": [
               {
                 "name": "social-graph-service",
-                "image": "xczhw/deathstarbench:latest@sha256:44bd2fb31741eaf5fb0940b89eecd524a73ec73bea629aa8d78ca6550d99f80f",
+                "image": "xczhw/deathstarbench:latest@sha256:926eb81a81444a58eabde202a67d3cc27d37cfd6b701fc11dbb08f6b1d1ecf73",
                 "command": [
                   "SocialGraphService"
+                ],
+                "env": [
+                  {
+                    "name": "ALGORITHM",
+                    "value": "round-robin"
+                  }
+                ],
+                "volumeMounts": [
+                  {
+                    "name": "shared-data",
+                    "mountPath": "/share"
+                  }
                 ]
+              },
+              {
+                "name": "side-car",
+                "image": "xczhw/sidecar:latest@sha256:a766b054fc62c442b7227619588fa87a4b49d56f2d0b42ecaff981b0472f5722",
+                "env": [
+                  {
+                    "name": "SERVICE_PORT",
+                    "value": "5050"
+                  },
+                  {
+                    "name": "ALGORITHM",
+                    "value": "round-robin"
+                  }
+                ],
+                "volumeMounts": [
+                  {
+                    "name": "shared-data",
+                    "mountPath": "/share"
+                  }
+                ]
+              }
+            ],
+            "volumes": [
+              {
+                "name": "shared-data",
+                "emptyDir": {}
               }
             ],
             "restartPolicy": "Always",
@@ -675,6 +901,12 @@
                   "--nojournal",
                   "--quiet"
                 ]
+              }
+            ],
+            "volumes": [
+              {
+                "name": "shared-data",
+                "emptyDir": {}
               }
             ],
             "restartPolicy": "Always",
@@ -734,6 +966,12 @@
                 ]
               }
             ],
+            "volumes": [
+              {
+                "name": "shared-data",
+                "emptyDir": {}
+              }
+            ],
             "restartPolicy": "Always",
             "enableServiceLinks": false
           }
@@ -783,10 +1021,48 @@
             "containers": [
               {
                 "name": "text-service",
-                "image": "xczhw/deathstarbench:latest@sha256:44bd2fb31741eaf5fb0940b89eecd524a73ec73bea629aa8d78ca6550d99f80f",
+                "image": "xczhw/deathstarbench:latest@sha256:926eb81a81444a58eabde202a67d3cc27d37cfd6b701fc11dbb08f6b1d1ecf73",
                 "command": [
                   "TextService"
+                ],
+                "env": [
+                  {
+                    "name": "ALGORITHM",
+                    "value": "round-robin"
+                  }
+                ],
+                "volumeMounts": [
+                  {
+                    "name": "shared-data",
+                    "mountPath": "/share"
+                  }
                 ]
+              },
+              {
+                "name": "side-car",
+                "image": "xczhw/sidecar:latest@sha256:a766b054fc62c442b7227619588fa87a4b49d56f2d0b42ecaff981b0472f5722",
+                "env": [
+                  {
+                    "name": "SERVICE_PORT",
+                    "value": "5050"
+                  },
+                  {
+                    "name": "ALGORITHM",
+                    "value": "round-robin"
+                  }
+                ],
+                "volumeMounts": [
+                  {
+                    "name": "shared-data",
+                    "mountPath": "/share"
+                  }
+                ]
+              }
+            ],
+            "volumes": [
+              {
+                "name": "shared-data",
+                "emptyDir": {}
               }
             ],
             "restartPolicy": "Always",
@@ -838,10 +1114,48 @@
             "containers": [
               {
                 "name": "unique-id-service",
-                "image": "xczhw/deathstarbench:latest@sha256:44bd2fb31741eaf5fb0940b89eecd524a73ec73bea629aa8d78ca6550d99f80f",
+                "image": "xczhw/deathstarbench:latest@sha256:926eb81a81444a58eabde202a67d3cc27d37cfd6b701fc11dbb08f6b1d1ecf73",
                 "command": [
                   "UniqueIdService"
+                ],
+                "env": [
+                  {
+                    "name": "ALGORITHM",
+                    "value": "round-robin"
+                  }
+                ],
+                "volumeMounts": [
+                  {
+                    "name": "shared-data",
+                    "mountPath": "/share"
+                  }
                 ]
+              },
+              {
+                "name": "side-car",
+                "image": "xczhw/sidecar:latest@sha256:a766b054fc62c442b7227619588fa87a4b49d56f2d0b42ecaff981b0472f5722",
+                "env": [
+                  {
+                    "name": "SERVICE_PORT",
+                    "value": "5050"
+                  },
+                  {
+                    "name": "ALGORITHM",
+                    "value": "round-robin"
+                  }
+                ],
+                "volumeMounts": [
+                  {
+                    "name": "shared-data",
+                    "mountPath": "/share"
+                  }
+                ]
+              }
+            ],
+            "volumes": [
+              {
+                "name": "shared-data",
+                "emptyDir": {}
               }
             ],
             "restartPolicy": "Always",
@@ -893,10 +1207,48 @@
             "containers": [
               {
                 "name": "url-shorten-service",
-                "image": "xczhw/deathstarbench:latest@sha256:44bd2fb31741eaf5fb0940b89eecd524a73ec73bea629aa8d78ca6550d99f80f",
+                "image": "xczhw/deathstarbench:latest@sha256:926eb81a81444a58eabde202a67d3cc27d37cfd6b701fc11dbb08f6b1d1ecf73",
                 "command": [
                   "UrlShortenService"
+                ],
+                "env": [
+                  {
+                    "name": "ALGORITHM",
+                    "value": "round-robin"
+                  }
+                ],
+                "volumeMounts": [
+                  {
+                    "name": "shared-data",
+                    "mountPath": "/share"
+                  }
                 ]
+              },
+              {
+                "name": "side-car",
+                "image": "xczhw/sidecar:latest@sha256:a766b054fc62c442b7227619588fa87a4b49d56f2d0b42ecaff981b0472f5722",
+                "env": [
+                  {
+                    "name": "SERVICE_PORT",
+                    "value": "5050"
+                  },
+                  {
+                    "name": "ALGORITHM",
+                    "value": "round-robin"
+                  }
+                ],
+                "volumeMounts": [
+                  {
+                    "name": "shared-data",
+                    "mountPath": "/share"
+                  }
+                ]
+              }
+            ],
+            "volumes": [
+              {
+                "name": "shared-data",
+                "emptyDir": {}
               }
             ],
             "restartPolicy": "Always",
@@ -948,10 +1300,48 @@
             "containers": [
               {
                 "name": "user-mention-service",
-                "image": "xczhw/deathstarbench:latest@sha256:44bd2fb31741eaf5fb0940b89eecd524a73ec73bea629aa8d78ca6550d99f80f",
+                "image": "xczhw/deathstarbench:latest@sha256:926eb81a81444a58eabde202a67d3cc27d37cfd6b701fc11dbb08f6b1d1ecf73",
                 "command": [
                   "UserMentionService"
+                ],
+                "env": [
+                  {
+                    "name": "ALGORITHM",
+                    "value": "round-robin"
+                  }
+                ],
+                "volumeMounts": [
+                  {
+                    "name": "shared-data",
+                    "mountPath": "/share"
+                  }
                 ]
+              },
+              {
+                "name": "side-car",
+                "image": "xczhw/sidecar:latest@sha256:a766b054fc62c442b7227619588fa87a4b49d56f2d0b42ecaff981b0472f5722",
+                "env": [
+                  {
+                    "name": "SERVICE_PORT",
+                    "value": "5050"
+                  },
+                  {
+                    "name": "ALGORITHM",
+                    "value": "round-robin"
+                  }
+                ],
+                "volumeMounts": [
+                  {
+                    "name": "shared-data",
+                    "mountPath": "/share"
+                  }
+                ]
+              }
+            ],
+            "volumes": [
+              {
+                "name": "shared-data",
+                "emptyDir": {}
               }
             ],
             "restartPolicy": "Always",
@@ -1003,10 +1393,48 @@
             "containers": [
               {
                 "name": "user-service",
-                "image": "xczhw/deathstarbench:latest@sha256:44bd2fb31741eaf5fb0940b89eecd524a73ec73bea629aa8d78ca6550d99f80f",
+                "image": "xczhw/deathstarbench:latest@sha256:926eb81a81444a58eabde202a67d3cc27d37cfd6b701fc11dbb08f6b1d1ecf73",
                 "command": [
                   "UserService"
+                ],
+                "env": [
+                  {
+                    "name": "ALGORITHM",
+                    "value": "round-robin"
+                  }
+                ],
+                "volumeMounts": [
+                  {
+                    "name": "shared-data",
+                    "mountPath": "/share"
+                  }
                 ]
+              },
+              {
+                "name": "side-car",
+                "image": "xczhw/sidecar:latest@sha256:a766b054fc62c442b7227619588fa87a4b49d56f2d0b42ecaff981b0472f5722",
+                "env": [
+                  {
+                    "name": "SERVICE_PORT",
+                    "value": "5050"
+                  },
+                  {
+                    "name": "ALGORITHM",
+                    "value": "round-robin"
+                  }
+                ],
+                "volumeMounts": [
+                  {
+                    "name": "shared-data",
+                    "mountPath": "/share"
+                  }
+                ]
+              }
+            ],
+            "volumes": [
+              {
+                "name": "shared-data",
+                "emptyDir": {}
               }
             ],
             "restartPolicy": "Always",
@@ -1071,6 +1499,12 @@
                 ]
               }
             ],
+            "volumes": [
+              {
+                "name": "shared-data",
+                "emptyDir": {}
+              }
+            ],
             "restartPolicy": "Always",
             "enableServiceLinks": false
           }
@@ -1127,6 +1561,12 @@
                 ]
               }
             ],
+            "volumes": [
+              {
+                "name": "shared-data",
+                "emptyDir": {}
+              }
+            ],
             "restartPolicy": "Always",
             "enableServiceLinks": false
           }
@@ -1176,10 +1616,48 @@
             "containers": [
               {
                 "name": "user-timeline-service",
-                "image": "xczhw/deathstarbench:latest@sha256:44bd2fb31741eaf5fb0940b89eecd524a73ec73bea629aa8d78ca6550d99f80f",
+                "image": "xczhw/deathstarbench:latest@sha256:926eb81a81444a58eabde202a67d3cc27d37cfd6b701fc11dbb08f6b1d1ecf73",
                 "command": [
                   "UserTimelineService"
+                ],
+                "env": [
+                  {
+                    "name": "ALGORITHM",
+                    "value": "round-robin"
+                  }
+                ],
+                "volumeMounts": [
+                  {
+                    "name": "shared-data",
+                    "mountPath": "/share"
+                  }
                 ]
+              },
+              {
+                "name": "side-car",
+                "image": "xczhw/sidecar:latest@sha256:a766b054fc62c442b7227619588fa87a4b49d56f2d0b42ecaff981b0472f5722",
+                "env": [
+                  {
+                    "name": "SERVICE_PORT",
+                    "value": "5050"
+                  },
+                  {
+                    "name": "ALGORITHM",
+                    "value": "round-robin"
+                  }
+                ],
+                "volumeMounts": [
+                  {
+                    "name": "shared-data",
+                    "mountPath": "/share"
+                  }
+                ]
+              }
+            ],
+            "volumes": [
+              {
+                "name": "shared-data",
+                "emptyDir": {}
               }
             ],
             "restartPolicy": "Always",
@@ -1238,6 +1716,12 @@
                 ]
               }
             ],
+            "volumes": [
+              {
+                "name": "shared-data",
+                "emptyDir": {}
+              }
+            ],
             "restartPolicy": "Always",
             "enableServiceLinks": false
           }
@@ -1293,6 +1777,12 @@
                   "-c",
                   "rm -f /data/dump.rdb && redis-server --save \"\" --appendonly no"
                 ]
+              }
+            ],
+            "volumes": [
+              {
+                "name": "shared-data",
+                "emptyDir": {}
               }
             ],
             "restartPolicy": "Always",
@@ -1357,6 +1847,12 @@
                 ]
               }
             ],
+            "volumes": [
+              {
+                "name": "shared-data",
+                "emptyDir": {}
+              }
+            ],
             "restartPolicy": "Always",
             "enableServiceLinks": false
           }
@@ -1419,6 +1915,12 @@
                 ]
               }
             ],
+            "volumes": [
+              {
+                "name": "shared-data",
+                "emptyDir": {}
+              }
+            ],
             "restartPolicy": "Always",
             "enableServiceLinks": false
           }
@@ -1473,6 +1975,12 @@
                 "image": "hypercube/social-network-ml-media-filter:latest@sha256:ece820ae1156eab2c6b41eae07ecac524960d47bcdd4e063e9d3520399dcac05"
               }
             ],
+            "volumes": [
+              {
+                "name": "shared-data",
+                "emptyDir": {}
+              }
+            ],
             "restartPolicy": "Always",
             "enableServiceLinks": false
           }
@@ -1509,6 +2017,12 @@
                 "image": "hypercube/social-network-ml-media-filter:latest@sha256:ece820ae1156eab2c6b41eae07ecac524960d47bcdd4e063e9d3520399dcac05"
               }
             ],
+            "volumes": [
+              {
+                "name": "shared-data",
+                "emptyDir": {}
+              }
+            ],
             "restartPolicy": "Always",
             "enableServiceLinks": false
           }
@@ -1543,6 +2057,12 @@
               {
                 "name": "media-filter-service",
                 "image": "hypercube/social-network-ml-media-filter:latest@sha256:ece820ae1156eab2c6b41eae07ecac524960d47bcdd4e063e9d3520399dcac05"
+              }
+            ],
+            "volumes": [
+              {
+                "name": "shared-data",
+                "emptyDir": {}
               }
             ],
             "restartPolicy": "Always",
@@ -1595,6 +2115,12 @@
               {
                 "name": "text-filter-service",
                 "image": "hypercube/social-network-ml-text-filter:latest@sha256:6f541847637a92e331f1088b78dcdf77acbe6242960994aabf1ced51dc308117"
+              }
+            ],
+            "volumes": [
+              {
+                "name": "shared-data",
+                "emptyDir": {}
               }
             ],
             "restartPolicy": "Always",

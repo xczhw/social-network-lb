@@ -53,8 +53,9 @@ private:
 
 };
 
-std::vector<std::string> get_ip_list(const std::string &ip_file) {
+std::vector<std::string> get_ip_list(const std::string &svc) {
   std::vector<std::string> ip_list;
+  std::string ip_file = '/shared/' + svc + 'pod_ips.txt'
   std::ifstream infile(ip_file);
   std::string ip;
   while (infile >> ip) {

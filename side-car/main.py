@@ -4,8 +4,10 @@ import time
 from kubernetes import client, config
 import psutil
 import logging
+import os
 
-LOGFILE = 'share/logs/log.txt'
+LOGFILE = '/share/logs/log.txt'
+SERVICE_PORT = os.environ.get('SERVICE_PORT')
 
 logger = logging.getLogger(LOGFILE)
 
@@ -18,6 +20,10 @@ def get_logger(filename):
     logger.addHandler(handler)
     return logger
 
+def create_if_not_exists(path):
+    if not os.path.exists(path):
+        os.makedirs(path)
+
 # Kubernetes client initialization
 config.load_incluster_config()
 v1 = client.CoreV1Api()
@@ -27,7 +33,8 @@ def get_pod_ips(service_name, namespace='default'):
     for pod in pods.items:
         if pod.metadata.labels.get('app') == service_name:
             pod_ips.append(pod.status.pod_ip)
-    with open(f"share/data/{service_name}/pod_ips.txt", 'w') as f:
+    create_if_not_exists(f"/share/data/{service_name}")
+    with open(f"/share/data/{service_name}/pod_ips.txt", 'w') as f:
         f.write("\n".join(pod_ips))
     return pod_ips
 
@@ -40,7 +47,7 @@ def get_system_info():
 # UDP Server to handle incoming requests
 def udp_server():
     with socket.socket(socket.AF_INET, socket.SOCK_DGRAM) as s:
-        s.bind(('0.0.0.0', 5000))
+        s.bind(('0.0.0.0', SERVICE_PORT))
         while True:
             data, addr = s.recvfrom(1024)
             if data:
@@ -58,7 +65,7 @@ def send_request_to_all_pod_in_svc(svc, message):
     response = {}
     with socket.socket(socket.AF_INET, socket.SOCK_DGRAM) as s:
         for ip in pod_ips:
-            s.sendto(message.encode(), (ip, 5000))
+            s.sendto(message.encode(), (ip, SERVICE_PORT))
             data, _ = s.recvfrom(1024)
             # print(f"Response from {ip}: {data.decode()}")
             response[ip] = data.decode()
@@ -69,7 +76,7 @@ def get_svc_list():
         return [svc.strip() for svc in f.readlines()]
 
 def save_response_to_file(response, svc, filename):
-    with open(f"share/data/{svc}/{filename}", 'w') as f:
+    with open(f"/share/data/{svc}/{filename}", 'w') as f:
         json.dump(response, f)
 
 # Main function

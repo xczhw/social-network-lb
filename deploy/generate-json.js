@@ -7,7 +7,8 @@ const worker1 = 'autothrottle-2';
 const worker2 = 'autothrottle-3';
 const worker3 = 'autothrottle-4';
 const worker4 = 'autothrottle-5';
-const image_cpp = 'xczhw/deathstarbench:latest@sha256:44bd2fb31741eaf5fb0940b89eecd524a73ec73bea629aa8d78ca6550d99f80f';
+const image_cpp = 'xczhw/deathstarbench:latest@sha256:926eb81a81444a58eabde202a67d3cc27d37cfd6b701fc11dbb08f6b1d1ecf73';
+const image_side_car = 'xczhw/sidecar:latest@sha256:a766b054fc62c442b7227619588fa87a4b49d56f2d0b42ecaff981b0472f5722'
 const image_nginx = 'hypercube/social-network-ml-nginx:latest@sha256:6ac95749cb7aff055735ce490c7e702d1dabf8b6262c87d52d49b8ef4377833a';
 const image_media_filter = 'hypercube/social-network-ml-media-filter:latest@sha256:ece820ae1156eab2c6b41eae07ecac524960d47bcdd4e063e9d3520399dcac05';
 const image_text_filter = 'hypercube/social-network-ml-text-filter:latest@sha256:6f541847637a92e331f1088b78dcdf77acbe6242960994aabf1ced51dc308117';
@@ -48,6 +49,12 @@ function deployment(name, {nodeName, containers, podLabels}) {
         spec: {
           // nodeName,
           containers,
+          volumes: [
+            {
+              name: 'shared-data',
+              emptyDir: {},
+            },
+          ],
           restartPolicy: 'Always',
           enableServiceLinks: false,
         },
@@ -94,6 +101,15 @@ function cpp(nodeName, name, command) {
         name,
         image: image_cpp,
         command: [command],
+        env: env({
+          ALGORITHM: 'round-robin',
+        }),
+        volumeMounts: [
+          {
+            name: 'shared-data',
+            mountPath: '/share',
+          },
+        ],
       },
       {
         name: 'side-car',
@@ -102,6 +118,12 @@ function cpp(nodeName, name, command) {
           SERVICE_PORT: '5050',
           ALGORITHM: 'round-robin',
         }),
+        volumeMounts: [
+          {
+            name: 'shared-data',
+            mountPath: '/share',
+          },
+        ],
       }
     ],
     ports: [
