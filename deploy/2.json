@@ -43,26 +43,6 @@
                     "mountPath": "/share"
                   }
                 ]
-              },
-              {
-                "name": "side-car",
-                "image": "xczhw/sidecar:latest@sha256:a766b054fc62c442b7227619588fa87a4b49d56f2d0b42ecaff981b0472f5722",
-                "env": [
-                  {
-                    "name": "SERVICE_PORT",
-                    "value": "5050"
-                  },
-                  {
-                    "name": "ALGORITHM",
-                    "value": "round-robin"
-                  }
-                ],
-                "volumeMounts": [
-                  {
-                    "name": "shared-data",
-                    "mountPath": "/share"
-                  }
-                ]
               }
             ],
             "volumes": [
@@ -125,26 +105,6 @@
                   "WriteUserTimelineService"
                 ],
                 "env": [
-                  {
-                    "name": "ALGORITHM",
-                    "value": "round-robin"
-                  }
-                ],
-                "volumeMounts": [
-                  {
-                    "name": "shared-data",
-                    "mountPath": "/share"
-                  }
-                ]
-              },
-              {
-                "name": "side-car",
-                "image": "xczhw/sidecar:latest@sha256:a766b054fc62c442b7227619588fa87a4b49d56f2d0b42ecaff981b0472f5722",
-                "env": [
-                  {
-                    "name": "SERVICE_PORT",
-                    "value": "5050"
-                  },
                   {
                     "name": "ALGORITHM",
                     "value": "round-robin"

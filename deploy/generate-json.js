@@ -111,20 +111,20 @@ function cpp(nodeName, name, command) {
           },
         ],
       },
-      {
-        name: 'side-car',
-        image: image_side_car,
-        env: env({
-          SERVICE_PORT: '5050',
-          ALGORITHM: 'round-robin',
-        }),
-        volumeMounts: [
-          {
-            name: 'shared-data',
-            mountPath: '/share',
-          },
-        ],
-      }
+      // {
+      //   name: 'side-car',
+      //   image: image_side_car,
+      //   env: env({
+      //     SERVICE_PORT: '5050',
+      //     ALGORITHM: 'round-robin',
+      //   }),
+      //   volumeMounts: [
+      //     {
+      //       name: 'shared-data',
+      //       mountPath: '/share',
+      //     },
+      //   ],
+      // }
     ],
     ports: [
       {port: 9090},

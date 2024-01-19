@@ -6,15 +6,16 @@ import psutil
 import logging
 import os
 
-LOGFILE = '/share/logs/log.txt'
-SERVICE_PORT = os.environ.get('SERVICE_PORT')
+DATAPATH = '/share/data/'
+LOGPATH = '/share/logs/'
+SERVICE_PORT = int(os.environ.get('SERVICE_PORT'))
 
-logger = logging.getLogger(LOGFILE)
+logger = get_logger(LOGPATH + 'log.txt')
 
-def get_logger(filename):
-    logger = logging.getLogger(filename)
+def get_logger(filepath):
+    logger = logging.getLogger(filepath)
     logger.setLevel(logging.INFO)
-    handler = logging.FileHandler(filename)
+    handler = logging.FileHandler(filepath)
     formatter = logging.Formatter('%(asctime)s - %(message)s')
     handler.setFormatter(formatter)
     logger.addHandler(handler)
@@ -31,10 +32,10 @@ def get_pod_ips(service_name, namespace='default'):
     pod_ips = []
     pods = v1.list_namespaced_pod(namespace)
     for pod in pods.items:
-        if pod.metadata.labels.get('app') == service_name:
+        if pod.metadata.labels.get('name') == service_name:
             pod_ips.append(pod.status.pod_ip)
-    create_if_not_exists(f"/share/data/{service_name}")
-    with open(f"/share/data/{service_name}/pod_ips.txt", 'w') as f:
+    create_if_not_exists(f"{DATAPATH}{service_name}")
+    with open(f"{DATAPATH}{service_name}/pod_ips.txt", 'w') as f:
         f.write("\n".join(pod_ips))
     return pod_ips
 
@@ -52,12 +53,14 @@ def udp_server():
             data, addr = s.recvfrom(1024)
             if data:
                 message = data.decode()
-                if message.tolower() == 'cpu_usage':
+                if message.lower() == 'cpu_usage':
                     cpu_usage = get_system_info()["cpu_usage"]
                     s.sendto(str(cpu_usage).encode(), addr)
+                    print('send:' + cpu_usage)
                 elif message == 'get_log':
-                    with open('log.txt', 'rb') as f:
+                    with open(LOGPATH + 'log.txt', 'rb') as f:
                         s.sendto(f.read(), addr)
+                s.sendto('<EOF>', (addr))
 
 # Function to send request to other pods
 def send_request_to_all_pod_in_svc(svc, message):

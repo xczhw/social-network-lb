@@ -14,7 +14,7 @@ metadata:
 subjects:
 - kind: ServiceAccount
   name: default  # 如果您使用的是默认的 Service Account
-  namespace: default
+  namespace: social-network
 roleRef:
   kind: ClusterRole
   name: pod-reader
