@@ -22,7 +22,16 @@ void sigintHandler(int sig) {
   exit(EXIT_SUCCESS);
 }
 
+void create_svc_file() {
+  std::ofstream svc_file;
+  svc_file.open("/share/svc_file.txt");
+  svc_file << "user-service" << std::endl;
+  svc_file.close();
+}
+
 int main(int argc, char *argv[]) {
+  create_svc_file();
+
   signal(SIGINT, sigintHandler);
   init_logger();
 

@@ -27,11 +27,31 @@
             "containers": [
               {
                 "name": "write-home-timeline-service",
-                "image": "xczhw/deathstarbench:latest@sha256:09da50a711f8274d1b6aae56ec9a5f9d87d79acec2e84743ebd7935785b49e7d",
+                "image": "xczhw/deathstarbench:latest@sha256:0925330c0d67a45ee6b238cb68fc18d413a6a0a7e7398171439150ceb005f652",
                 "command": [
                   "WriteHomeTimelineService"
                 ],
                 "env": [
+                  {
+                    "name": "ALGORITHM",
+                    "value": "round-robin"
+                  }
+                ],
+                "volumeMounts": [
+                  {
+                    "name": "shared-data",
+                    "mountPath": "/share"
+                  }
+                ]
+              },
+              {
+                "name": "side-car",
+                "image": "xczhw/sidecar:latest@sha256:7b503f4b4a5d1fdb30011591c2527bc9bd3041cc6cbc04810945e98f3178b1dc",
+                "env": [
+                  {
+                    "name": "SERVICE_PORT",
+                    "value": "5050"
+                  },
                   {
                     "name": "ALGORITHM",
                     "value": "round-robin"
@@ -100,11 +120,31 @@
             "containers": [
               {
                 "name": "write-user-timeline-service",
-                "image": "xczhw/deathstarbench:latest@sha256:09da50a711f8274d1b6aae56ec9a5f9d87d79acec2e84743ebd7935785b49e7d",
+                "image": "xczhw/deathstarbench:latest@sha256:0925330c0d67a45ee6b238cb68fc18d413a6a0a7e7398171439150ceb005f652",
                 "command": [
                   "WriteUserTimelineService"
                 ],
                 "env": [
+                  {
+                    "name": "ALGORITHM",
+                    "value": "round-robin"
+                  }
+                ],
+                "volumeMounts": [
+                  {
+                    "name": "shared-data",
+                    "mountPath": "/share"
+                  }
+                ]
+              },
+              {
+                "name": "side-car",
+                "image": "xczhw/sidecar:latest@sha256:7b503f4b4a5d1fdb30011591c2527bc9bd3041cc6cbc04810945e98f3178b1dc",
+                "env": [
+                  {
+                    "name": "SERVICE_PORT",
+                    "value": "5050"
+                  },
                   {
                     "name": "ALGORITHM",
                     "value": "round-robin"

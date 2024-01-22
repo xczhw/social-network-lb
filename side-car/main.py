@@ -6,13 +6,17 @@ import psutil
 import logging
 import os
 
-DATAPATH = '/share/data/'
-LOGPATH = '/share/logs/'
+DATAPATH = '/share/data'
+LOGPATH = '/share/logs'
 SERVICE_PORT = int(os.environ.get('SERVICE_PORT'))
 
-logger = get_logger(LOGPATH + 'log.txt')
+def create_if_not_exists(path):
+    if not os.path.exists(path):
+        os.makedirs(path)
 
-def get_logger(filepath):
+def get_logger(path, filename):
+    create_if_not_exists(path)
+    filepath = path + filename
     logger = logging.getLogger(filepath)
     logger.setLevel(logging.INFO)
     handler = logging.FileHandler(filepath)
@@ -21,21 +25,16 @@ def get_logger(filepath):
     logger.addHandler(handler)
     return logger
 
-def create_if_not_exists(path):
-    if not os.path.exists(path):
-        os.makedirs(path)
+logger = get_logger(LOGPATH, 'log.txt')
 
-# Kubernetes client initialization
-config.load_incluster_config()
-v1 = client.CoreV1Api()
 def get_pod_ips(service_name, namespace='default'):
     pod_ips = []
     pods = v1.list_namespaced_pod(namespace)
     for pod in pods.items:
         if pod.metadata.labels.get('name') == service_name:
             pod_ips.append(pod.status.pod_ip)
-    create_if_not_exists(f"{DATAPATH}{service_name}")
-    with open(f"{DATAPATH}{service_name}/pod_ips.txt", 'w') as f:
+    create_if_not_exists(f"{DATAPATH}/{service_name}")
+    with open(f"{DATAPATH}/{service_name}/pod_ips.txt", 'w') as f:
         f.write("\n".join(pod_ips))
     return pod_ips
 
@@ -58,7 +57,7 @@ def udp_server():
                     s.sendto(str(cpu_usage).encode(), addr)
                     print('send:' + cpu_usage)
                 elif message == 'get_log':
-                    with open(LOGPATH + 'log.txt', 'rb') as f:
+                    with open(f'{LOGPATH}/log.txt', 'rb') as f:
                         s.sendto(f.read(), addr)
                 s.sendto('<EOF>', (addr))
 
@@ -74,12 +73,23 @@ def send_request_to_all_pod_in_svc(svc, message):
             response[ip] = data.decode()
     return response
 
+# waiting until file exists
+def wait_for_file(file_path, timeout=60):
+    start_time = time.time()
+    while not os.path.exists(file_path):
+        if time.time() - start_time >= timeout:
+            raise TimeoutError(f"File {file_path} not found after {timeout} seconds")
+        time.sleep(5)
+
 def get_svc_list():
-    with open('svc_list.txt', 'r') as f:
+    file_path = f'{DATAPATH}/svc_list.txt'
+    wait_for_file(file_path)
+    with open(file_path, 'r') as f:
         return [svc.strip() for svc in f.readlines()]
 
 def save_response_to_file(response, svc, filename):
-    with open(f"/share/data/{svc}/{filename}", 'w') as f:
+    create_if_not_exists(f"{DATAPATH}/{svc}")
+    with open(f"{DATAPATH}/{svc}/{filename}", 'w') as f:
         json.dump(response, f)
 
 # Main function
@@ -98,6 +108,10 @@ def log_system_info():
         time.sleep(1)
 
 if __name__ == "__main__":
+    # Kubernetes client initialization
+    config.load_incluster_config()
+    v1 = client.CoreV1Api()
+
     # Starting UDP server in a separate thread
     import threading
     server_thread = threading.Thread(target=udp_server, daemon=True)
@@ -107,5 +121,3 @@ if __name__ == "__main__":
     server_thread.start()
     update_status_thread.start()
     log_thread.start()
-
-    

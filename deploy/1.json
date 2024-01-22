@@ -175,11 +175,31 @@
             "containers": [
               {
                 "name": "compose-post-service",
-                "image": "xczhw/deathstarbench:latest@sha256:09da50a711f8274d1b6aae56ec9a5f9d87d79acec2e84743ebd7935785b49e7d",
+                "image": "xczhw/deathstarbench:latest@sha256:0925330c0d67a45ee6b238cb68fc18d413a6a0a7e7398171439150ceb005f652",
                 "command": [
                   "ComposePostService"
                 ],
                 "env": [
+                  {
+                    "name": "ALGORITHM",
+                    "value": "round-robin"
+                  }
+                ],
+                "volumeMounts": [
+                  {
+                    "name": "shared-data",
+                    "mountPath": "/share"
+                  }
+                ]
+              },
+              {
+                "name": "side-car",
+                "image": "xczhw/sidecar:latest@sha256:7b503f4b4a5d1fdb30011591c2527bc9bd3041cc6cbc04810945e98f3178b1dc",
+                "env": [
+                  {
+                    "name": "SERVICE_PORT",
+                    "value": "5050"
+                  },
                   {
                     "name": "ALGORITHM",
                     "value": "round-robin"
@@ -311,11 +331,31 @@
             "containers": [
               {
                 "name": "home-timeline-service",
-                "image": "xczhw/deathstarbench:latest@sha256:09da50a711f8274d1b6aae56ec9a5f9d87d79acec2e84743ebd7935785b49e7d",
+                "image": "xczhw/deathstarbench:latest@sha256:0925330c0d67a45ee6b238cb68fc18d413a6a0a7e7398171439150ceb005f652",
                 "command": [
                   "HomeTimelineService"
                 ],
                 "env": [
+                  {
+                    "name": "ALGORITHM",
+                    "value": "round-robin"
+                  }
+                ],
+                "volumeMounts": [
+                  {
+                    "name": "shared-data",
+                    "mountPath": "/share"
+                  }
+                ]
+              },
+              {
+                "name": "side-car",
+                "image": "xczhw/sidecar:latest@sha256:7b503f4b4a5d1fdb30011591c2527bc9bd3041cc6cbc04810945e98f3178b1dc",
+                "env": [
+                  {
+                    "name": "SERVICE_PORT",
+                    "value": "5050"
+                  },
                   {
                     "name": "ALGORITHM",
                     "value": "round-robin"
@@ -447,11 +487,31 @@
             "containers": [
               {
                 "name": "media-service",
-                "image": "xczhw/deathstarbench:latest@sha256:09da50a711f8274d1b6aae56ec9a5f9d87d79acec2e84743ebd7935785b49e7d",
+                "image": "xczhw/deathstarbench:latest@sha256:0925330c0d67a45ee6b238cb68fc18d413a6a0a7e7398171439150ceb005f652",
                 "command": [
                   "MediaService"
                 ],
                 "env": [
+                  {
+                    "name": "ALGORITHM",
+                    "value": "round-robin"
+                  }
+                ],
+                "volumeMounts": [
+                  {
+                    "name": "shared-data",
+                    "mountPath": "/share"
+                  }
+                ]
+              },
+              {
+                "name": "side-car",
+                "image": "xczhw/sidecar:latest@sha256:7b503f4b4a5d1fdb30011591c2527bc9bd3041cc6cbc04810945e98f3178b1dc",
+                "env": [
+                  {
+                    "name": "SERVICE_PORT",
+                    "value": "5050"
+                  },
                   {
                     "name": "ALGORITHM",
                     "value": "round-robin"
@@ -520,11 +580,31 @@
             "containers": [
               {
                 "name": "post-storage-service",
-                "image": "xczhw/deathstarbench:latest@sha256:09da50a711f8274d1b6aae56ec9a5f9d87d79acec2e84743ebd7935785b49e7d",
+                "image": "xczhw/deathstarbench:latest@sha256:0925330c0d67a45ee6b238cb68fc18d413a6a0a7e7398171439150ceb005f652",
                 "command": [
                   "PostStorageService"
                 ],
                 "env": [
+                  {
+                    "name": "ALGORITHM",
+                    "value": "round-robin"
+                  }
+                ],
+                "volumeMounts": [
+                  {
+                    "name": "shared-data",
+                    "mountPath": "/share"
+                  }
+                ]
+              },
+              {
+                "name": "side-car",
+                "image": "xczhw/sidecar:latest@sha256:7b503f4b4a5d1fdb30011591c2527bc9bd3041cc6cbc04810945e98f3178b1dc",
+                "env": [
+                  {
+                    "name": "SERVICE_PORT",
+                    "value": "5050"
+                  },
                   {
                     "name": "ALGORITHM",
                     "value": "round-robin"
@@ -723,11 +803,31 @@
             "containers": [
               {
                 "name": "social-graph-service",
-                "image": "xczhw/deathstarbench:latest@sha256:09da50a711f8274d1b6aae56ec9a5f9d87d79acec2e84743ebd7935785b49e7d",
+                "image": "xczhw/deathstarbench:latest@sha256:0925330c0d67a45ee6b238cb68fc18d413a6a0a7e7398171439150ceb005f652",
                 "command": [
                   "SocialGraphService"
                 ],
                 "env": [
+                  {
+                    "name": "ALGORITHM",
+                    "value": "round-robin"
+                  }
+                ],
+                "volumeMounts": [
+                  {
+                    "name": "shared-data",
+                    "mountPath": "/share"
+                  }
+                ]
+              },
+              {
+                "name": "side-car",
+                "image": "xczhw/sidecar:latest@sha256:7b503f4b4a5d1fdb30011591c2527bc9bd3041cc6cbc04810945e98f3178b1dc",
+                "env": [
+                  {
+                    "name": "SERVICE_PORT",
+                    "value": "5050"
+                  },
                   {
                     "name": "ALGORITHM",
                     "value": "round-robin"
@@ -921,11 +1021,31 @@
             "containers": [
               {
                 "name": "text-service",
-                "image": "xczhw/deathstarbench:latest@sha256:09da50a711f8274d1b6aae56ec9a5f9d87d79acec2e84743ebd7935785b49e7d",
+                "image": "xczhw/deathstarbench:latest@sha256:0925330c0d67a45ee6b238cb68fc18d413a6a0a7e7398171439150ceb005f652",
                 "command": [
                   "TextService"
                 ],
                 "env": [
+                  {
+                    "name": "ALGORITHM",
+                    "value": "round-robin"
+                  }
+                ],
+                "volumeMounts": [
+                  {
+                    "name": "shared-data",
+                    "mountPath": "/share"
+                  }
+                ]
+              },
+              {
+                "name": "side-car",
+                "image": "xczhw/sidecar:latest@sha256:7b503f4b4a5d1fdb30011591c2527bc9bd3041cc6cbc04810945e98f3178b1dc",
+                "env": [
+                  {
+                    "name": "SERVICE_PORT",
+                    "value": "5050"
+                  },
                   {
                     "name": "ALGORITHM",
                     "value": "round-robin"
@@ -994,11 +1114,31 @@
             "containers": [
               {
                 "name": "unique-id-service",
-                "image": "xczhw/deathstarbench:latest@sha256:09da50a711f8274d1b6aae56ec9a5f9d87d79acec2e84743ebd7935785b49e7d",
+                "image": "xczhw/deathstarbench:latest@sha256:0925330c0d67a45ee6b238cb68fc18d413a6a0a7e7398171439150ceb005f652",
                 "command": [
                   "UniqueIdService"
                 ],
                 "env": [
+                  {
+                    "name": "ALGORITHM",
+                    "value": "round-robin"
+                  }
+                ],
+                "volumeMounts": [
+                  {
+                    "name": "shared-data",
+                    "mountPath": "/share"
+                  }
+                ]
+              },
+              {
+                "name": "side-car",
+                "image": "xczhw/sidecar:latest@sha256:7b503f4b4a5d1fdb30011591c2527bc9bd3041cc6cbc04810945e98f3178b1dc",
+                "env": [
+                  {
+                    "name": "SERVICE_PORT",
+                    "value": "5050"
+                  },
                   {
                     "name": "ALGORITHM",
                     "value": "round-robin"
@@ -1067,11 +1207,31 @@
             "containers": [
               {
                 "name": "url-shorten-service",
-                "image": "xczhw/deathstarbench:latest@sha256:09da50a711f8274d1b6aae56ec9a5f9d87d79acec2e84743ebd7935785b49e7d",
+                "image": "xczhw/deathstarbench:latest@sha256:0925330c0d67a45ee6b238cb68fc18d413a6a0a7e7398171439150ceb005f652",
                 "command": [
                   "UrlShortenService"
                 ],
                 "env": [
+                  {
+                    "name": "ALGORITHM",
+                    "value": "round-robin"
+                  }
+                ],
+                "volumeMounts": [
+                  {
+                    "name": "shared-data",
+                    "mountPath": "/share"
+                  }
+                ]
+              },
+              {
+                "name": "side-car",
+                "image": "xczhw/sidecar:latest@sha256:7b503f4b4a5d1fdb30011591c2527bc9bd3041cc6cbc04810945e98f3178b1dc",
+                "env": [
+                  {
+                    "name": "SERVICE_PORT",
+                    "value": "5050"
+                  },
                   {
                     "name": "ALGORITHM",
                     "value": "round-robin"
@@ -1140,11 +1300,31 @@
             "containers": [
               {
                 "name": "user-mention-service",
-                "image": "xczhw/deathstarbench:latest@sha256:09da50a711f8274d1b6aae56ec9a5f9d87d79acec2e84743ebd7935785b49e7d",
+                "image": "xczhw/deathstarbench:latest@sha256:0925330c0d67a45ee6b238cb68fc18d413a6a0a7e7398171439150ceb005f652",
                 "command": [
                   "UserMentionService"
                 ],
                 "env": [
+                  {
+                    "name": "ALGORITHM",
+                    "value": "round-robin"
+                  }
+                ],
+                "volumeMounts": [
+                  {
+                    "name": "shared-data",
+                    "mountPath": "/share"
+                  }
+                ]
+              },
+              {
+                "name": "side-car",
+                "image": "xczhw/sidecar:latest@sha256:7b503f4b4a5d1fdb30011591c2527bc9bd3041cc6cbc04810945e98f3178b1dc",
+                "env": [
+                  {
+                    "name": "SERVICE_PORT",
+                    "value": "5050"
+                  },
                   {
                     "name": "ALGORITHM",
                     "value": "round-robin"
@@ -1213,11 +1393,31 @@
             "containers": [
               {
                 "name": "user-service",
-                "image": "xczhw/deathstarbench:latest@sha256:09da50a711f8274d1b6aae56ec9a5f9d87d79acec2e84743ebd7935785b49e7d",
+                "image": "xczhw/deathstarbench:latest@sha256:0925330c0d67a45ee6b238cb68fc18d413a6a0a7e7398171439150ceb005f652",
                 "command": [
                   "UserService"
                 ],
                 "env": [
+                  {
+                    "name": "ALGORITHM",
+                    "value": "round-robin"
+                  }
+                ],
+                "volumeMounts": [
+                  {
+                    "name": "shared-data",
+                    "mountPath": "/share"
+                  }
+                ]
+              },
+              {
+                "name": "side-car",
+                "image": "xczhw/sidecar:latest@sha256:7b503f4b4a5d1fdb30011591c2527bc9bd3041cc6cbc04810945e98f3178b1dc",
+                "env": [
+                  {
+                    "name": "SERVICE_PORT",
+                    "value": "5050"
+                  },
                   {
                     "name": "ALGORITHM",
                     "value": "round-robin"
@@ -1416,11 +1616,31 @@
             "containers": [
               {
                 "name": "user-timeline-service",
-                "image": "xczhw/deathstarbench:latest@sha256:09da50a711f8274d1b6aae56ec9a5f9d87d79acec2e84743ebd7935785b49e7d",
+                "image": "xczhw/deathstarbench:latest@sha256:0925330c0d67a45ee6b238cb68fc18d413a6a0a7e7398171439150ceb005f652",
                 "command": [
                   "UserTimelineService"
                 ],
                 "env": [
+                  {
+                    "name": "ALGORITHM",
+                    "value": "round-robin"
+                  }
+                ],
+                "volumeMounts": [
+                  {
+                    "name": "shared-data",
+                    "mountPath": "/share"
+                  }
+                ]
+              },
+              {
+                "name": "side-car",
+                "image": "xczhw/sidecar:latest@sha256:7b503f4b4a5d1fdb30011591c2527bc9bd3041cc6cbc04810945e98f3178b1dc",
+                "env": [
+                  {
+                    "name": "SERVICE_PORT",
+                    "value": "5050"
+                  },
                   {
                     "name": "ALGORITHM",
                     "value": "round-robin"

@@ -161,7 +161,15 @@ void WorkerThread(std::string &addr, int port) {
   connection.close();
 }
 
+void create_svc_file() {
+  std::ofstream svc_file;
+  svc_file.open("/share/svc_file.txt");
+  svc_file.close();
+}
+
 int main(int argc, char *argv[]) {
+  create_svc_file();
+  
   signal(SIGINT, sigintHandler);
   init_logger();
 

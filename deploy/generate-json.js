@@ -7,8 +7,8 @@ const worker1 = 'autothrottle-2';
 const worker2 = 'autothrottle-3';
 const worker3 = 'autothrottle-4';
 const worker4 = 'autothrottle-5';
-const image_cpp = 'xczhw/deathstarbench:latest@sha256:09da50a711f8274d1b6aae56ec9a5f9d87d79acec2e84743ebd7935785b49e7d';
-const image_side_car = 'xczhw/sidecar:latest@sha256:a766b054fc62c442b7227619588fa87a4b49d56f2d0b42ecaff981b0472f5722'
+const image_cpp = 'xczhw/deathstarbench:latest@sha256:0925330c0d67a45ee6b238cb68fc18d413a6a0a7e7398171439150ceb005f652';
+const image_side_car = 'xczhw/sidecar:latest@sha256:7b503f4b4a5d1fdb30011591c2527bc9bd3041cc6cbc04810945e98f3178b1dc'
 const image_nginx = 'hypercube/social-network-ml-nginx:latest@sha256:6ac95749cb7aff055735ce490c7e702d1dabf8b6262c87d52d49b8ef4377833a';
 const image_media_filter = 'hypercube/social-network-ml-media-filter:latest@sha256:ece820ae1156eab2c6b41eae07ecac524960d47bcdd4e063e9d3520399dcac05';
 const image_text_filter = 'hypercube/social-network-ml-text-filter:latest@sha256:6f541847637a92e331f1088b78dcdf77acbe6242960994aabf1ced51dc308117';
@@ -111,20 +111,20 @@ function cpp(nodeName, name, command) {
           },
         ],
       },
-      // {
-      //   name: 'side-car',
-      //   image: image_side_car,
-      //   env: env({
-      //     SERVICE_PORT: '5050',
-      //     ALGORITHM: 'round-robin',
-      //   }),
-      //   volumeMounts: [
-      //     {
-      //       name: 'shared-data',
-      //       mountPath: '/share',
-      //     },
-      //   ],
-      // }
+      {
+        name: 'side-car',
+        image: image_side_car,
+        env: env({
+          SERVICE_PORT: '5050',
+          ALGORITHM: 'round-robin',
+        }),
+        volumeMounts: [
+          {
+            name: 'shared-data',
+            mountPath: '/share',
+          },
+        ],
+      }
     ],
     ports: [
       {port: 9090},
