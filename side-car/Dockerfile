@@ -7,8 +7,10 @@ WORKDIR /usr/src/app
 # 将当前目录内容复制到容器的 /usr/src/app
 COPY . .
 
-# 安装 requirements.txt 中指定的所需包
-RUN pip3 install --no-cache-dir kubernetes psutil
+# 安装构建依赖项和所需包
+RUN apt-get update \
+    && apt-get install -y gcc python3-dev \
+    && pip3 install --no-cache-dir kubernetes psutil \
 
 # 容器启动时运行脚本
 CMD ["python3", "./main.py"]
