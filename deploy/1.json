@@ -175,7 +175,7 @@
             "containers": [
               {
                 "name": "compose-post-service",
-                "image": "xczhw/deathstarbench:latest@sha256:926eb81a81444a58eabde202a67d3cc27d37cfd6b701fc11dbb08f6b1d1ecf73",
+                "image": "xczhw/deathstarbench:latest@sha256:09da50a711f8274d1b6aae56ec9a5f9d87d79acec2e84743ebd7935785b49e7d",
                 "command": [
                   "ComposePostService"
                 ],
@@ -311,7 +311,7 @@
             "containers": [
               {
                 "name": "home-timeline-service",
-                "image": "xczhw/deathstarbench:latest@sha256:926eb81a81444a58eabde202a67d3cc27d37cfd6b701fc11dbb08f6b1d1ecf73",
+                "image": "xczhw/deathstarbench:latest@sha256:09da50a711f8274d1b6aae56ec9a5f9d87d79acec2e84743ebd7935785b49e7d",
                 "command": [
                   "HomeTimelineService"
                 ],
@@ -447,7 +447,7 @@
             "containers": [
               {
                 "name": "media-service",
-                "image": "xczhw/deathstarbench:latest@sha256:926eb81a81444a58eabde202a67d3cc27d37cfd6b701fc11dbb08f6b1d1ecf73",
+                "image": "xczhw/deathstarbench:latest@sha256:09da50a711f8274d1b6aae56ec9a5f9d87d79acec2e84743ebd7935785b49e7d",
                 "command": [
                   "MediaService"
                 ],
@@ -520,7 +520,7 @@
             "containers": [
               {
                 "name": "post-storage-service",
-                "image": "xczhw/deathstarbench:latest@sha256:926eb81a81444a58eabde202a67d3cc27d37cfd6b701fc11dbb08f6b1d1ecf73",
+                "image": "xczhw/deathstarbench:latest@sha256:09da50a711f8274d1b6aae56ec9a5f9d87d79acec2e84743ebd7935785b49e7d",
                 "command": [
                   "PostStorageService"
                 ],
@@ -723,7 +723,7 @@
             "containers": [
               {
                 "name": "social-graph-service",
-                "image": "xczhw/deathstarbench:latest@sha256:926eb81a81444a58eabde202a67d3cc27d37cfd6b701fc11dbb08f6b1d1ecf73",
+                "image": "xczhw/deathstarbench:latest@sha256:09da50a711f8274d1b6aae56ec9a5f9d87d79acec2e84743ebd7935785b49e7d",
                 "command": [
                   "SocialGraphService"
                 ],
@@ -921,7 +921,7 @@
             "containers": [
               {
                 "name": "text-service",
-                "image": "xczhw/deathstarbench:latest@sha256:926eb81a81444a58eabde202a67d3cc27d37cfd6b701fc11dbb08f6b1d1ecf73",
+                "image": "xczhw/deathstarbench:latest@sha256:09da50a711f8274d1b6aae56ec9a5f9d87d79acec2e84743ebd7935785b49e7d",
                 "command": [
                   "TextService"
                 ],
@@ -994,7 +994,7 @@
             "containers": [
               {
                 "name": "unique-id-service",
-                "image": "xczhw/deathstarbench:latest@sha256:926eb81a81444a58eabde202a67d3cc27d37cfd6b701fc11dbb08f6b1d1ecf73",
+                "image": "xczhw/deathstarbench:latest@sha256:09da50a711f8274d1b6aae56ec9a5f9d87d79acec2e84743ebd7935785b49e7d",
                 "command": [
                   "UniqueIdService"
                 ],
@@ -1067,7 +1067,7 @@
             "containers": [
               {
                 "name": "url-shorten-service",
-                "image": "xczhw/deathstarbench:latest@sha256:926eb81a81444a58eabde202a67d3cc27d37cfd6b701fc11dbb08f6b1d1ecf73",
+                "image": "xczhw/deathstarbench:latest@sha256:09da50a711f8274d1b6aae56ec9a5f9d87d79acec2e84743ebd7935785b49e7d",
                 "command": [
                   "UrlShortenService"
                 ],
@@ -1140,7 +1140,7 @@
             "containers": [
               {
                 "name": "user-mention-service",
-                "image": "xczhw/deathstarbench:latest@sha256:926eb81a81444a58eabde202a67d3cc27d37cfd6b701fc11dbb08f6b1d1ecf73",
+                "image": "xczhw/deathstarbench:latest@sha256:09da50a711f8274d1b6aae56ec9a5f9d87d79acec2e84743ebd7935785b49e7d",
                 "command": [
                   "UserMentionService"
                 ],
@@ -1213,7 +1213,7 @@
             "containers": [
               {
                 "name": "user-service",
-                "image": "xczhw/deathstarbench:latest@sha256:926eb81a81444a58eabde202a67d3cc27d37cfd6b701fc11dbb08f6b1d1ecf73",
+                "image": "xczhw/deathstarbench:latest@sha256:09da50a711f8274d1b6aae56ec9a5f9d87d79acec2e84743ebd7935785b49e7d",
                 "command": [
                   "UserService"
                 ],
@@ -1416,7 +1416,7 @@
             "containers": [
               {
                 "name": "user-timeline-service",
-                "image": "xczhw/deathstarbench:latest@sha256:926eb81a81444a58eabde202a67d3cc27d37cfd6b701fc11dbb08f6b1d1ecf73",
+                "image": "xczhw/deathstarbench:latest@sha256:09da50a711f8274d1b6aae56ec9a5f9d87d79acec2e84743ebd7935785b49e7d",
                 "command": [
                   "UserTimelineService"
                 ],
