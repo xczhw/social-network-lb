@@ -55,7 +55,7 @@ def udp_server():
                 if message.lower() == 'cpu_usage':
                     cpu_usage = get_system_info()["cpu_usage"]
                     s.sendto(str(cpu_usage).encode(), addr)
-                    print('send:' + cpu_usage)
+                    print('send:' + str(cpu_usage))
                 elif message == 'get_log':
                     with open(f'{LOGPATH}/log.txt', 'rb') as f:
                         s.sendto(f.read(), addr)
