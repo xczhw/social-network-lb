@@ -13,4 +13,4 @@ RUN apt-get update \
     && pip3 install --no-cache-dir kubernetes psutil
 
 # 容器启动时运行脚本
-CMD ["python3", "./main.py"]
+CMD ["python3", "-u", "./side-car.py"]

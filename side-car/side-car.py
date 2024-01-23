@@ -16,7 +16,7 @@ def create_if_not_exists(path):
 
 def get_logger(path, filename):
     create_if_not_exists(path)
-    filepath = path + filename
+    filepath = f"{path}/{filename}"
     logger = logging.getLogger(filepath)
     logger.setLevel(logging.INFO)
     handler = logging.FileHandler(filepath)
@@ -114,10 +114,12 @@ if __name__ == "__main__":
 
     # Starting UDP server in a separate thread
     import threading
-    server_thread = threading.Thread(target=udp_server, daemon=True)
+    server_thread = threading.Thread(target=udp_server)
     update_status_thread = threading.Thread(target=update_status, daemon=True)
     log_thread = threading.Thread(target=log_system_info, daemon=True)
 
     server_thread.start()
     update_status_thread.start()
     log_thread.start()
+    
+    server_thread.join()
