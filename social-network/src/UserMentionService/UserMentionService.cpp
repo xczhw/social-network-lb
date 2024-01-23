@@ -30,7 +30,7 @@ void sigintHandler(int sig) {
 }
 void create_svc_file() {
   std::ofstream svc_file;
-  svc_file.open("/share/svc_file.txt");
+  svc_file.open("/share/data/svc_file.txt");
   svc_file << "compose-post-service" << std::endl;
   svc_file.close();
 }
