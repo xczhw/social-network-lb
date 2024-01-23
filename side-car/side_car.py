@@ -27,12 +27,14 @@ def get_logger(path, filename):
 
 logger = get_logger(LOGPATH, 'log.txt')
 
-def get_pod_ips(service_name, namespace='default'):
-    pod_ips = []
+# Kubernetes client initialization
+config.load_incluster_config()
+v1 = client.CoreV1Api()
+def get_pod_ips(service_name, namespace='social-network'):
     pods = v1.list_namespaced_pod(namespace)
-    for pod in pods.items:
-        if pod.metadata.labels.get('name') == service_name:
-            pod_ips.append(pod.status.pod_ip)
+    svc_pods = list(filter(lambda pod: pod.metadata.labels.get('name') == service_name, pods.items))
+    pod_ips = [pod.status.pod_ip for pod in svc_pods]
+    pod_ips = list(filter(lambda ip: ip is not None, pod_ips))
     create_if_not_exists(f"{DATAPATH}/{service_name}")
     with open(f"{DATAPATH}/{service_name}/pod_ips.txt", 'w') as f:
         f.write("\n".join(pod_ips))
@@ -58,19 +60,40 @@ def udp_server():
                     print('send:' + str(cpu_usage))
                 elif message == 'get_log':
                     with open(f'{LOGPATH}/log.txt', 'rb') as f:
-                        s.sendto(f.read(), addr)
-                s.sendto('<EOF>', (addr))
+                        while True:
+                            chunk = f.read(1024)
+                            if not chunk:
+                                break
+                            s.sendto(chunk, addr)
+                s.sendto('<EOF>'.encode(), (addr))
+
+def recv_until_eof(s):
+    data_parts = []
+    while True:
+        data, _ = s.recvfrom(1024)
+        data_parts.append(data)
+        if data.decode().endswith('<EOF>'):
+            break
+    data = b''.join(data_parts).decode()
+    data = data[:-len('<EOF>')]
+    return data
+
+def send_to(ip, message):
+    response = {}
+    with socket.socket(socket.AF_INET, socket.SOCK_DGRAM) as s:
+        s.sendto(message.encode(), (ip, SERVICE_PORT))
+        data = recv_until_eof(s)
+        print(f"Response from {ip}: {data}")
+        response[ip] = data
+    return response
 
 # Function to send request to other pods
 def send_request_to_all_pod_in_svc(svc, message):
     pod_ips = get_pod_ips(svc)
     response = {}
-    with socket.socket(socket.AF_INET, socket.SOCK_DGRAM) as s:
-        for ip in pod_ips:
-            s.sendto(message.encode(), (ip, SERVICE_PORT))
-            data, _ = s.recvfrom(1024)
-            # print(f"Response from {ip}: {data.decode()}")
-            response[ip] = data.decode()
+    for ip in pod_ips:
+        res = send_to(ip, message)
+        response[ip] = res
     return response
 
 # waiting until file exists
@@ -108,10 +131,6 @@ def log_system_info():
         time.sleep(1)
 
 if __name__ == "__main__":
-    # Kubernetes client initialization
-    config.load_incluster_config()
-    v1 = client.CoreV1Api()
-
     # Starting UDP server in a separate thread
     import threading
     server_thread = threading.Thread(target=udp_server)
