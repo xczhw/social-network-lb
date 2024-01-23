@@ -82,7 +82,7 @@ def wait_for_file(file_path, timeout=60):
         time.sleep(5)
 
 def get_svc_list():
-    file_path = f'{DATAPATH}/svc_list.txt'
+    file_path = f'{DATAPATH}/svc_file.txt'
     wait_for_file(file_path)
     with open(file_path, 'r') as f:
         return [svc.strip() for svc in f.readlines()]
