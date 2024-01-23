@@ -194,7 +194,7 @@
               },
               {
                 "name": "side-car",
-                "image": "node0:5000/sidecar:latest@sha256:feb02956d8042fe6a4f73848e1e2592c0b6c2948ce896c24b9f04af57a444989",
+                "image": "node0:5000/sidecar:latest@sha256:b34948a5babe0226d3ffee0c7e98e8ad2c65769e5f62e813e8970ad668c09dbf",
                 "env": [
                   {
                     "name": "SERVICE_PORT",
@@ -350,7 +350,7 @@
               },
               {
                 "name": "side-car",
-                "image": "node0:5000/sidecar:latest@sha256:feb02956d8042fe6a4f73848e1e2592c0b6c2948ce896c24b9f04af57a444989",
+                "image": "node0:5000/sidecar:latest@sha256:b34948a5babe0226d3ffee0c7e98e8ad2c65769e5f62e813e8970ad668c09dbf",
                 "env": [
                   {
                     "name": "SERVICE_PORT",
@@ -506,7 +506,7 @@
               },
               {
                 "name": "side-car",
-                "image": "node0:5000/sidecar:latest@sha256:feb02956d8042fe6a4f73848e1e2592c0b6c2948ce896c24b9f04af57a444989",
+                "image": "node0:5000/sidecar:latest@sha256:b34948a5babe0226d3ffee0c7e98e8ad2c65769e5f62e813e8970ad668c09dbf",
                 "env": [
                   {
                     "name": "SERVICE_PORT",
@@ -599,7 +599,7 @@
               },
               {
                 "name": "side-car",
-                "image": "node0:5000/sidecar:latest@sha256:feb02956d8042fe6a4f73848e1e2592c0b6c2948ce896c24b9f04af57a444989",
+                "image": "node0:5000/sidecar:latest@sha256:b34948a5babe0226d3ffee0c7e98e8ad2c65769e5f62e813e8970ad668c09dbf",
                 "env": [
                   {
                     "name": "SERVICE_PORT",
@@ -822,7 +822,7 @@
               },
               {
                 "name": "side-car",
-                "image": "node0:5000/sidecar:latest@sha256:feb02956d8042fe6a4f73848e1e2592c0b6c2948ce896c24b9f04af57a444989",
+                "image": "node0:5000/sidecar:latest@sha256:b34948a5babe0226d3ffee0c7e98e8ad2c65769e5f62e813e8970ad668c09dbf",
                 "env": [
                   {
                     "name": "SERVICE_PORT",
@@ -1040,7 +1040,7 @@
               },
               {
                 "name": "side-car",
-                "image": "node0:5000/sidecar:latest@sha256:feb02956d8042fe6a4f73848e1e2592c0b6c2948ce896c24b9f04af57a444989",
+                "image": "node0:5000/sidecar:latest@sha256:b34948a5babe0226d3ffee0c7e98e8ad2c65769e5f62e813e8970ad668c09dbf",
                 "env": [
                   {
                     "name": "SERVICE_PORT",
@@ -1133,7 +1133,7 @@
               },
               {
                 "name": "side-car",
-                "image": "node0:5000/sidecar:latest@sha256:feb02956d8042fe6a4f73848e1e2592c0b6c2948ce896c24b9f04af57a444989",
+                "image": "node0:5000/sidecar:latest@sha256:b34948a5babe0226d3ffee0c7e98e8ad2c65769e5f62e813e8970ad668c09dbf",
                 "env": [
                   {
                     "name": "SERVICE_PORT",
@@ -1226,7 +1226,7 @@
               },
               {
                 "name": "side-car",
-                "image": "node0:5000/sidecar:latest@sha256:feb02956d8042fe6a4f73848e1e2592c0b6c2948ce896c24b9f04af57a444989",
+                "image": "node0:5000/sidecar:latest@sha256:b34948a5babe0226d3ffee0c7e98e8ad2c65769e5f62e813e8970ad668c09dbf",
                 "env": [
                   {
                     "name": "SERVICE_PORT",
@@ -1319,7 +1319,7 @@
               },
               {
                 "name": "side-car",
-                "image": "node0:5000/sidecar:latest@sha256:feb02956d8042fe6a4f73848e1e2592c0b6c2948ce896c24b9f04af57a444989",
+                "image": "node0:5000/sidecar:latest@sha256:b34948a5babe0226d3ffee0c7e98e8ad2c65769e5f62e813e8970ad668c09dbf",
                 "env": [
                   {
                     "name": "SERVICE_PORT",
@@ -1412,7 +1412,7 @@
               },
               {
                 "name": "side-car",
-                "image": "node0:5000/sidecar:latest@sha256:feb02956d8042fe6a4f73848e1e2592c0b6c2948ce896c24b9f04af57a444989",
+                "image": "node0:5000/sidecar:latest@sha256:b34948a5babe0226d3ffee0c7e98e8ad2c65769e5f62e813e8970ad668c09dbf",
                 "env": [
                   {
                     "name": "SERVICE_PORT",
@@ -1635,7 +1635,7 @@
               },
               {
                 "name": "side-car",
-                "image": "node0:5000/sidecar:latest@sha256:feb02956d8042fe6a4f73848e1e2592c0b6c2948ce896c24b9f04af57a444989",
+                "image": "node0:5000/sidecar:latest@sha256:b34948a5babe0226d3ffee0c7e98e8ad2c65769e5f62e813e8970ad668c09dbf",
                 "env": [
                   {
                     "name": "SERVICE_PORT",
