@@ -7,8 +7,10 @@ const worker1 = 'autothrottle-2';
 const worker2 = 'autothrottle-3';
 const worker3 = 'autothrottle-4';
 const worker4 = 'autothrottle-5';
-const image_cpp = 'node0:5000/deathstarbench:latest@sha256:6be4f3db7bc718319e80a9d3773913560f9ce1068c97045d036d56185cc5c07d';
-const image_side_car = 'node0:5000/sidecar:latest@sha256:c97a86a2914d62263ccfb5bfa1a88af022086ff4b38a2a66cf94e96b98ec3565'
+
+var image = JSON.parse(fs.readFileSync('./image.json', 'utf8'));
+const image_cpp = image['deathstarbench'];
+const image_side_car = image['sidecar'];
 const image_nginx = 'hypercube/social-network-ml-nginx:latest@sha256:6ac95749cb7aff055735ce490c7e702d1dabf8b6262c87d52d49b8ef4377833a';
 const image_media_filter = 'hypercube/social-network-ml-media-filter:latest@sha256:ece820ae1156eab2c6b41eae07ecac524960d47bcdd4e063e9d3520399dcac05';
 const image_text_filter = 'hypercube/social-network-ml-text-filter:latest@sha256:6f541847637a92e331f1088b78dcdf77acbe6242960994aabf1ced51dc308117';
