@@ -78,11 +78,16 @@ def recv_until_eof(s):
     data = data[:-len('<EOF>')]
     return data
 
-def send_to(ip, message):
+def send_to(ip, message, timeout=2):
     with socket.socket(socket.AF_INET, socket.SOCK_DGRAM) as s:
-        s.sendto(message.encode(), (ip, SERVICE_PORT))
-        data = recv_until_eof(s)
-        print(f"Response from {ip}: {data}")
+        s.settimeout(timeout)
+        try:
+            s.sendto(message.encode(), (ip, SERVICE_PORT))
+            data = recv_until_eof(s)
+            print(f"Response from {ip}: {data}")
+        except socket.timeout:
+            data = "None"
+            print(f"Timeout for {ip}")
     return data
 
 # Function to send request to other pods

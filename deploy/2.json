@@ -27,7 +27,7 @@
             "containers": [
               {
                 "name": "write-home-timeline-service",
-                "image": "node0:5000/deathstarbench:latest@sha256:59b00e43257169914336de4abfd23a6b80a2ac02028252bfe377a2cd754cbf6f",
+                "image": "node0:5000/deathstarbench:latest@sha256:8f290df0cd376321967ffd52a6e36c6ff752bd276355afe0b9249da204310c28",
                 "command": [
                   "WriteHomeTimelineService"
                 ],
@@ -46,7 +46,7 @@
               },
               {
                 "name": "side-car",
-                "image": "node0:5000/sidecar:latest@sha256:36586431109297c321723214546b70b9b5f34d7b0eed2af8c7bad9269fa8bec5",
+                "image": "node0:5000/sidecar:latest@sha256:5f314a20e9500e4a7934ffa6b7feb35d51079fbcdd6c7f23e611ef602b518363",
                 "env": [
                   {
                     "name": "SERVICE_PORT",
@@ -54,7 +54,7 @@
                   },
                   {
                     "name": "ALGORITHM",
-                    "value": "round-robin"
+                    "value": "random"
                   }
                 ],
                 "volumeMounts": [
@@ -120,7 +120,7 @@
             "containers": [
               {
                 "name": "write-user-timeline-service",
-                "image": "node0:5000/deathstarbench:latest@sha256:59b00e43257169914336de4abfd23a6b80a2ac02028252bfe377a2cd754cbf6f",
+                "image": "node0:5000/deathstarbench:latest@sha256:8f290df0cd376321967ffd52a6e36c6ff752bd276355afe0b9249da204310c28",
                 "command": [
                   "WriteUserTimelineService"
                 ],
@@ -139,7 +139,7 @@
               },
               {
                 "name": "side-car",
-                "image": "node0:5000/sidecar:latest@sha256:36586431109297c321723214546b70b9b5f34d7b0eed2af8c7bad9269fa8bec5",
+                "image": "node0:5000/sidecar:latest@sha256:5f314a20e9500e4a7934ffa6b7feb35d51079fbcdd6c7f23e611ef602b518363",
                 "env": [
                   {
                     "name": "SERVICE_PORT",
@@ -147,7 +147,7 @@
                   },
                   {
                     "name": "ALGORITHM",
-                    "value": "round-robin"
+                    "value": "random"
                   }
                 ],
                 "volumeMounts": [

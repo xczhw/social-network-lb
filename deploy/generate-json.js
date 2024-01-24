@@ -30,7 +30,7 @@ function env(o) {
   return Object.entries(o).map(([name, value]) => ({name, value}));
 }
 
-function deployment(name, {nodeName, containers, podLabels}) {
+function deployment(name, {nodeName, containers, podLabels}, replicas = 1) {
   return {
     apiVersion: 'apps/v1',
     kind: 'Deployment',
@@ -39,7 +39,7 @@ function deployment(name, {nodeName, containers, podLabels}) {
       name,
     },
     spec: {
-      replicas: 1,
+      replicas: replicas,
       selector: {
         matchLabels: podLabels || {name},
       },
@@ -81,9 +81,9 @@ function service(name, {serviceType, ports, selector}) {
   };
 }
 
-function deployment_service(name, {nodeName, containers, serviceType, ports}) {
+function deployment_service(name, {nodeName, containers, serviceType, ports}, replicas = 1) {
   return [
-    deployment(name, {nodeName, containers}),
+    deployment(name, {nodeName, containers}, replicas),
     service(name, {serviceType, ports}),
   ];
 }
@@ -118,7 +118,7 @@ function cpp(nodeName, name, command) {
         image: image_side_car,
         env: env({
           SERVICE_PORT: '5050',
-          ALGORITHM: 'round-robin',
+          ALGORITHM: 'random',
         }),
         volumeMounts: [
           {
@@ -253,7 +253,7 @@ const doc1 = {
       ],
     }),
 
-    ...cpp(worker3, 'compose-post-service', 'ComposePostService'),
+    ...cpp(worker3, 'compose-post-service', 'ComposePostService', 10),
     ...redis(worker3, 'compose-post-redis'),
 
     ...cpp(worker1, 'home-timeline-service', 'HomeTimelineService'),

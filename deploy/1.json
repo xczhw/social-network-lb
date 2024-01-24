@@ -175,7 +175,7 @@
             "containers": [
               {
                 "name": "compose-post-service",
-                "image": "node0:5000/deathstarbench:latest@sha256:59b00e43257169914336de4abfd23a6b80a2ac02028252bfe377a2cd754cbf6f",
+                "image": "node0:5000/deathstarbench:latest@sha256:8f290df0cd376321967ffd52a6e36c6ff752bd276355afe0b9249da204310c28",
                 "command": [
                   "ComposePostService"
                 ],
@@ -194,7 +194,7 @@
               },
               {
                 "name": "side-car",
-                "image": "node0:5000/sidecar:latest@sha256:36586431109297c321723214546b70b9b5f34d7b0eed2af8c7bad9269fa8bec5",
+                "image": "node0:5000/sidecar:latest@sha256:5f314a20e9500e4a7934ffa6b7feb35d51079fbcdd6c7f23e611ef602b518363",
                 "env": [
                   {
                     "name": "SERVICE_PORT",
@@ -202,7 +202,7 @@
                   },
                   {
                     "name": "ALGORITHM",
-                    "value": "round-robin"
+                    "value": "random"
                   }
                 ],
                 "volumeMounts": [
@@ -331,7 +331,7 @@
             "containers": [
               {
                 "name": "home-timeline-service",
-                "image": "node0:5000/deathstarbench:latest@sha256:59b00e43257169914336de4abfd23a6b80a2ac02028252bfe377a2cd754cbf6f",
+                "image": "node0:5000/deathstarbench:latest@sha256:8f290df0cd376321967ffd52a6e36c6ff752bd276355afe0b9249da204310c28",
                 "command": [
                   "HomeTimelineService"
                 ],
@@ -350,7 +350,7 @@
               },
               {
                 "name": "side-car",
-                "image": "node0:5000/sidecar:latest@sha256:36586431109297c321723214546b70b9b5f34d7b0eed2af8c7bad9269fa8bec5",
+                "image": "node0:5000/sidecar:latest@sha256:5f314a20e9500e4a7934ffa6b7feb35d51079fbcdd6c7f23e611ef602b518363",
                 "env": [
                   {
                     "name": "SERVICE_PORT",
@@ -358,7 +358,7 @@
                   },
                   {
                     "name": "ALGORITHM",
-                    "value": "round-robin"
+                    "value": "random"
                   }
                 ],
                 "volumeMounts": [
@@ -487,7 +487,7 @@
             "containers": [
               {
                 "name": "media-service",
-                "image": "node0:5000/deathstarbench:latest@sha256:59b00e43257169914336de4abfd23a6b80a2ac02028252bfe377a2cd754cbf6f",
+                "image": "node0:5000/deathstarbench:latest@sha256:8f290df0cd376321967ffd52a6e36c6ff752bd276355afe0b9249da204310c28",
                 "command": [
                   "MediaService"
                 ],
@@ -506,7 +506,7 @@
               },
               {
                 "name": "side-car",
-                "image": "node0:5000/sidecar:latest@sha256:36586431109297c321723214546b70b9b5f34d7b0eed2af8c7bad9269fa8bec5",
+                "image": "node0:5000/sidecar:latest@sha256:5f314a20e9500e4a7934ffa6b7feb35d51079fbcdd6c7f23e611ef602b518363",
                 "env": [
                   {
                     "name": "SERVICE_PORT",
@@ -514,7 +514,7 @@
                   },
                   {
                     "name": "ALGORITHM",
-                    "value": "round-robin"
+                    "value": "random"
                   }
                 ],
                 "volumeMounts": [
@@ -580,7 +580,7 @@
             "containers": [
               {
                 "name": "post-storage-service",
-                "image": "node0:5000/deathstarbench:latest@sha256:59b00e43257169914336de4abfd23a6b80a2ac02028252bfe377a2cd754cbf6f",
+                "image": "node0:5000/deathstarbench:latest@sha256:8f290df0cd376321967ffd52a6e36c6ff752bd276355afe0b9249da204310c28",
                 "command": [
                   "PostStorageService"
                 ],
@@ -599,7 +599,7 @@
               },
               {
                 "name": "side-car",
-                "image": "node0:5000/sidecar:latest@sha256:36586431109297c321723214546b70b9b5f34d7b0eed2af8c7bad9269fa8bec5",
+                "image": "node0:5000/sidecar:latest@sha256:5f314a20e9500e4a7934ffa6b7feb35d51079fbcdd6c7f23e611ef602b518363",
                 "env": [
                   {
                     "name": "SERVICE_PORT",
@@ -607,7 +607,7 @@
                   },
                   {
                     "name": "ALGORITHM",
-                    "value": "round-robin"
+                    "value": "random"
                   }
                 ],
                 "volumeMounts": [
@@ -803,7 +803,7 @@
             "containers": [
               {
                 "name": "social-graph-service",
-                "image": "node0:5000/deathstarbench:latest@sha256:59b00e43257169914336de4abfd23a6b80a2ac02028252bfe377a2cd754cbf6f",
+                "image": "node0:5000/deathstarbench:latest@sha256:8f290df0cd376321967ffd52a6e36c6ff752bd276355afe0b9249da204310c28",
                 "command": [
                   "SocialGraphService"
                 ],
@@ -822,7 +822,7 @@
               },
               {
                 "name": "side-car",
-                "image": "node0:5000/sidecar:latest@sha256:36586431109297c321723214546b70b9b5f34d7b0eed2af8c7bad9269fa8bec5",
+                "image": "node0:5000/sidecar:latest@sha256:5f314a20e9500e4a7934ffa6b7feb35d51079fbcdd6c7f23e611ef602b518363",
                 "env": [
                   {
                     "name": "SERVICE_PORT",
@@ -830,7 +830,7 @@
                   },
                   {
                     "name": "ALGORITHM",
-                    "value": "round-robin"
+                    "value": "random"
                   }
                 ],
                 "volumeMounts": [
@@ -1021,7 +1021,7 @@
             "containers": [
               {
                 "name": "text-service",
-                "image": "node0:5000/deathstarbench:latest@sha256:59b00e43257169914336de4abfd23a6b80a2ac02028252bfe377a2cd754cbf6f",
+                "image": "node0:5000/deathstarbench:latest@sha256:8f290df0cd376321967ffd52a6e36c6ff752bd276355afe0b9249da204310c28",
                 "command": [
                   "TextService"
                 ],
@@ -1040,7 +1040,7 @@
               },
               {
                 "name": "side-car",
-                "image": "node0:5000/sidecar:latest@sha256:36586431109297c321723214546b70b9b5f34d7b0eed2af8c7bad9269fa8bec5",
+                "image": "node0:5000/sidecar:latest@sha256:5f314a20e9500e4a7934ffa6b7feb35d51079fbcdd6c7f23e611ef602b518363",
                 "env": [
                   {
                     "name": "SERVICE_PORT",
@@ -1048,7 +1048,7 @@
                   },
                   {
                     "name": "ALGORITHM",
-                    "value": "round-robin"
+                    "value": "random"
                   }
                 ],
                 "volumeMounts": [
@@ -1114,7 +1114,7 @@
             "containers": [
               {
                 "name": "unique-id-service",
-                "image": "node0:5000/deathstarbench:latest@sha256:59b00e43257169914336de4abfd23a6b80a2ac02028252bfe377a2cd754cbf6f",
+                "image": "node0:5000/deathstarbench:latest@sha256:8f290df0cd376321967ffd52a6e36c6ff752bd276355afe0b9249da204310c28",
                 "command": [
                   "UniqueIdService"
                 ],
@@ -1133,7 +1133,7 @@
               },
               {
                 "name": "side-car",
-                "image": "node0:5000/sidecar:latest@sha256:36586431109297c321723214546b70b9b5f34d7b0eed2af8c7bad9269fa8bec5",
+                "image": "node0:5000/sidecar:latest@sha256:5f314a20e9500e4a7934ffa6b7feb35d51079fbcdd6c7f23e611ef602b518363",
                 "env": [
                   {
                     "name": "SERVICE_PORT",
@@ -1141,7 +1141,7 @@
                   },
                   {
                     "name": "ALGORITHM",
-                    "value": "round-robin"
+                    "value": "random"
                   }
                 ],
                 "volumeMounts": [
@@ -1207,7 +1207,7 @@
             "containers": [
               {
                 "name": "url-shorten-service",
-                "image": "node0:5000/deathstarbench:latest@sha256:59b00e43257169914336de4abfd23a6b80a2ac02028252bfe377a2cd754cbf6f",
+                "image": "node0:5000/deathstarbench:latest@sha256:8f290df0cd376321967ffd52a6e36c6ff752bd276355afe0b9249da204310c28",
                 "command": [
                   "UrlShortenService"
                 ],
@@ -1226,7 +1226,7 @@
               },
               {
                 "name": "side-car",
-                "image": "node0:5000/sidecar:latest@sha256:36586431109297c321723214546b70b9b5f34d7b0eed2af8c7bad9269fa8bec5",
+                "image": "node0:5000/sidecar:latest@sha256:5f314a20e9500e4a7934ffa6b7feb35d51079fbcdd6c7f23e611ef602b518363",
                 "env": [
                   {
                     "name": "SERVICE_PORT",
@@ -1234,7 +1234,7 @@
                   },
                   {
                     "name": "ALGORITHM",
-                    "value": "round-robin"
+                    "value": "random"
                   }
                 ],
                 "volumeMounts": [
@@ -1300,7 +1300,7 @@
             "containers": [
               {
                 "name": "user-mention-service",
-                "image": "node0:5000/deathstarbench:latest@sha256:59b00e43257169914336de4abfd23a6b80a2ac02028252bfe377a2cd754cbf6f",
+                "image": "node0:5000/deathstarbench:latest@sha256:8f290df0cd376321967ffd52a6e36c6ff752bd276355afe0b9249da204310c28",
                 "command": [
                   "UserMentionService"
                 ],
@@ -1319,7 +1319,7 @@
               },
               {
                 "name": "side-car",
-                "image": "node0:5000/sidecar:latest@sha256:36586431109297c321723214546b70b9b5f34d7b0eed2af8c7bad9269fa8bec5",
+                "image": "node0:5000/sidecar:latest@sha256:5f314a20e9500e4a7934ffa6b7feb35d51079fbcdd6c7f23e611ef602b518363",
                 "env": [
                   {
                     "name": "SERVICE_PORT",
@@ -1327,7 +1327,7 @@
                   },
                   {
                     "name": "ALGORITHM",
-                    "value": "round-robin"
+                    "value": "random"
                   }
                 ],
                 "volumeMounts": [
@@ -1393,7 +1393,7 @@
             "containers": [
               {
                 "name": "user-service",
-                "image": "node0:5000/deathstarbench:latest@sha256:59b00e43257169914336de4abfd23a6b80a2ac02028252bfe377a2cd754cbf6f",
+                "image": "node0:5000/deathstarbench:latest@sha256:8f290df0cd376321967ffd52a6e36c6ff752bd276355afe0b9249da204310c28",
                 "command": [
                   "UserService"
                 ],
@@ -1412,7 +1412,7 @@
               },
               {
                 "name": "side-car",
-                "image": "node0:5000/sidecar:latest@sha256:36586431109297c321723214546b70b9b5f34d7b0eed2af8c7bad9269fa8bec5",
+                "image": "node0:5000/sidecar:latest@sha256:5f314a20e9500e4a7934ffa6b7feb35d51079fbcdd6c7f23e611ef602b518363",
                 "env": [
                   {
                     "name": "SERVICE_PORT",
@@ -1420,7 +1420,7 @@
                   },
                   {
                     "name": "ALGORITHM",
-                    "value": "round-robin"
+                    "value": "random"
                   }
                 ],
                 "volumeMounts": [
@@ -1616,7 +1616,7 @@
             "containers": [
               {
                 "name": "user-timeline-service",
-                "image": "node0:5000/deathstarbench:latest@sha256:59b00e43257169914336de4abfd23a6b80a2ac02028252bfe377a2cd754cbf6f",
+                "image": "node0:5000/deathstarbench:latest@sha256:8f290df0cd376321967ffd52a6e36c6ff752bd276355afe0b9249da204310c28",
                 "command": [
                   "UserTimelineService"
                 ],
@@ -1635,7 +1635,7 @@
               },
               {
                 "name": "side-car",
-                "image": "node0:5000/sidecar:latest@sha256:36586431109297c321723214546b70b9b5f34d7b0eed2af8c7bad9269fa8bec5",
+                "image": "node0:5000/sidecar:latest@sha256:5f314a20e9500e4a7934ffa6b7feb35d51079fbcdd6c7f23e611ef602b518363",
                 "env": [
                   {
                     "name": "SERVICE_PORT",
@@ -1643,7 +1643,7 @@
                   },
                   {
                     "name": "ALGORITHM",
-                    "value": "round-robin"
+                    "value": "random"
                   }
                 ],
                 "volumeMounts": [
