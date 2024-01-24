@@ -9,6 +9,7 @@ class IAlgorithm {
 public:
     virtual ~IAlgorithm() {}
     virtual std::string execute() = 0;
+    virtual void update() = 0;
     
 protected:
     std::string svc;

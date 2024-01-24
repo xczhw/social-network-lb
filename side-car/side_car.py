@@ -79,13 +79,11 @@ def recv_until_eof(s):
     return data
 
 def send_to(ip, message):
-    response = {}
     with socket.socket(socket.AF_INET, socket.SOCK_DGRAM) as s:
         s.sendto(message.encode(), (ip, SERVICE_PORT))
         data = recv_until_eof(s)
         print(f"Response from {ip}: {data}")
-        response[ip] = data
-    return response
+    return data
 
 # Function to send request to other pods
 def send_request_to_all_pod_in_svc(svc, message):
@@ -113,7 +111,8 @@ def get_svc_list():
 def save_response_to_file(response, svc, filename):
     create_if_not_exists(f"{DATAPATH}/{svc}")
     with open(f"{DATAPATH}/{svc}/{filename}", 'w') as f:
-        json.dump(response, f)
+        for ip in response:
+            f.write(f"{ip} {response[ip]}\n")
 
 # Main function
 def update_status():

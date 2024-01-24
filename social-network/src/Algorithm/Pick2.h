@@ -12,9 +12,10 @@ class Pick2 : public IAlgorithm
 public:
     Pick2(std::string svc);
     ~Pick2() = default;
+    void update() override;
     std::string execute() override;
 private:
-    std::map<std::string, int> ip_to_status;
+    std::map<std::string, std::string> ip_to_status;
     void read_ip_status();
 };
 
@@ -22,12 +23,17 @@ Pick2::Pick2(std::string svc)
 {
     std::cout << "Pick2 constructor" << std::endl;
     this->svc = svc;
+    this->ip_to_status = std::map<std::string, std::string>();
+    this->update();
+}
+
+void Pick2::update()
+{
+    std::cout << "Pick2 update" << std::endl;
     this->ips = get_ips(svc);
-    this->ip_to_status = std::map<std::string, int>();
     for (auto ip : ips)
-    {
-        ip_to_status[ip] = 0;
-    }
+        ip_to_status[ip] = "0";
+    read_ip_status();
 }
 
 
@@ -48,20 +54,17 @@ void Pick2::read_ip_status()
 
 std::string Pick2::execute()
 {
-    this->read_ip_status();
+    this->update();
     std::cout << "Pick2 execute" << std::endl;
     int idx1 = rand() % ips.size();
     int idx2 = rand() % ips.size();
     std::string ip1 = ips[idx1];
     std::string ip2 = ips[idx2];
-    if (ip_to_status[ip1] < ip_to_status[ip2])
-    {
-        return ip1;
-    }
-    else
-    {
-        return ip2;
-    }
+    double statu1 = std::stod(ip_to_status[ip1]);
+    double statu2 = std::stod(ip_to_status[ip2]);
+    std::string ip = statu1 < statu2 ? ip1 : ip2;
+    std::cout << "Pick2 execute " << ip << std::endl;
+    return ip;
 }
 
 #endif //Pick2_H

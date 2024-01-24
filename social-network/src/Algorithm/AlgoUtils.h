@@ -26,6 +26,7 @@ std::vector<std::string> safe_read(std::string file_name) {
     return lines;
 }
 
+// TODO：改为检查文件 pod_ips.txt 的最后修改时间，并且仅当这个时间晚于上次更新的时间时，它才会读取文件（考虑是否有必要）
 std::vector<std::string> get_ips(std::string svc) {
     std::vector<std::string> ips = safe_read("/share/data/" + svc + "/pod_ips.txt");
     return ips;

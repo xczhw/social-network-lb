@@ -48,21 +48,10 @@ private:
   std::condition_variable _cv;
   IAlgorithm * _algorithm;
 
-  TClient * GetClientFromPool();
-  TClient * ProduceClient();
+  TClient * GetClientFromPool(std::string ip);
+  TClient * ProduceClient(std::string ip);
 
 };
-
-std::vector<std::string> get_ip_list(const std::string &svc) {
-  std::vector<std::string> ip_list;
-  std::string ip_file = '/shared/' + svc + 'pod_ips.txt'
-  std::ifstream infile(ip_file);
-  std::string ip;
-  while (infile >> ip) {
-    ip_list.push_back(ip);
-  }
-  return ip_list;
-}
 
 template<class TClient>
 ClientPool<TClient>::ClientPool(const std::string &client_type,
@@ -77,7 +66,7 @@ ClientPool<TClient>::ClientPool(const std::string &client_type,
   _client_type = client_type;
   std::string algo = std::getenv("ALGORITHM");
   _algorithm = AlgorithmFactory::GetAlgorithm(algo, addr);
-  _ip_list = get_ip_list(addr);
+  _ip_list = get_ips(addr);
 
   int conn_num = 0;
   for (auto &ip : _ip_list) {
@@ -107,22 +96,36 @@ ClientPool<TClient>::~ClientPool() {
   }
 }
 
+void write_send_to(std::string svc, std::string send_to)
+{
+  std::string filename = "/share/data/" + svc + "/send_to.txt";
+  // add to filename
+  std::ofstream outfile(filename, std::ios_base::app);
+  // time, send_to
+  outfile << std::to_string(std::chrono::duration_cast<std::chrono::milliseconds>(
+    std::chrono::system_clock::now().time_since_epoch()).count()) << " " 
+    << send_to << std::endl;
+  outfile.close();
+}
+
 template<class TClient>
 TClient * ClientPool<TClient>::Pop() {
   TClient * client = nullptr;
-  client = GetClientFromPool();
+  std::string ip = _algorithm->execute();
+  client = GetClientFromPool(ip);
   if (!client)
-    client = ProduceClient();
+    client = ProduceClient(ip);
   if (client) {
     try {
       client->Connect();
     } catch (...) {
       LOG(error) << "Failed to connect " + _client_type;
 
-      _pool_map[client->GetIp()].push_back(client);
+      _pool_map[client->GetIp()].push_back(client); // 改为ClientPool->Push
       throw;
     }
   }
+  write_send_to(_addr, ip);
   return client;
 }
 
@@ -144,11 +147,10 @@ void ClientPool<TClient>::Remove(TClient *client) {
 }
 
 template<class TClient>
-TClient * ClientPool<TClient>::GetClientFromPool() {
+TClient * ClientPool<TClient>::GetClientFromPool(std::string ip) {
   std::unique_lock<std::mutex> cv_lock(_mtx);
   TClient * client = nullptr;
-  std::deque<TClient *> _pool = _pools.front();
-  _pools.pop_front();
+  std::deque<TClient *> _pool = _pool_map[ip];
   if (!_pool.empty()) {
     client = _pool.front();
     _pool.pop_front();
@@ -172,17 +174,16 @@ TClient * ClientPool<TClient>::GetClientFromPool() {
     _curr_pool_size--;
   }
   cv_lock.unlock();
-  _pools.push_back(_pool);
   return client;
 }
 
 template<class TClient>
-TClient * ClientPool<TClient>::ProduceClient() {
+TClient * ClientPool<TClient>::ProduceClient(std::string ip) {
   std::unique_lock<std::mutex> lock(_mtx);
   TClient * client = nullptr;
   if (_curr_pool_size < _max_pool_size) {
     try {
-      client = new TClient(_addr, _port, _keep_alive);
+      client = new TClient(ip, _port, _keep_alive);
       _curr_pool_size++;
       LOG(warning) << "ClientPool size " << _curr_pool_size << " " << _client_type;
       lock.unlock();

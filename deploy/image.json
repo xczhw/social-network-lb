@@ -1,1 +1,1 @@
-{"sidecar": "node0:5000/sidecar:latest@sha256:b34948a5babe0226d3ffee0c7e98e8ad2c65769e5f62e813e8970ad668c09dbf", "deathstarbench": "node0:5000/deathstarbench:latest@sha256:c22628f6169dc8bc9c44a2112830a3bf5f1f230df4d9046eff489e75846b7df6"}
+{"sidecar": "node0:5000/sidecar:latest@sha256:36586431109297c321723214546b70b9b5f34d7b0eed2af8c7bad9269fa8bec5", "deathstarbench": "node0:5000/deathstarbench:latest@sha256:59b00e43257169914336de4abfd23a6b80a2ac02028252bfe377a2cd754cbf6f"}

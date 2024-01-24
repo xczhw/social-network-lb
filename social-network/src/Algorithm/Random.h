@@ -10,10 +10,12 @@ class Random : public IAlgorithm
 public:
     Random(std::string svc);
     ~Random() = default;
+    void update() override;
     std::string execute() override
     {
-        std::cout << "Random execute" << std::endl;
         int index = rand() % ips.size();
+        std::string ip = ips[index];
+        std::cout << "Random execute " << ip << std::endl;
         return ips[index];
     }
 };
@@ -22,6 +24,12 @@ Random::Random(std::string svc)
 {
     std::cout << "Random constructor" << std::endl;
     this->svc = svc;
+    this->ips = get_ips(svc);
+}
+
+void Random::update()
+{
+    std::cout << "Random update" << std::endl;
     this->ips = get_ips(svc);
 }
 

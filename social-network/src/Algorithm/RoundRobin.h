@@ -9,11 +9,14 @@ class RoundRobin : public IAlgorithm
 {
 public:
     RoundRobin(std::string svc);
+    void update() override;
     ~RoundRobin() = default;
     std::string execute() override
     {
-        std::cout << "RoundRobin execute" << std::endl;
+        update();
+        index = std::min(index, (int)ips.size() - 1);
         std::string ip = ips[index];
+        std::cout << "RoundRobin execute " << ip << std::endl;
         index = (index + 1) % ips.size();
         return ip;
     }
@@ -27,6 +30,12 @@ RoundRobin::RoundRobin(std::string svc)
     this->svc = svc;
     this->ips = get_ips(svc);
     this->index = 0;
+}
+
+void RoundRobin::update()
+{
+    std::cout << "RoundRobin update" << std::endl;
+    this->ips = get_ips(svc);
 }
 
 
