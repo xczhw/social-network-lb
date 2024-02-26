@@ -1,5 +1,4 @@
-#ifndef SOCIAL_NETWORK_MICROSERVICES_CLIENTPOOL_H
-#define SOCIAL_NETWORK_MICROSERVICES_CLIENTPOOL_H
+#pragma once
 
 #include <vector>
 #include <mutex>
@@ -65,15 +64,16 @@ ClientPool<TClient>::ClientPool(const std::string &client_type,
   _keep_alive = keep_alive;
   _client_type = client_type;
   std::string algo = std::getenv("ALGORITHM");
-  _algorithm = AlgorithmFactory::GetAlgorithm(algo, addr);
+  _algorithm = AlgorithmFactory::createAlgorithm(algo, addr);
   _ip_list = get_ips(addr);
 
+  // 为每个ip创建一个队列
   int conn_num = 0;
   for (auto &ip : _ip_list) {
     _pool_map[ip] = std::deque<TClient *>();
-    _pools.push_back(_pool_map[ip]);
   }
 
+  // 创建最小连接数的连接,每个ip均匀分布
   while (conn_num < min_pool_size) {
     for (auto &ip : _ip_list) {
       TClient *client = new TClient(ip, port, _keep_alive);
@@ -96,6 +96,7 @@ ClientPool<TClient>::~ClientPool() {
   }
 }
 
+// 记录每次请求发送到哪个ip
 void write_send_to(std::string svc, std::string send_to)
 {
   std::string filename = "/share/data/" + svc + "/send_to.txt";
@@ -108,12 +109,13 @@ void write_send_to(std::string svc, std::string send_to)
   outfile.close();
 }
 
+// 从队列中取出一个client的conn
 template<class TClient>
 TClient * ClientPool<TClient>::Pop() {
   TClient * client = nullptr;
   std::string ip = _algorithm->execute();
   client = GetClientFromPool(ip);
-  if (!client)
+  if (!client) // 如果取出失败,则创建一个新的client
     client = ProduceClient(ip);
   if (client) {
     try {
@@ -129,6 +131,7 @@ TClient * ClientPool<TClient>::Pop() {
   return client;
 }
 
+// 将client放回队列
 template<class TClient>
 void ClientPool<TClient>::Push(TClient *client) {
   std::unique_lock<std::mutex> cv_lock(_mtx);
@@ -137,6 +140,7 @@ void ClientPool<TClient>::Push(TClient *client) {
   _cv.notify_one();
 }
 
+// 从队列中删除一个client
 template<class TClient>
 void ClientPool<TClient>::Remove(TClient *client) {
   std::unique_lock<std::mutex> lock(_mtx);
@@ -146,15 +150,17 @@ void ClientPool<TClient>::Remove(TClient *client) {
   lock.unlock();
 }
 
+// 从队列中取出一个client
 template<class TClient>
 TClient * ClientPool<TClient>::GetClientFromPool(std::string ip) {
   std::unique_lock<std::mutex> cv_lock(_mtx);
   TClient * client = nullptr;
   std::deque<TClient *> _pool = _pool_map[ip];
-  if (!_pool.empty()) {
+  if (!_pool.empty()) { // 如果队列不为空,则取出一个client
     client = _pool.front();
     _pool.pop_front();
-  } else if (_curr_pool_size == _max_pool_size) {
+  } else if (_curr_pool_size == _max_pool_size) { 
+    // 如果队列为空,且当前连接数已经达到最大连接数,则等待
     auto wait_time = std::chrono::system_clock::now() +
         std::chrono::milliseconds(_timeout_ms);
     bool wait_success = _cv.wait_until(cv_lock, wait_time,
@@ -162,7 +168,6 @@ TClient * ClientPool<TClient>::GetClientFromPool(std::string ip) {
     if (!wait_success) {
       LOG(warning) << "ClientPool pop timeout";
       cv_lock.unlock();
-      _pools.push_back(_pool);
       return nullptr;
     }
     client = _pool.front();
@@ -196,5 +201,3 @@ TClient * ClientPool<TClient>::ProduceClient(std::string ip) {
 }
 
 } // namespace social_network
-
-#endif //SOCIAL_NETWORK_MICROSERVICES_CLIENTPOOL_H

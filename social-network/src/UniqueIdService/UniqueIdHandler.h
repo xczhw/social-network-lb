@@ -16,7 +16,7 @@
 #include "../../gen-cpp/UniqueIdService.h"
 #include "../../gen-cpp/ComposePostService.h"
 #include "../../gen-cpp/social_network_types.h"
-#include "../ClientPool.h"
+#include "../MyClientPool.h"
 #include "../ThriftClient.h"
 #include "../logger.h"
 #include "../tracing.h"
