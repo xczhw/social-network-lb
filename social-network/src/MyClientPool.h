@@ -151,6 +151,7 @@ void ClientPool<TClient>::Remove(TClient *client) {
   client = nullptr;
   _curr_pool_size--;
   lock.unlock();
+  
 }
 
 // 从队列中取出一个client
