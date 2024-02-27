@@ -10,11 +10,18 @@
 #include <string>
 
 #include "logger.h"
+#include "sharedFolderUtils.h"
 #include "Algorithm/AlgorithmFactory.h"
 #include "Algorithm/IAlgorithm.h"
 
+// Custom Epoch (January 1, 2018 Midnight GMT = 2018-01-01T00:00:00Z)
+#define CUSTOM_EPOCH 1514764800000
 
 namespace social_network {
+
+using std::chrono::milliseconds;
+using std::chrono::duration_cast;
+using std::chrono::system_clock;
 
 template<class TClient>
 class ClientPool {
@@ -96,20 +103,7 @@ ClientPool<TClient>::~ClientPool() {
   }
 }
 
-// 记录每次请求发送到哪个ip
-void write_send_to(std::string svc, std::string send_to)
-{
-  std::string filename = "/share/data/" + svc + "/send_to.txt";
-  // add to filename
-  std::ofstream outfile(filename, std::ios_base::app);
-  // time, send_to
-  outfile << std::to_string(std::chrono::duration_cast<std::chrono::milliseconds>(
-    std::chrono::system_clock::now().time_since_epoch()).count()) << " " 
-    << send_to << std::endl;
-  outfile.close();
-}
-
-// 从队列中取出一个client的conn
+// 从队列中取出并记录一个client的conn
 template<class TClient>
 TClient * ClientPool<TClient>::Pop() {
   TClient * client = nullptr;
@@ -138,6 +132,15 @@ void ClientPool<TClient>::Push(TClient *client) {
   _pool_map[client->GetIp()].push_back(client);
   cv_lock.unlock();
   _cv.notify_one();
+}
+
+template<class TClient>
+void ClientPool<TClient>::Push(TClient *client, int64_t timestamp) {
+  this->Push(client);
+  int64_t now = duration_cast<milliseconds>(
+      system_clock::now().time_since_epoch()).count() - CUSTOM_EPOCH;
+  int64_t latency = now - timestamp;
+  write_latency(_addr, client->GetIp(), latency);
 }
 
 // 从队列中删除一个client

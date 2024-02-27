@@ -14,6 +14,7 @@ def create_if_not_exists(path):
     if not os.path.exists(path):
         os.makedirs(path)
 
+# 创建一个logger
 def get_logger(path, filename):
     create_if_not_exists(path)
     filepath = f"{path}/{filename}"
