@@ -131,7 +131,7 @@ void UniqueIdHandler::UploadUniqueId(
     se.message = "Failed to connect to compose-post-service";
     throw se;
   }
-  auto compose_post_client = compose_post_client_wrapper->GetClient();
+  auto compose_post_client = compose_post_client_wrapper->GetClient()->GetClient();
   try {
     compose_post_client->UploadUniqueId(req_id, post_id, post_type, writer_text_map);    
   } catch (...) {

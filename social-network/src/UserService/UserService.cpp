@@ -21,7 +21,7 @@ void sigintHandler(int sig) {
 }
 
 void create_svc_file() {
-  system("mkdir -p /share/data");
+  int status = system("mkdir -p /share/data");
   std::ofstream svc_file;
   svc_file.open("/share/data/svc_file.txt");
   svc_file << "compose-post-service" << std::endl;

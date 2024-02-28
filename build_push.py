@@ -37,6 +37,12 @@ def build_deathstarbench():
     return sha256
 
 if __name__ == '__main__':
+    args = os.sys.argv
+    print(args)
+    if args[1] == '--rm':
+        os.system(f"(cd deploy && bash rm.sh)")
+        exit(0)
+
     sidecar_sha256 = build_side_car()
     deathstarbench_sha256 = build_deathstarbench()
     with open('deploy/image.json', 'w') as f:

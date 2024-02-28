@@ -45,4 +45,17 @@ void write_latency(std::string svc, std::string ip, int64_t latency)
     << ip << " " << latency << std::endl;
   outfile.close();
 }
+
+void write_algorithm_latency(std::string svc, std::string ip, int64_t latency, int64_t algorithm_time)
+{
+  std::string filename = "/share/data/" + svc + "/algorithm_latency.txt";
+  // add to filename
+  std::ofstream outfile(filename, std::ios_base::app);
+  // time, latency
+  outfile << std::to_string(std::chrono::duration_cast<std::chrono::milliseconds>(
+    std::chrono::system_clock::now().time_since_epoch()).count() - CUSTOM_EPOCH) << " " 
+    << ip << " " << latency << " " << algorithm_time << algorithm_time / latency * 100 << '%' << std::endl;
+  outfile.close();
+}
+
 } //namespace social_network

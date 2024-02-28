@@ -212,7 +212,7 @@ void WorkerThread(std::string &addr, int port) {
 }
 
 void create_svc_file() {
-  system("mkdir -p /share/data");
+  int status = system("mkdir -p /share/data");
   std::ofstream svc_file;
   svc_file.open("/share/data/svc_file.txt");
   svc_file.close();
