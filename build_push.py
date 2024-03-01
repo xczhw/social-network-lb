@@ -39,7 +39,7 @@ def build_deathstarbench():
 if __name__ == '__main__':
     args = os.sys.argv
     print(args)
-    if args[1] == '--rm':
+    if len(args) > 1 and args[1] == '--rm':
         os.system(f"(cd deploy && bash rm.sh)")
         exit(0)
 
