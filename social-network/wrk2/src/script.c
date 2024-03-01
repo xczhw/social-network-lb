@@ -258,14 +258,11 @@ void script_response(lua_State *L, int status, buffer *headers, buffer *body) {
     lua_newtable(L);
 
     for (char *c = headers->buffer; c < headers->cursor; ) {
-
-        
         c = buffer_pushlstring(L, c);
         c = buffer_pushlstring(L, c);
         lua_rawset(L, -3);
-        
     }
-    
+
     lua_pushlstring(L, body->buffer, body->cursor - body->buffer);
     lua_call(L, 3, 0);
 

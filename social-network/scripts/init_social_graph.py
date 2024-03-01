@@ -70,7 +70,7 @@ if __name__ == '__main__':
 
   # nginx is on ath-3
   # addr = "http://127.0.0.1:8080"
-  addr = "http://128.253.128.66:8080"
+  addr = "http://localhost:30001"
 
   loop = asyncio.get_event_loop()
   future = asyncio.ensure_future(register(addr, nodes))

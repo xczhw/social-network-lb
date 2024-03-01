@@ -9,8 +9,6 @@
 #include "stats.h"
 #include "wrk.h"
 
-
-
 lua_State *script_create(char *, char *, char **);
 
 bool script_resolve(lua_State *, char *, char *);
