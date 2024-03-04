@@ -1,1 +1,1 @@
-{"sidecar": "node0:5000/sidecar:latest@sha256:bff3989047e232e6828d0f96a35ccd0457caf9f1b32c47054e78ba914b1b8bae", "deathstarbench": "node0:5000/deathstarbench:latest@sha256:028969216f05601b98b445310557935e0eca3ddc725e06a9f091c308c2376fa9"}
+{"sidecar": "node0:5000/sidecar:latest@sha256:", "deathstarbench": "node0:5000/deathstarbench:latest@sha256:"}

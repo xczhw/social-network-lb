@@ -175,7 +175,7 @@
             "containers": [
               {
                 "name": "compose-post-service",
-                "image": "node0:5000/deathstarbench:latest@sha256:028969216f05601b98b445310557935e0eca3ddc725e06a9f091c308c2376fa9",
+                "image": "node0:5000/deathstarbench:latest@sha256:",
                 "command": [
                   "ComposePostService"
                 ],
@@ -194,7 +194,7 @@
               },
               {
                 "name": "side-car",
-                "image": "node0:5000/sidecar:latest@sha256:bff3989047e232e6828d0f96a35ccd0457caf9f1b32c47054e78ba914b1b8bae",
+                "image": "node0:5000/sidecar:latest@sha256:",
                 "env": [
                   {
                     "name": "SERVICE_PORT",
@@ -331,7 +331,7 @@
             "containers": [
               {
                 "name": "home-timeline-service",
-                "image": "node0:5000/deathstarbench:latest@sha256:028969216f05601b98b445310557935e0eca3ddc725e06a9f091c308c2376fa9",
+                "image": "node0:5000/deathstarbench:latest@sha256:",
                 "command": [
                   "HomeTimelineService"
                 ],
@@ -350,7 +350,7 @@
               },
               {
                 "name": "side-car",
-                "image": "node0:5000/sidecar:latest@sha256:bff3989047e232e6828d0f96a35ccd0457caf9f1b32c47054e78ba914b1b8bae",
+                "image": "node0:5000/sidecar:latest@sha256:",
                 "env": [
                   {
                     "name": "SERVICE_PORT",
@@ -487,7 +487,7 @@
             "containers": [
               {
                 "name": "media-service",
-                "image": "node0:5000/deathstarbench:latest@sha256:028969216f05601b98b445310557935e0eca3ddc725e06a9f091c308c2376fa9",
+                "image": "node0:5000/deathstarbench:latest@sha256:",
                 "command": [
                   "MediaService"
                 ],
@@ -506,7 +506,7 @@
               },
               {
                 "name": "side-car",
-                "image": "node0:5000/sidecar:latest@sha256:bff3989047e232e6828d0f96a35ccd0457caf9f1b32c47054e78ba914b1b8bae",
+                "image": "node0:5000/sidecar:latest@sha256:",
                 "env": [
                   {
                     "name": "SERVICE_PORT",
@@ -580,7 +580,7 @@
             "containers": [
               {
                 "name": "post-storage-service",
-                "image": "node0:5000/deathstarbench:latest@sha256:028969216f05601b98b445310557935e0eca3ddc725e06a9f091c308c2376fa9",
+                "image": "node0:5000/deathstarbench:latest@sha256:",
                 "command": [
                   "PostStorageService"
                 ],
@@ -599,7 +599,7 @@
               },
               {
                 "name": "side-car",
-                "image": "node0:5000/sidecar:latest@sha256:bff3989047e232e6828d0f96a35ccd0457caf9f1b32c47054e78ba914b1b8bae",
+                "image": "node0:5000/sidecar:latest@sha256:",
                 "env": [
                   {
                     "name": "SERVICE_PORT",
@@ -803,7 +803,7 @@
             "containers": [
               {
                 "name": "social-graph-service",
-                "image": "node0:5000/deathstarbench:latest@sha256:028969216f05601b98b445310557935e0eca3ddc725e06a9f091c308c2376fa9",
+                "image": "node0:5000/deathstarbench:latest@sha256:",
                 "command": [
                   "SocialGraphService"
                 ],
@@ -822,7 +822,7 @@
               },
               {
                 "name": "side-car",
-                "image": "node0:5000/sidecar:latest@sha256:bff3989047e232e6828d0f96a35ccd0457caf9f1b32c47054e78ba914b1b8bae",
+                "image": "node0:5000/sidecar:latest@sha256:",
                 "env": [
                   {
                     "name": "SERVICE_PORT",
@@ -1021,7 +1021,7 @@
             "containers": [
               {
                 "name": "text-service",
-                "image": "node0:5000/deathstarbench:latest@sha256:028969216f05601b98b445310557935e0eca3ddc725e06a9f091c308c2376fa9",
+                "image": "node0:5000/deathstarbench:latest@sha256:",
                 "command": [
                   "TextService"
                 ],
@@ -1040,7 +1040,7 @@
               },
               {
                 "name": "side-car",
-                "image": "node0:5000/sidecar:latest@sha256:bff3989047e232e6828d0f96a35ccd0457caf9f1b32c47054e78ba914b1b8bae",
+                "image": "node0:5000/sidecar:latest@sha256:",
                 "env": [
                   {
                     "name": "SERVICE_PORT",
@@ -1114,7 +1114,7 @@
             "containers": [
               {
                 "name": "unique-id-service",
-                "image": "node0:5000/deathstarbench:latest@sha256:028969216f05601b98b445310557935e0eca3ddc725e06a9f091c308c2376fa9",
+                "image": "node0:5000/deathstarbench:latest@sha256:",
                 "command": [
                   "UniqueIdService"
                 ],
@@ -1133,7 +1133,7 @@
               },
               {
                 "name": "side-car",
-                "image": "node0:5000/sidecar:latest@sha256:bff3989047e232e6828d0f96a35ccd0457caf9f1b32c47054e78ba914b1b8bae",
+                "image": "node0:5000/sidecar:latest@sha256:",
                 "env": [
                   {
                     "name": "SERVICE_PORT",
@@ -1207,7 +1207,7 @@
             "containers": [
               {
                 "name": "url-shorten-service",
-                "image": "node0:5000/deathstarbench:latest@sha256:028969216f05601b98b445310557935e0eca3ddc725e06a9f091c308c2376fa9",
+                "image": "node0:5000/deathstarbench:latest@sha256:",
                 "command": [
                   "UrlShortenService"
                 ],
@@ -1226,7 +1226,7 @@
               },
               {
                 "name": "side-car",
-                "image": "node0:5000/sidecar:latest@sha256:bff3989047e232e6828d0f96a35ccd0457caf9f1b32c47054e78ba914b1b8bae",
+                "image": "node0:5000/sidecar:latest@sha256:",
                 "env": [
                   {
                     "name": "SERVICE_PORT",
@@ -1300,7 +1300,7 @@
             "containers": [
               {
                 "name": "user-mention-service",
-                "image": "node0:5000/deathstarbench:latest@sha256:028969216f05601b98b445310557935e0eca3ddc725e06a9f091c308c2376fa9",
+                "image": "node0:5000/deathstarbench:latest@sha256:",
                 "command": [
                   "UserMentionService"
                 ],
@@ -1319,7 +1319,7 @@
               },
               {
                 "name": "side-car",
-                "image": "node0:5000/sidecar:latest@sha256:bff3989047e232e6828d0f96a35ccd0457caf9f1b32c47054e78ba914b1b8bae",
+                "image": "node0:5000/sidecar:latest@sha256:",
                 "env": [
                   {
                     "name": "SERVICE_PORT",
@@ -1393,7 +1393,7 @@
             "containers": [
               {
                 "name": "user-service",
-                "image": "node0:5000/deathstarbench:latest@sha256:028969216f05601b98b445310557935e0eca3ddc725e06a9f091c308c2376fa9",
+                "image": "node0:5000/deathstarbench:latest@sha256:",
                 "command": [
                   "UserService"
                 ],
@@ -1412,7 +1412,7 @@
               },
               {
                 "name": "side-car",
-                "image": "node0:5000/sidecar:latest@sha256:bff3989047e232e6828d0f96a35ccd0457caf9f1b32c47054e78ba914b1b8bae",
+                "image": "node0:5000/sidecar:latest@sha256:",
                 "env": [
                   {
                     "name": "SERVICE_PORT",
@@ -1616,7 +1616,7 @@
             "containers": [
               {
                 "name": "user-timeline-service",
-                "image": "node0:5000/deathstarbench:latest@sha256:028969216f05601b98b445310557935e0eca3ddc725e06a9f091c308c2376fa9",
+                "image": "node0:5000/deathstarbench:latest@sha256:",
                 "command": [
                   "UserTimelineService"
                 ],
@@ -1635,7 +1635,7 @@
               },
               {
                 "name": "side-car",
-                "image": "node0:5000/sidecar:latest@sha256:bff3989047e232e6828d0f96a35ccd0457caf9f1b32c47054e78ba914b1b8bae",
+                "image": "node0:5000/sidecar:latest@sha256:",
                 "env": [
                   {
                     "name": "SERVICE_PORT",
