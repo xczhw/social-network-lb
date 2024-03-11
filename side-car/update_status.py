@@ -16,8 +16,7 @@ def wait_for_file(file_path, timeout=60):
 def get_svc_list():
     file_path = f'{DATAPATH}/svc_file.txt'
     wait_for_file(file_path)
-    with open(file_path, 'r') as f:
-        return [svc.strip() for svc in f.readlines()]
+    return split_and_strip(safe_read(file_path))
 
 # 初始化k8s客户端
 config.load_incluster_config()
@@ -29,11 +28,10 @@ def get_pod_ips(service_name, namespace='social-network'):
     pod_ips = [pod.status.pod_ip for pod in svc_pods]
     pod_ips = list(filter(lambda ip: ip is not None, pod_ips))
     create_if_not_exists(f"{DATAPATH}/{service_name}")
-    with open(f"{DATAPATH}/{service_name}/pod_ips.txt", 'w') as f:
-        f.write("\n".join(pod_ips))
+    safe_write("\n".join(pod_ips), f"{DATAPATH}/{service_name}/pod_ips.txt")
     return pod_ips
 
-
+# 接收直到EOF
 def recv_until_eof(s):
     data_parts = []
     while True:
@@ -45,7 +43,8 @@ def recv_until_eof(s):
     data = data[:-len('<EOF>')]
     return data
 
-def send_to(ip, message, timeout=2):
+# 向指定ip发送请求
+def send_and_recv(message, ip, timeout=2):
     with socket.socket(socket.AF_INET, socket.SOCK_DGRAM) as s:
         s.settimeout(timeout)
         try:
@@ -62,22 +61,22 @@ def send_request_to_all_pod_in_svc(svc, message):
     pod_ips = get_pod_ips(svc)
     response = {}
     for ip in pod_ips:
-        res = send_to(ip, message)
+        res = send_and_recv(message, ip)
         response[ip] = res
     return response
 
 # 保存请求的响应到文件
 def save_response_to_file(response, svc, filename):
     create_if_not_exists(f"{DATAPATH}/{svc}")
-    with open(f"{DATAPATH}/{svc}/{filename}", 'w') as f:
-        for ip in response:
-            f.write(f"{ip} {response[ip]}\n")
+    data = "\n".join([f"{ip} {response[ip]}" for ip in response])
+    safe_write(data, f"{DATAPATH}/{svc}/{filename}")
 
 # 定时更新服务状态
 def update_status():
     service_names = get_svc_list()
     while True:
         for svc in service_names:
+            # 获取所有下游服务的cpu使用率
             res = send_request_to_all_pod_in_svc(svc, "cpu_usage")
             save_response_to_file(res, svc, "cpu_usage.txt")
             time.sleep(10)

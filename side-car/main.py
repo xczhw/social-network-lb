@@ -3,7 +3,6 @@ from server import udp_server
 from update_status import update_status
 from log_sys_info import log_sys_info
 
-DATAPATH = '/share/data'
 
 if __name__ == "__main__":
     # Starting UDP server in a separate thread

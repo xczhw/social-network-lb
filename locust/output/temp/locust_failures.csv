@@ -1,1 +1,2 @@
 Method,Name,Error,Occurrences
+POST,compose_post,"""BadStatusCode('http://localhost:30001/wrk2-api/post/compose', code=500)""",977
