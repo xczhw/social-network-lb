@@ -51,7 +51,8 @@ def run_locust(locustfile, url):
             rps = 1
         warmup.append(rps)
     trace = warmup + trace
-    dump_trace(trace[:40], 'rps.txt')
+    trace = list(map(lambda x: x // 10, trace[:40]))
+    dump_trace(trace, 'rps.txt')
     
     print('Running Locust')
     temp_dir = pathlib.Path('output/temp')
@@ -83,5 +84,5 @@ def get_data():
     pass
 
 # deploy()
-run_locust('./locustfile.py', 'http://localhost:30001')
+run_locust('./locustfile.py', 'http://node0:30001')
 # get_data()

@@ -24,6 +24,10 @@ v1 = client.CoreV1Api()
 # 获取服务中的所有pod的ip
 def get_pod_ips(service_name, namespace='social-network'):
     pods = v1.list_namespaced_pod(namespace)
+    while not pods.items:
+        print(f"No pod found for service {service_name}, retrying in 5 seconds")
+        time.sleep(5)
+        pods = v1.list_namespaced_pod(namespace)
     svc_pods = list(filter(lambda pod: pod.metadata.labels.get('name') == service_name, pods.items))
     pod_ips = [pod.status.pod_ip for pod in svc_pods]
     pod_ips = list(filter(lambda ip: ip is not None, pod_ips))
@@ -50,7 +54,7 @@ def send_and_recv(message, ip, timeout=2):
         try:
             s.sendto(message.encode(), (ip, SERVICE_PORT))
             data = recv_until_eof(s)
-            print(f"Response from {ip}: {data}")
+            print(f"Send {message} to {ip}, response: {data}")
         except socket.timeout:
             data = "None"
             print(f"Timeout for {ip}")

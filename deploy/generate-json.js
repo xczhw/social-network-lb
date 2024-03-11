@@ -11,6 +11,7 @@ const worker4 = 'autothrottle-5';
 var image = JSON.parse(fs.readFileSync('./image.json', 'utf8'));
 const image_cpp = image['deathstarbench'];
 const image_side_car = image['sidecar'];
+const image_data_collector = image['datacollector'];
 const image_nginx = 'hypercube/social-network-ml-nginx:latest@sha256:6ac95749cb7aff055735ce490c7e702d1dabf8b6262c87d52d49b8ef4377833a';
 const image_media_filter = 'hypercube/social-network-ml-media-filter:latest@sha256:ece820ae1156eab2c6b41eae07ecac524960d47bcdd4e063e9d3520399dcac05';
 const image_text_filter = 'hypercube/social-network-ml-text-filter:latest@sha256:6f541847637a92e331f1088b78dcdf77acbe6242960994aabf1ced51dc308117';
@@ -30,6 +31,7 @@ function env(o) {
   return Object.entries(o).map(([name, value]) => ({name, value}));
 }
 
+// TODO: 把nodeName删除
 function deployment(name, {nodeName, containers, podLabels}, replicas = 1) {
   return {
     apiVersion: 'apps/v1',
@@ -118,7 +120,7 @@ function cpp(nodeName, name, command) {
         image: image_side_car,
         env: env({
           SERVICE_PORT: '5050',
-          ALGORITHM: 'random',
+          ALGORITHM: 'round-robin',
         }),
         volumeMounts: [
           {
@@ -207,6 +209,10 @@ function rabbitmq(nodeName, name, cookie) {
   });
 }
 
+function datacollector(nodeName, name) {
+  return
+}
+
 const doc1 = {
   apiVersion: 'v1',
   kind: 'List',
@@ -250,6 +256,20 @@ const doc1 = {
       serviceType: 'NodePort',
       ports: [
         {port: 8080, nodePort: 30001},
+      ],
+    }),
+
+    ...deployment_service('data-collector', {
+      nodeName: worker4,
+      containers: [
+        {
+          name: 'data-collector',
+          image: image_data_collector,
+        },
+      ],
+      serviceType: 'NodePort',
+      ports: [
+        {port: 8080, nodePort: 30002},
       ],
     }),
 
@@ -313,7 +333,6 @@ const doc1 = {
         {port: 40000},
       ],
     }),
-
   ],
 };
 

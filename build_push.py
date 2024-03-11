@@ -36,6 +36,15 @@ def build_deathstarbench():
         raise Exception("deathstarbench sha256 not found")
     return sha256
 
+def build_data_collector():
+    os.system(f"(cd data-collector && docker build -t {HOST}/datacollector:latest .)")
+    # push and get sha256
+    os.system(f"docker push {HOST}/datacollector:latest")
+    sha256 = find_sha256(f"{HOST}/datacollector")
+    if sha256 is None:
+        raise Exception("datacollector sha256 not found")
+    return sha256
+
 if __name__ == '__main__':
     args = os.sys.argv
     print(args)
@@ -45,9 +54,11 @@ if __name__ == '__main__':
 
     sidecar_sha256 = build_side_car()
     deathstarbench_sha256 = build_deathstarbench()
+    datacollector_sha256 = build_data_collector()
     with open('deploy/image.json', 'w') as f:
         json.dump({
             "sidecar": f'{HOST}/sidecar:latest@sha256:{sidecar_sha256}',
-            "deathstarbench": f'{HOST}/deathstarbench:latest@sha256:{deathstarbench_sha256}'
+            "deathstarbench": f'{HOST}/deathstarbench:latest@sha256:{deathstarbench_sha256}',
+            "datacollector": f'{HOST}/datacollector:latest@sha256:{datacollector_sha256}'
         }, f)
     os.system("(cd deploy && bash deploy.sh)")

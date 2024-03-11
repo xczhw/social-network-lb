@@ -20,6 +20,11 @@ using std::chrono::milliseconds;
 using std::chrono::duration_cast;
 using std::chrono::system_clock;
 
+void safe_write(std::string filename, std::string content)
+{
+  
+}
+
 // 记录每次请求发送到哪个ip
 void write_send_to(std::string svc, std::string send_to)
 {

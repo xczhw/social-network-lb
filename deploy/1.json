@@ -155,6 +155,66 @@
       "kind": "Deployment",
       "metadata": {
         "namespace": "social-network",
+        "name": "data-collector"
+      },
+      "spec": {
+        "replicas": 1,
+        "selector": {
+          "matchLabels": {
+            "name": "data-collector"
+          }
+        },
+        "template": {
+          "metadata": {
+            "name": "data-collector",
+            "labels": {
+              "name": "data-collector"
+            }
+          },
+          "spec": {
+            "containers": [
+              {
+                "name": "data-collector",
+                "image": "node0:5000/datacollector:latest@sha256:140658381033bcfb9076817c1a75945b40568090272c28f918a5a8aa4846667d"
+              }
+            ],
+            "volumes": [
+              {
+                "name": "shared-data",
+                "emptyDir": {}
+              }
+            ],
+            "restartPolicy": "Always",
+            "enableServiceLinks": false
+          }
+        }
+      }
+    },
+    {
+      "apiVersion": "v1",
+      "kind": "Service",
+      "metadata": {
+        "namespace": "social-network",
+        "name": "data-collector"
+      },
+      "spec": {
+        "type": "NodePort",
+        "ports": [
+          {
+            "port": 8080,
+            "nodePort": 30002
+          }
+        ],
+        "selector": {
+          "name": "data-collector"
+        }
+      }
+    },
+    {
+      "apiVersion": "apps/v1",
+      "kind": "Deployment",
+      "metadata": {
+        "namespace": "social-network",
         "name": "compose-post-service"
       },
       "spec": {
@@ -175,7 +235,7 @@
             "containers": [
               {
                 "name": "compose-post-service",
-                "image": "node0:5000/deathstarbench:latest@sha256:2c1d70dedd102a4da8f97118481b96d90864c37f41808d699d378bc0a387e208",
+                "image": "node0:5000/deathstarbench:latest@sha256:1b4c6a803e89d46334ab1a02e5e8ba0ccde912b6216708d1c7dd81a5fca9630d",
                 "command": [
                   "ComposePostService"
                 ],
@@ -194,7 +254,7 @@
               },
               {
                 "name": "side-car",
-                "image": "node0:5000/sidecar:latest@sha256:fd8951dc49cdbfee62fcc9672ba150c5aa107126c1935b62135bd6509adf161c",
+                "image": "node0:5000/sidecar:latest@sha256:40ce312f1c4f324a40d3b1a85d051377cef16e9311f7f88969aa6b92bb54d2f8",
                 "env": [
                   {
                     "name": "SERVICE_PORT",
@@ -202,7 +262,7 @@
                   },
                   {
                     "name": "ALGORITHM",
-                    "value": "random"
+                    "value": "round-robin"
                   }
                 ],
                 "volumeMounts": [
@@ -331,7 +391,7 @@
             "containers": [
               {
                 "name": "home-timeline-service",
-                "image": "node0:5000/deathstarbench:latest@sha256:2c1d70dedd102a4da8f97118481b96d90864c37f41808d699d378bc0a387e208",
+                "image": "node0:5000/deathstarbench:latest@sha256:1b4c6a803e89d46334ab1a02e5e8ba0ccde912b6216708d1c7dd81a5fca9630d",
                 "command": [
                   "HomeTimelineService"
                 ],
@@ -350,7 +410,7 @@
               },
               {
                 "name": "side-car",
-                "image": "node0:5000/sidecar:latest@sha256:fd8951dc49cdbfee62fcc9672ba150c5aa107126c1935b62135bd6509adf161c",
+                "image": "node0:5000/sidecar:latest@sha256:40ce312f1c4f324a40d3b1a85d051377cef16e9311f7f88969aa6b92bb54d2f8",
                 "env": [
                   {
                     "name": "SERVICE_PORT",
@@ -358,7 +418,7 @@
                   },
                   {
                     "name": "ALGORITHM",
-                    "value": "random"
+                    "value": "round-robin"
                   }
                 ],
                 "volumeMounts": [
@@ -487,7 +547,7 @@
             "containers": [
               {
                 "name": "media-service",
-                "image": "node0:5000/deathstarbench:latest@sha256:2c1d70dedd102a4da8f97118481b96d90864c37f41808d699d378bc0a387e208",
+                "image": "node0:5000/deathstarbench:latest@sha256:1b4c6a803e89d46334ab1a02e5e8ba0ccde912b6216708d1c7dd81a5fca9630d",
                 "command": [
                   "MediaService"
                 ],
@@ -506,7 +566,7 @@
               },
               {
                 "name": "side-car",
-                "image": "node0:5000/sidecar:latest@sha256:fd8951dc49cdbfee62fcc9672ba150c5aa107126c1935b62135bd6509adf161c",
+                "image": "node0:5000/sidecar:latest@sha256:40ce312f1c4f324a40d3b1a85d051377cef16e9311f7f88969aa6b92bb54d2f8",
                 "env": [
                   {
                     "name": "SERVICE_PORT",
@@ -514,7 +574,7 @@
                   },
                   {
                     "name": "ALGORITHM",
-                    "value": "random"
+                    "value": "round-robin"
                   }
                 ],
                 "volumeMounts": [
@@ -580,7 +640,7 @@
             "containers": [
               {
                 "name": "post-storage-service",
-                "image": "node0:5000/deathstarbench:latest@sha256:2c1d70dedd102a4da8f97118481b96d90864c37f41808d699d378bc0a387e208",
+                "image": "node0:5000/deathstarbench:latest@sha256:1b4c6a803e89d46334ab1a02e5e8ba0ccde912b6216708d1c7dd81a5fca9630d",
                 "command": [
                   "PostStorageService"
                 ],
@@ -599,7 +659,7 @@
               },
               {
                 "name": "side-car",
-                "image": "node0:5000/sidecar:latest@sha256:fd8951dc49cdbfee62fcc9672ba150c5aa107126c1935b62135bd6509adf161c",
+                "image": "node0:5000/sidecar:latest@sha256:40ce312f1c4f324a40d3b1a85d051377cef16e9311f7f88969aa6b92bb54d2f8",
                 "env": [
                   {
                     "name": "SERVICE_PORT",
@@ -607,7 +667,7 @@
                   },
                   {
                     "name": "ALGORITHM",
-                    "value": "random"
+                    "value": "round-robin"
                   }
                 ],
                 "volumeMounts": [
@@ -803,7 +863,7 @@
             "containers": [
               {
                 "name": "social-graph-service",
-                "image": "node0:5000/deathstarbench:latest@sha256:2c1d70dedd102a4da8f97118481b96d90864c37f41808d699d378bc0a387e208",
+                "image": "node0:5000/deathstarbench:latest@sha256:1b4c6a803e89d46334ab1a02e5e8ba0ccde912b6216708d1c7dd81a5fca9630d",
                 "command": [
                   "SocialGraphService"
                 ],
@@ -822,7 +882,7 @@
               },
               {
                 "name": "side-car",
-                "image": "node0:5000/sidecar:latest@sha256:fd8951dc49cdbfee62fcc9672ba150c5aa107126c1935b62135bd6509adf161c",
+                "image": "node0:5000/sidecar:latest@sha256:40ce312f1c4f324a40d3b1a85d051377cef16e9311f7f88969aa6b92bb54d2f8",
                 "env": [
                   {
                     "name": "SERVICE_PORT",
@@ -830,7 +890,7 @@
                   },
                   {
                     "name": "ALGORITHM",
-                    "value": "random"
+                    "value": "round-robin"
                   }
                 ],
                 "volumeMounts": [
@@ -1021,7 +1081,7 @@
             "containers": [
               {
                 "name": "text-service",
-                "image": "node0:5000/deathstarbench:latest@sha256:2c1d70dedd102a4da8f97118481b96d90864c37f41808d699d378bc0a387e208",
+                "image": "node0:5000/deathstarbench:latest@sha256:1b4c6a803e89d46334ab1a02e5e8ba0ccde912b6216708d1c7dd81a5fca9630d",
                 "command": [
                   "TextService"
                 ],
@@ -1040,7 +1100,7 @@
               },
               {
                 "name": "side-car",
-                "image": "node0:5000/sidecar:latest@sha256:fd8951dc49cdbfee62fcc9672ba150c5aa107126c1935b62135bd6509adf161c",
+                "image": "node0:5000/sidecar:latest@sha256:40ce312f1c4f324a40d3b1a85d051377cef16e9311f7f88969aa6b92bb54d2f8",
                 "env": [
                   {
                     "name": "SERVICE_PORT",
@@ -1048,7 +1108,7 @@
                   },
                   {
                     "name": "ALGORITHM",
-                    "value": "random"
+                    "value": "round-robin"
                   }
                 ],
                 "volumeMounts": [
@@ -1114,7 +1174,7 @@
             "containers": [
               {
                 "name": "unique-id-service",
-                "image": "node0:5000/deathstarbench:latest@sha256:2c1d70dedd102a4da8f97118481b96d90864c37f41808d699d378bc0a387e208",
+                "image": "node0:5000/deathstarbench:latest@sha256:1b4c6a803e89d46334ab1a02e5e8ba0ccde912b6216708d1c7dd81a5fca9630d",
                 "command": [
                   "UniqueIdService"
                 ],
@@ -1133,7 +1193,7 @@
               },
               {
                 "name": "side-car",
-                "image": "node0:5000/sidecar:latest@sha256:fd8951dc49cdbfee62fcc9672ba150c5aa107126c1935b62135bd6509adf161c",
+                "image": "node0:5000/sidecar:latest@sha256:40ce312f1c4f324a40d3b1a85d051377cef16e9311f7f88969aa6b92bb54d2f8",
                 "env": [
                   {
                     "name": "SERVICE_PORT",
@@ -1141,7 +1201,7 @@
                   },
                   {
                     "name": "ALGORITHM",
-                    "value": "random"
+                    "value": "round-robin"
                   }
                 ],
                 "volumeMounts": [
@@ -1207,7 +1267,7 @@
             "containers": [
               {
                 "name": "url-shorten-service",
-                "image": "node0:5000/deathstarbench:latest@sha256:2c1d70dedd102a4da8f97118481b96d90864c37f41808d699d378bc0a387e208",
+                "image": "node0:5000/deathstarbench:latest@sha256:1b4c6a803e89d46334ab1a02e5e8ba0ccde912b6216708d1c7dd81a5fca9630d",
                 "command": [
                   "UrlShortenService"
                 ],
@@ -1226,7 +1286,7 @@
               },
               {
                 "name": "side-car",
-                "image": "node0:5000/sidecar:latest@sha256:fd8951dc49cdbfee62fcc9672ba150c5aa107126c1935b62135bd6509adf161c",
+                "image": "node0:5000/sidecar:latest@sha256:40ce312f1c4f324a40d3b1a85d051377cef16e9311f7f88969aa6b92bb54d2f8",
                 "env": [
                   {
                     "name": "SERVICE_PORT",
@@ -1234,7 +1294,7 @@
                   },
                   {
                     "name": "ALGORITHM",
-                    "value": "random"
+                    "value": "round-robin"
                   }
                 ],
                 "volumeMounts": [
@@ -1300,7 +1360,7 @@
             "containers": [
               {
                 "name": "user-mention-service",
-                "image": "node0:5000/deathstarbench:latest@sha256:2c1d70dedd102a4da8f97118481b96d90864c37f41808d699d378bc0a387e208",
+                "image": "node0:5000/deathstarbench:latest@sha256:1b4c6a803e89d46334ab1a02e5e8ba0ccde912b6216708d1c7dd81a5fca9630d",
                 "command": [
                   "UserMentionService"
                 ],
@@ -1319,7 +1379,7 @@
               },
               {
                 "name": "side-car",
-                "image": "node0:5000/sidecar:latest@sha256:fd8951dc49cdbfee62fcc9672ba150c5aa107126c1935b62135bd6509adf161c",
+                "image": "node0:5000/sidecar:latest@sha256:40ce312f1c4f324a40d3b1a85d051377cef16e9311f7f88969aa6b92bb54d2f8",
                 "env": [
                   {
                     "name": "SERVICE_PORT",
@@ -1327,7 +1387,7 @@
                   },
                   {
                     "name": "ALGORITHM",
-                    "value": "random"
+                    "value": "round-robin"
                   }
                 ],
                 "volumeMounts": [
@@ -1393,7 +1453,7 @@
             "containers": [
               {
                 "name": "user-service",
-                "image": "node0:5000/deathstarbench:latest@sha256:2c1d70dedd102a4da8f97118481b96d90864c37f41808d699d378bc0a387e208",
+                "image": "node0:5000/deathstarbench:latest@sha256:1b4c6a803e89d46334ab1a02e5e8ba0ccde912b6216708d1c7dd81a5fca9630d",
                 "command": [
                   "UserService"
                 ],
@@ -1412,7 +1472,7 @@
               },
               {
                 "name": "side-car",
-                "image": "node0:5000/sidecar:latest@sha256:fd8951dc49cdbfee62fcc9672ba150c5aa107126c1935b62135bd6509adf161c",
+                "image": "node0:5000/sidecar:latest@sha256:40ce312f1c4f324a40d3b1a85d051377cef16e9311f7f88969aa6b92bb54d2f8",
                 "env": [
                   {
                     "name": "SERVICE_PORT",
@@ -1420,7 +1480,7 @@
                   },
                   {
                     "name": "ALGORITHM",
-                    "value": "random"
+                    "value": "round-robin"
                   }
                 ],
                 "volumeMounts": [
@@ -1616,7 +1676,7 @@
             "containers": [
               {
                 "name": "user-timeline-service",
-                "image": "node0:5000/deathstarbench:latest@sha256:2c1d70dedd102a4da8f97118481b96d90864c37f41808d699d378bc0a387e208",
+                "image": "node0:5000/deathstarbench:latest@sha256:1b4c6a803e89d46334ab1a02e5e8ba0ccde912b6216708d1c7dd81a5fca9630d",
                 "command": [
                   "UserTimelineService"
                 ],
@@ -1635,7 +1695,7 @@
               },
               {
                 "name": "side-car",
-                "image": "node0:5000/sidecar:latest@sha256:fd8951dc49cdbfee62fcc9672ba150c5aa107126c1935b62135bd6509adf161c",
+                "image": "node0:5000/sidecar:latest@sha256:40ce312f1c4f324a40d3b1a85d051377cef16e9311f7f88969aa6b92bb54d2f8",
                 "env": [
                   {
                     "name": "SERVICE_PORT",
@@ -1643,7 +1703,7 @@
                   },
                   {
                     "name": "ALGORITHM",
-                    "value": "random"
+                    "value": "round-robin"
                   }
                 ],
                 "volumeMounts": [

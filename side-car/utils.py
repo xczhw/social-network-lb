@@ -16,7 +16,7 @@ def get_sys_info():
     }
 
 def split_and_strip(data):
-    return [x.strip() for x in data.split('\n')]
+    return [x.strip() for x in data.strip().split('\n')]
 
 def safe_read(path, mode='r'):
     with open(path, mode) as f:

@@ -8,6 +8,7 @@
 #include <chrono>
 #include <map>
 #include <string>
+#include <iostream>
 
 #include "logger.h"
 #include "sharedFolderUtils.h"
@@ -121,22 +122,28 @@ template<class TClient>
 typename ClientPool<TClient>::PoolItem * ClientPool<TClient>::Pop() {
   PoolItem * client = nullptr;
   time_t start = time(nullptr); // TODO: 是否合理?
+  std::cout << "Pop(): algorithm start = " << start << std::endl;
   std::string ip = _algorithm->execute();
   time_t end = time(nullptr);
+  std::cout << "Pop(): algorithm end = " << end << " ip: " << ip << std::endl;
   int64_t algorithm_time = end - start;
   client = GetClientFromPool(ip);
   if (!client) // 如果取出失败,则创建一个新的client
+  {
     client = ProduceClient(ip);
-  if (client) {
+    std::cout << "Pop(): ProduceClient" << std::endl;
+  }
+  if (client && client->GetClient()) {
     client->algorithm_time = algorithm_time;
     client->pop_time = duration_cast<milliseconds>(
         system_clock::now().time_since_epoch()).count() - CUSTOM_EPOCH;
     try {
       client->GetClient()->Connect();
+      std::cout << "Pop(): Connect Success" << std::endl;
     } catch (...) {
       LOG(error) << "Failed to connect " + _client_type;
 
-      _pool_map[client->GetClient()->GetIp()].push_back(client); // 改为ClientPool->Push
+      _pool_map[client->GetClient()->GetIp()].push_back(client);
       throw;
     }
   }
@@ -172,7 +179,6 @@ void ClientPool<TClient>::Remove(typename ClientPool<TClient>::PoolItem *client)
   client = nullptr;
   _curr_pool_size--;
   lock.unlock();
-  
 }
 
 // 从队列中取出一个client
