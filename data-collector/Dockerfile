@@ -8,7 +8,7 @@ WORKDIR /usr/src/app
 COPY . .
 
 # 安装main.py所需的所有依赖
-RUN pip install --no-cache-dir flask
+RUN pip install --no-cache-dir flask kubernetes
 
 # 使端口8080可用于世界之外的通信
 EXPOSE 8080

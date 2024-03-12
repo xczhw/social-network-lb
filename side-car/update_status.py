@@ -28,8 +28,11 @@ def get_pod_ips(service_name, namespace='social-network'):
         print(f"No pod found for service {service_name}, retrying in 5 seconds")
         time.sleep(5)
         pods = v1.list_namespaced_pod(namespace)
+    # 获取svc中所有的pod
     svc_pods = list(filter(lambda pod: pod.metadata.labels.get('name') == service_name, pods.items))
+    # 获取pod的ip
     pod_ips = [pod.status.pod_ip for pod in svc_pods]
+    # 过滤掉None
     pod_ips = list(filter(lambda ip: ip is not None, pod_ips))
     create_if_not_exists(f"{DATAPATH}/{service_name}")
     safe_write("\n".join(pod_ips), f"{DATAPATH}/{service_name}/pod_ips.txt")
@@ -54,7 +57,8 @@ def send_and_recv(message, ip, timeout=2):
         try:
             s.sendto(message.encode(), (ip, SERVICE_PORT))
             data = recv_until_eof(s)
-            print(f"Send {message} to {ip}, response: {data}")
+            t = time.strftime("%Y-%m-%d %H:%M:%S", time.localtime())
+            print(f"{t} Send {message} to {ip}, response: {data}")
         except socket.timeout:
             data = "None"
             print(f"Timeout for {ip}")

@@ -16,7 +16,7 @@ public:
         update();
         index = std::min(index, (int)ips.size() - 1);
         std::string ip = ips[index];
-        // std::cout << "RoundRobin execute " << ip << std::endl;
+        std::cout << "RoundRobin execute " << ip << std::endl;
         index = (index + 1) % ips.size();
         return ip;
     }
@@ -26,7 +26,7 @@ private:
 
 RoundRobin::RoundRobin(std::string svc)
 {
-    // std::cout << "RoundRobin constructor" << std::endl;
+    std::cout << "RoundRobin constructor" << std::endl;
     this->svc = svc;
     this->ips = get_ips(svc);
     this->index = 0;
@@ -34,7 +34,7 @@ RoundRobin::RoundRobin(std::string svc)
 
 void RoundRobin::update()
 {
-    // std::cout << "RoundRobin update" << std::endl;
+    std::cout << "RoundRobin update" << std::endl;
     this->ips = get_ips(svc);
 }
 

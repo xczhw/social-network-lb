@@ -27,7 +27,7 @@ def with_locust(temp_dir, locustfile, url, workers):
         'locust',
         '--master',
         '--expect-workers', f'{workers}',
-        # '--headless',
+        '--headless',
         '-f', locustfile,
         '-H', url,
         '--csv', temp_dir/'locust',
@@ -60,22 +60,7 @@ def run_locust(locustfile, url):
 
     p, worker_ps = with_locust(temp_dir, locustfile, url, workers=8)
     print('Locust started')
-    with p:
-        try:
-            time_base = time.time()
-            while True:
-                t = time.perf_counter()
-                tt = (-t) % 1
-                t += tt
-                time.sleep(t)
-                if p.poll() is not None:
-                    break
-        except Exception as e:
-            print(e)
-            p.terminate()
-            for wp in worker_ps:
-                wp.terminate()
-            raise
+    p.wait()
     print('Locust finished')
     for wp in worker_ps:
         wp.wait()

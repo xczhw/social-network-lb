@@ -22,7 +22,7 @@ using std::chrono::system_clock;
 
 void safe_write(std::string filename, std::string content)
 {
-  
+  // TODO: add lock
 }
 
 // 记录每次请求发送到哪个ip

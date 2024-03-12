@@ -6,7 +6,6 @@
  */
 #include "ComposePostService.h"
 
-#include <iostream>
 namespace social_network {
 
 
@@ -1741,41 +1740,33 @@ void ComposePostServiceClient::recv_UploadMedia()
 
 void ComposePostServiceClient::UploadUniqueId(const int64_t req_id, const int64_t post_id, const PostType::type post_type, const std::map<std::string, std::string> & carrier)
 {
-  std::cout << "ComposePostService.cpp:UploadUniqueId:send_UploadUniqueId" << std::endl;
   send_UploadUniqueId(req_id, post_id, post_type, carrier);
-  std::cout << "ComposePostService.cpp:UploadUniqueId:recv_UploadUniqueId" << std::endl;
   recv_UploadUniqueId();
 }
 
 void ComposePostServiceClient::send_UploadUniqueId(const int64_t req_id, const int64_t post_id, const PostType::type post_type, const std::map<std::string, std::string> & carrier)
 {
-  std::cout << "ComposePostService.cpp:UploadUniqueId:send_UploadUniqueId   1 " << std::endl;
   int32_t cseqid = 0;
   oprot_->writeMessageBegin("UploadUniqueId", ::apache::thrift::protocol::T_CALL, cseqid);
-  std::cout << "ComposePostService.cpp:UploadUniqueId:send_UploadUniqueId   2 " << std::endl;
+
   ComposePostService_UploadUniqueId_pargs args;
   args.req_id = &req_id;
   args.post_id = &post_id;
   args.post_type = &post_type;
   args.carrier = &carrier;
   args.write(oprot_);
-  std::cout << "ComposePostService.cpp:UploadUniqueId:send_UploadUniqueId   3 " << std::endl;
 
   oprot_->writeMessageEnd();
-  std::cout << "ComposePostService.cpp:UploadUniqueId:send_UploadUniqueId   4 " << std::endl;
   oprot_->getTransport()->writeEnd();
-  std::cout << "ComposePostService.cpp:UploadUniqueId:send_UploadUniqueId   5 " << std::endl;
   oprot_->getTransport()->flush();
-  std::cout << "ComposePostService.cpp:UploadUniqueId:send_UploadUniqueId   6 " << std::endl;
 }
 
 void ComposePostServiceClient::recv_UploadUniqueId()
 {
-  std::cout << "ComposePostService.cpp:UploadUniqueId:recv_UploadUniqueId   1 " << std::endl;
+
   int32_t rseqid = 0;
   std::string fname;
   ::apache::thrift::protocol::TMessageType mtype;
-  std::cout << "ComposePostService.cpp:UploadUniqueId:recv_UploadUniqueId   2 " << std::endl;
 
   iprot_->readMessageBegin(fname, mtype, rseqid);
   if (mtype == ::apache::thrift::protocol::T_EXCEPTION) {
@@ -1785,25 +1776,21 @@ void ComposePostServiceClient::recv_UploadUniqueId()
     iprot_->getTransport()->readEnd();
     throw x;
   }
-  std::cout << "ComposePostService.cpp:UploadUniqueId:recv_UploadUniqueId   3 " << std::endl;
   if (mtype != ::apache::thrift::protocol::T_REPLY) {
     iprot_->skip(::apache::thrift::protocol::T_STRUCT);
     iprot_->readMessageEnd();
     iprot_->getTransport()->readEnd();
   }
-  std::cout << "ComposePostService.cpp:UploadUniqueId:recv_UploadUniqueId   4 " << std::endl;
   if (fname.compare("UploadUniqueId") != 0) {
     iprot_->skip(::apache::thrift::protocol::T_STRUCT);
     iprot_->readMessageEnd();
     iprot_->getTransport()->readEnd();
   }
-  std::cout << "ComposePostService.cpp:UploadUniqueId:recv_UploadUniqueId   5 " << std::endl;
   ComposePostService_UploadUniqueId_presult result;
   result.read(iprot_);
   iprot_->readMessageEnd();
   iprot_->getTransport()->readEnd();
-  std::cout << "ComposePostService.cpp:UploadUniqueId:recv_UploadUniqueId   6 " << std::endl;
-  
+
   if (result.__isset.se) {
     throw result.se;
   }
@@ -2852,4 +2839,3 @@ void ComposePostServiceConcurrentClient::recv_UploadUserMentions(const int32_t s
 }
 
 } // namespace
-

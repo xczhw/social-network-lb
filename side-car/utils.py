@@ -1,7 +1,9 @@
 import os
 import fcntl
 import psutil
+import zipfile
 
+ROOTPATH = '/share'
 DATAPATH = '/share/data'
 LOGPATH = '/share/logs'
 SERVICE_PORT = int(os.environ.get('SERVICE_PORT'))
@@ -31,3 +33,13 @@ def safe_write(data, path, mode='w'):
         f.write(data)
         f.flush()
         fcntl.flock(f, fcntl.LOCK_UN)
+
+def create_zip_file(directory, zip_filename):
+    with zipfile.ZipFile(zip_filename, 'w', zipfile.ZIP_DEFLATED) as zipf:
+        for root, dirs, files in os.walk(directory):
+            for file in files:
+                # Full path to the file
+                file_path = os.path.join(root, file)
+                # Relative path for the file within the zip
+                relative_path = os.path.relpath(file_path, directory)
+                zipf.write(file_path, relative_path)

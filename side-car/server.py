@@ -18,4 +18,11 @@ def udp_server():
                     while data:
                         s.sendto(data[:1024], addr)
                         data = data[1024:]
+                elif message == 'collect':
+                    create_zip_file(ROOTPATH, 'temp.zip')
+                    with open('temp.zip', 'rb') as file:
+                        data = file.read(4096)
+                        while data:
+                            s.sendto(data, addr)
+                            data = file.read(4096)
                 s.sendto('<EOF>'.encode(), (addr))

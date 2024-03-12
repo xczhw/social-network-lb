@@ -14,37 +14,33 @@ def collect_and_compress_data():
     collection_in_progress = True
     collection_complete = False
 
-    services = get_svc()
-    collected_data = {}
+    ips = []
+    for svc in SVC_NAMES:
+        ips.extend(get_pod_ips(svc))
     # 创建UDP socket
     sock = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
     sock.settimeout(2)  # 设置超时时间
 
-    for ip, port, svc_name in services:
+    for ip, port, svc_name in ips:
         try:
-            server_address = (ip, port)
-            sock.sendto(b'collect', server_address)
-            data, server = sock.recvfrom(4096)
-            collected_data[svc_name] = data.decode()
+            sock.sendto(b'collect', (ip, port))
+            data = recv_until_eof(sock)
+            # Directly save the received data (now without the EOF marker) as a zip file.
+            # if DATA_DIR/svc_name folder does not exist, create it
+            path = os.path.join(DATA_DIR, svc_name)
+            create_if_not_exists(path)
+            with open(os.path.join(path, f'{ip}.zip'), 'wb') as file:
+                file.write(data)
         except socket.timeout:
-            collected_data[svc_name] = 'No response'
+            print(f'No response from {svc_name}')
         except Exception as e:
-            collected_data[svc_name] = f'Error: {e}'
+            print(f'Error with {svc_name}: {e}')
 
     sock.close()
-
-    # 将收集到的数据写入文件，并压缩
-    for svc_name, data in collected_data.items():
-        with open(os.path.join(data_dir, f'{svc_name}.txt'), 'w') as file:
-            file.write(data)
-
-    with zipfile.ZipFile(zip_filename, 'w') as zipf:
-        for root, dirs, files in os.walk(data_dir):
-            for file in files:
-                zipf.write(os.path.join(root, file), arcname=file)
     
     collection_in_progress = False
     collection_complete = True
+
 
 app = Flask(__name__)
 
@@ -71,10 +67,10 @@ def check_collection_status():
 def download_data():
     if not collection_complete:
         return jsonify({'error': 'Data collection not complete. Please check status.'}), 424  # Failed Dependency
-    elif not os.path.exists(zip_filename):
-        return jsonify({'error': 'Data file does not exist. Please initiate collection first.'}), 404  # Not Found
     else:
-        return send_file(zip_filename, as_attachment=True)
-
+        requested_filename = request.args.get('filename', 'collection_data.zip')
+        create_zip_file(DATA_DIR, zip_filename=requested_filename)
+        return send_file(requested_filename, as_attachment=True) 
+    
 if __name__ == '__main__':
     app.run(host='0.0.0.0', port=8080)
