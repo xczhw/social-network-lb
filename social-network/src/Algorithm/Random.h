@@ -13,10 +13,10 @@ public:
     void update() override;
     std::string execute() override
     {
-        int index = rand() % ips.size();
-        std::string ip = ips[index];
+        int index = rand() % ips->size();
+        std::string ip = ips->at(index);
         std::cout << "Random execute " << ip << std::endl;
-        return ips[index];
+        return ip;
     }
 };
 

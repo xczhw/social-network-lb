@@ -13,7 +13,7 @@ public:
     
 protected:
     std::string svc;
-    std::vector <std::string> ips;
+    std::vector <std::string>* ips;
 };
 
 #endif //SOCIAL_NETWORK_IALGORITHM_H

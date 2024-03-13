@@ -31,7 +31,7 @@ def with_locust(output_folder, locustfile, url, workers):
         'locust',
         '--master',
         '--expect-workers', f'{workers}',
-        # '--headless',
+        '--headless',
         '-f', locustfile,
         '-H', url,
         '--csv', output_folder/'locust',
@@ -55,6 +55,7 @@ def generate_rps(rps=-1):
             rps = 1
         warmup.append(rps)
     trace = warmup + trace
+    # trace = [x // 10 for x in trace]
     dump_trace(trace[:60], 'rps.txt')
 
 def run_locust(locustfile, url, output_folder, rps=-1):

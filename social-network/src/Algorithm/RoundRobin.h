@@ -14,10 +14,13 @@ public:
     std::string execute() override
     {
         update();
-        index = std::min(index, (int)ips.size() - 1);
-        std::string ip = ips[index];
-        std::cout << "RoundRobin execute " << ip << std::endl;
-        index = (index + 1) % ips.size();
+        return svc;
+        if (ips->empty())
+            return svc;
+        index = std::min(index, (int)ips->size() - 1);
+        std::string ip = ips -> at(index);
+        LOG(info) << "RoundRobin execute " << ip << std::endl;
+        index = (index + 1) % ips->size();
         return ip;
     }
 private:
@@ -37,7 +40,5 @@ void RoundRobin::update()
     std::cout << "RoundRobin update" << std::endl;
     this->ips = get_ips(svc);
 }
-
-
 
 #endif //ROUNDROBIN_H

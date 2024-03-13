@@ -76,11 +76,12 @@ ClientPool<TClient>::ClientPool(const std::string &client_type,
   _keep_alive = keep_alive;
   _client_type = client_type;
   std::string algo = std::getenv("ALGORITHM");
+  std::cout << algo << std::endl;
   _algorithm = AlgorithmFactory::createAlgorithm(algo, addr);
-  // _ip_list = get_ips(addr);
 
   for (int i = 0; i < min_pool_size; ++i) {
     TClient *client = new TClient(addr, port, _keep_alive);
+    std::string ip = client->GetIp();
     _pool_map.push_back(new PoolItem(client));
   }
 
@@ -106,24 +107,24 @@ ClientPool<TClient>::~ClientPool() {
 template<class TClient>
 typename ClientPool<TClient>::PoolItem * ClientPool<TClient>::Pop() {
   PoolItem * client = nullptr;
-  // int64_t start = get_timestamp();
+  int64_t start = get_timestamp();
   // std::cout << "Pop(): algorithm start = " << start << std::endl;
-  // std::string ip = _algorithm->execute();
-  // int64_t end = get_timestamp();
+  std::string ip = _algorithm->execute();
+  int64_t end = get_timestamp();
   // std::cout << "Pop(): algorithm end = " << end << " ip: " << ip << std::endl;
-  
-  client = GetClientFromPool("");
+  int64_t algorithm_time = end - start;
+  client = GetClientFromPool("ip");
   if (!client) // 如果取出失败,则创建一个新的client
   {
-    std::cout << "Pop(): ProduceClient" << std::endl;
-    client = ProduceClient("");
+    // std::cout << "Pop(): ProduceClient" << std::endl;
+    client = ProduceClient("ip");
   }
   if (client && client->GetClient()) {
-    // client->algorithm_time = algorithm_time;
-    // client->pop_time = get_timestamp();
+    client->algorithm_time = algorithm_time;
+    client->pop_time = get_timestamp();
     try {
       client->GetClient()->Connect();
-      std::cout << "Pop(): Connect Success" << std::endl;
+      // std::cout << "Pop(): Connect Success" << std::endl;
     } catch (...) {
       LOG(error) << "Failed to connect " + _client_type;
       // std::string ip = client->GetIp();
@@ -142,6 +143,15 @@ typename ClientPool<TClient>::PoolItem * ClientPool<TClient>::Pop() {
 template<class TClient>
 void ClientPool<TClient>::Push(typename ClientPool<TClient>::PoolItem *item) {
   // 如果是通过算法取出的client,则记录延时
+// if (item->pop_time > 0) {
+//     int64_t now = get_timestamp();
+//     int64_t latency = now - item->pop_time;
+//     write_latency(_addr, item->GetClient()->GetIp(), latency);
+//     if (item->algorithm_time > 0) {
+//       write_algorithm_latency(_addr, item->GetClient()->GetIp(), latency, item->algorithm_time);
+//     }
+//     item->algorithm_time = item->pop_time = -1;
+//   }
   std::unique_lock<std::mutex> cv_lock(_mtx);
   // std::string ip = item->GetIp();
   // if (_pool_map.find(ip) == _pool_map.end()) {

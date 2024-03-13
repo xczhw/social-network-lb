@@ -16,8 +16,8 @@ public:
     {
         std::cout << " execute" << std::endl;
         if (index == -1)
-            index = rand() % ips.size();
-        std::string ip = ips[index];
+            index = rand() % ips->size();
+        std::string ip = ips->at(index);
         return ip;
     }
 private:
