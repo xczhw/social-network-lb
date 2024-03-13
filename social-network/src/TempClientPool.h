@@ -26,6 +26,7 @@ class PoolItem {
       pop_time = -1;
     }
     TClient * GetClient() { return _client; }
+    std::string GetIp() { return _client->GetIp(); }
     int64_t algorithm_time;
     int64_t pop_time;
    private:
@@ -46,7 +47,7 @@ public:
   void Remove(PoolItem *);
 
 private:
-  std::deque<PoolItem *> _pool_map;
+  std::map<std::string, std::deque<PoolItem *> *> _pool_map;
   std::string _addr;
   std::string _client_type;
   int _port;
@@ -76,13 +77,16 @@ ClientPool<TClient>::ClientPool(const std::string &client_type,
   _keep_alive = keep_alive;
   _client_type = client_type;
   std::string algo = std::getenv("ALGORITHM");
-  std::cout << algo << std::endl;
   _algorithm = AlgorithmFactory::createAlgorithm(algo, addr);
+  _pool_map = std::map<std::string, std::deque<PoolItem *> *>();
 
   for (int i = 0; i < min_pool_size; ++i) {
     TClient *client = new TClient(addr, port, _keep_alive);
     std::string ip = client->GetIp();
-    _pool_map.push_back(new PoolItem(client));
+    if (_pool_map.find(ip) == _pool_map.end()) {
+      _pool_map[ip] = new std::deque<PoolItem *>();
+    }
+    _pool_map[ip]->push_back(new PoolItem(client));
   }
 
   _curr_pool_size = min_pool_size;
@@ -90,17 +94,13 @@ ClientPool<TClient>::ClientPool(const std::string &client_type,
 
 template<class TClient>
 ClientPool<TClient>::~ClientPool() {
-  while (!_pool_map.empty()) {
-    delete _pool_map.front();
-    _pool_map.pop_front();
+    for (auto &kv : _pool_map) {
+    while (!kv.second->empty()) {
+      delete kv.second->front();
+      kv.second->pop_front();
+    }
+    delete kv.second;
   }
-  //   for (auto &kv : _pool_map) {
-  //   while (!kv.second->empty()) {
-  //     delete kv.second->front();
-  //     kv.second->pop_front();
-  //   }
-  //   delete kv.second;
-  // }
 }
 
 // 从队列中取出并记录一个client的conn
@@ -113,11 +113,11 @@ typename ClientPool<TClient>::PoolItem * ClientPool<TClient>::Pop() {
   int64_t end = get_timestamp();
   // std::cout << "Pop(): algorithm end = " << end << " ip: " << ip << std::endl;
   int64_t algorithm_time = end - start;
-  client = GetClientFromPool("ip");
+  client = GetClientFromPool(ip);
   if (!client) // 如果取出失败,则创建一个新的client
   {
     // std::cout << "Pop(): ProduceClient" << std::endl;
-    client = ProduceClient("ip");
+    client = ProduceClient(ip);
   }
   if (client && client->GetClient()) {
     client->algorithm_time = algorithm_time;
@@ -127,15 +127,15 @@ typename ClientPool<TClient>::PoolItem * ClientPool<TClient>::Pop() {
       // std::cout << "Pop(): Connect Success" << std::endl;
     } catch (...) {
       LOG(error) << "Failed to connect " + _client_type;
-      // std::string ip = client->GetIp();
-      // if (_pool_map.find(ip) == _pool_map.end()) {
-      //   _pool_map[ip] = new std::deque<TClient *>();
-      // }
-      _pool_map.push_back(client);
+      std::string ip = client->GetIp();
+      if (_pool_map.find(ip) == _pool_map.end()) {
+        _pool_map[ip] = new std::deque<PoolItem *>();
+      }
+      _pool_map[ip]->push_back(client);
       throw;
     }
   }
-  // write_send_to(_addr, ip);
+  write_send_to(_addr, ip);
   return client;
 }
 
@@ -153,11 +153,11 @@ void ClientPool<TClient>::Push(typename ClientPool<TClient>::PoolItem *item) {
 //     item->algorithm_time = item->pop_time = -1;
 //   }
   std::unique_lock<std::mutex> cv_lock(_mtx);
-  // std::string ip = item->GetIp();
-  // if (_pool_map.find(ip) == _pool_map.end()) {
-  //   _pool_map[ip] = new std::deque<TClient *>();
-  // }
-  _pool_map.push_back(item);
+  std::string ip = item->GetIp();
+  if (_pool_map.find(ip) == _pool_map.end()) {
+    _pool_map[ip] = new std::deque<PoolItem *>();
+  }
+  _pool_map[ip]->push_back(item);
   cv_lock.unlock();
   _cv.notify_one();
 }
@@ -177,28 +177,26 @@ template<class TClient>
 typename ClientPool<TClient>::PoolItem * ClientPool<TClient>::GetClientFromPool(std::string ip) {
   std::unique_lock<std::mutex> cv_lock(_mtx);
   PoolItem * client = nullptr;
-  // if (_pool_map.find(ip) == _pool_map.end()) {
-  //   _pool_map[ip] = new std::deque<TClient *>();
-  //   std::cout << "<GetClientFromPool> Create new pool for ip: " << ip << "\n";
-  // }
-  // std::deque<TClient *> *_pool = _pool_map[ip];
-  if (!_pool_map.empty()) { // 如果队列不为空,则取出一个client
-    // LOG(info) << "GetClientFromPool: " << _client_type << "pool_size = " << _pool_map->size() << " " << ip;
-    client = _pool_map.front();
-    _pool_map.pop_front();
+  if (_pool_map.find(ip) == _pool_map.end()) {
+  _pool_map[ip] = new std::deque<PoolItem *>();
+  }
+   std::deque<PoolItem *> *_pool = _pool_map[ip];
+  if (!_pool->empty()) { // 如果队列不为空,则取出一个client
+    client = _pool->front();
+    _pool->pop_front();
   } else if (_curr_pool_size == _max_pool_size) { 
     // 如果队列为空,且当前连接数已经达到最大连接数,则等待
     auto wait_time = std::chrono::system_clock::now() +
         std::chrono::milliseconds(_timeout_ms);
     bool wait_success = _cv.wait_until(cv_lock, wait_time,
-        [this] { return _pool_map.size() > 0; });
+        [this, ip] { return _pool_map[ip]->size() > 0; });
     if (!wait_success) {
       LOG(warning) << "ClientPool pop timeout";
       cv_lock.unlock();
       return nullptr;
     }
-    client = _pool_map.front();
-    _pool_map.pop_front();
+    client = _pool->front();
+    _pool->pop_front();
   }
   if (client && !client->GetClient()->IsAlive()) {
     delete client;
@@ -215,7 +213,7 @@ typename ClientPool<TClient>::PoolItem * ClientPool<TClient>::ProduceClient(std:
   TClient * client = nullptr;
   if (_curr_pool_size < _max_pool_size) {
     try {
-      client = new TClient(_addr, _port, _keep_alive);
+      client = new TClient(ip, _port, _keep_alive);
       _curr_pool_size++;
       LOG(warning) << "ClientPool size " << _curr_pool_size << " " << _client_type;
       lock.unlock();

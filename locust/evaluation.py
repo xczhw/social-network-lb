@@ -43,8 +43,8 @@ def with_locust(output_folder, locustfile, url, workers):
     time.sleep(1)
     return master_p, worker_ps
 
-def generate_rps(rps=-1):
-    request_log_file = open('request.log', 'w')
+def generate_rps(output_folder, rps=-1):
+    request_log_file = open(output_folder/'request.log', 'w')
     print('Generating RPS trace')
     warmup_seconds = 10
     trace = load_trace('./traces/diurnal-2.txt')
@@ -59,7 +59,7 @@ def generate_rps(rps=-1):
     dump_trace(trace[:60], 'rps.txt')
 
 def run_locust(locustfile, url, output_folder, rps=-1):
-    generate_rps(rps)
+    generate_rps(output_folder, rps)
 
     print('Running Locust')
 
@@ -76,12 +76,14 @@ def get_data(path='./', filename='data.zip'):
     download_data(path, filename)
 
 def run(algo='round-robin', rps=-1, times=0):
-    path = pathlib.Path(f'output/{algo}/RPS_{rps}/{times}/')
-    path.mkdir(parents=True, exist_ok=True)
-    # deploy(algo)
-    # os.system(f"(cd ../social-network/ && python3 scripts/init_social_graph.py)")
-    run_locust('./locustfile.py', 'http://node0:30001', path, rps=rps)
-    # get_data(path, f'{algo}-RPS_{rps}-{times}.zip')
+    for t in range(times):
+        path = pathlib.Path(f'output/{algo}/RPS_{rps}/{t}/')
+        path.mkdir(parents=True, exist_ok=True)
+        # deploy(algo)
+        # os.system(f"(cd ../social-network/ && python3 scripts/init_social_graph.py)")
+        run_locust('./locustfile.py', 'http://node0:30001', path, rps=rps)
+        get_data(path, f'{algo}-RPS_{rps}-{times}.zip')
+        time.sleep(10)
 
 if __name__ == '__main__':
-    run()
+    run(times=3)

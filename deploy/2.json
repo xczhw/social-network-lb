@@ -27,7 +27,7 @@
             "containers": [
               {
                 "name": "write-home-timeline-service",
-                "image": "node0:5000/deathstarbench:latest@sha256:bdd2280cfcafb9cfb0e1dbb6f09dc9814e5af55ea546c5e5bd51b2bb7ccac086",
+                "image": "node0:5000/deathstarbench:latest@sha256:d6b86f85219c20cc145039ad3ef31b35a5280973ac208fec4fe06234136bcdce",
                 "command": [
                   "WriteHomeTimelineService"
                 ],
@@ -120,7 +120,7 @@
             "containers": [
               {
                 "name": "write-user-timeline-service",
-                "image": "node0:5000/deathstarbench:latest@sha256:bdd2280cfcafb9cfb0e1dbb6f09dc9814e5af55ea546c5e5bd51b2bb7ccac086",
+                "image": "node0:5000/deathstarbench:latest@sha256:d6b86f85219c20cc145039ad3ef31b35a5280973ac208fec4fe06234136bcdce",
                 "command": [
                   "WriteUserTimelineService"
                 ],
