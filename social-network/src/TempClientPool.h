@@ -5,7 +5,6 @@
 #include <condition_variable>
 #include <cstdlib>
 #include <deque>
-#include <chrono>
 #include <map>
 #include <string>
 #include <iostream>
@@ -15,30 +14,12 @@
 #include "Algorithm/AlgorithmFactory.h"
 #include "Algorithm/IAlgorithm.h"
 
-// Custom Epoch (January 1, 2018 Midnight GMT = 2018-01-01T00:00:00Z)
-#define CUSTOM_EPOCH 1514764800000
+
 
 namespace social_network {
 
-using std::chrono::milliseconds;
-using std::chrono::duration_cast;
-using std::chrono::system_clock;
-
 template<class TClient>
 class ClientPool {
-  class PoolItem {
-   public:
-    PoolItem(TClient *client) {
-      _client = client;
-      algorithm_time = -1;
-      pop_time = -1;
-    }
-    TClient * GetClient() { return _client; }
-    int64_t algorithm_time;
-    int64_t pop_time;
-   private:
-    TClient * _client;
-  };
 public:
   ClientPool(const std::string &client_type, const std::string &addr,
       int port, int min_size, int max_size, int timeout_ms, int keep_alive=0);
@@ -49,12 +30,12 @@ public:
   ClientPool(ClientPool&&) = default;
   ClientPool& operator=(ClientPool&&) = default;
 
-  PoolItem * Pop();
-  void Push(PoolItem *);
-  void Remove(PoolItem *);
+  TClient * Pop();
+  void Push(TClient *);
+  void Remove(TClient *);
 
 private:
-  std::map<std::string, std::deque<PoolItem *> *> _pool_map;
+  std::map<std::string, std::deque<TClient *> *> _pool_map;
   std::vector<std::string> _ip_list;
   std::string _addr;
   std::string _client_type;
@@ -68,8 +49,8 @@ private:
   std::condition_variable _cv;
   IAlgorithm * _algorithm;
 
-  PoolItem * GetClientFromPool(std::string ip);
-  PoolItem * ProduceClient(std::string ip);
+  TClient * GetClientFromPool(std::string ip);
+  TClient * ProduceClient(std::string ip);
 
 };
 
@@ -92,9 +73,10 @@ ClientPool<TClient>::ClientPool(const std::string &client_type,
     TClient *client = new TClient(addr, port, _keep_alive);
     std::string ip = client->GetIp();
     if (_pool_map.find(ip) == _pool_map.end()) {
-      _pool_map[ip] = new std::deque<PoolItem *>();
+      _pool_map[ip] = new std::deque<TClient *>();
+      std::cout << "<ClientPool> Create new pool for ip: " << ip << "\n";
     }
-    _pool_map[ip]->push_back(new PoolItem(client));
+    _pool_map[ip]->push_back(client);
   }
 
   _curr_pool_size = min_pool_size;
@@ -113,34 +95,31 @@ ClientPool<TClient>::~ClientPool() {
 
 // 从队列中取出并记录一个client的conn
 template<class TClient>
-typename ClientPool<TClient>::PoolItem * ClientPool<TClient>::Pop() {
-  PoolItem * client = nullptr;
-  int64_t start = duration_cast<milliseconds>(
-      system_clock::now().time_since_epoch()).count() - CUSTOM_EPOCH;
+TClient * ClientPool<TClient>::Pop() {
+  TClient * client = nullptr;
+  int64_t start = get_timestamp();
   std::cout << "Pop(): algorithm start = " << start << std::endl;
   std::string ip = _algorithm->execute();
-  int64_t end = duration_cast<milliseconds>(
-      system_clock::now().time_since_epoch()).count() - CUSTOM_EPOCH;
+  int64_t end = get_timestamp();
   std::cout << "Pop(): algorithm end = " << end << " ip: " << ip << std::endl;
-  int64_t algorithm_time = end - start;
+  
   client = GetClientFromPool(ip);
   if (!client) // 如果取出失败,则创建一个新的client
   {
-    client = ProduceClient(ip);
     std::cout << "Pop(): ProduceClient" << std::endl;
+    client = ProduceClient(ip);
   }
-  if (client && client->GetClient()) {
-    client->algorithm_time = algorithm_time;
-    client->pop_time = duration_cast<milliseconds>(
-        system_clock::now().time_since_epoch()).count() - CUSTOM_EPOCH;
+  if (client) {
+    // client->algorithm_time = algorithm_time;
+    // client->pop_time = get_timestamp();
     try {
-      client->GetClient()->Connect();
+      client->Connect();
       std::cout << "Pop(): Connect Success" << std::endl;
     } catch (...) {
       LOG(error) << "Failed to connect " + _client_type;
-      std::string ip = client->GetClient()->GetIp();
+      std::string ip = client->GetIp();
       if (_pool_map.find(ip) == _pool_map.end()) {
-        _pool_map[ip] = new std::deque<PoolItem *>();
+        _pool_map[ip] = new std::deque<TClient *>();
       }
       _pool_map[ip]->push_back(client);
       throw;
@@ -152,22 +131,12 @@ typename ClientPool<TClient>::PoolItem * ClientPool<TClient>::Pop() {
 
 // 将client放回队列
 template<class TClient>
-void ClientPool<TClient>::Push(typename ClientPool<TClient>::PoolItem *item) {
+void ClientPool<TClient>::Push(TClient *item) {
   // 如果是通过算法取出的client,则记录延时
-  if (item->pop_time > 0) {
-    int64_t now = duration_cast<milliseconds>(
-        system_clock::now().time_since_epoch()).count() - CUSTOM_EPOCH;
-    int64_t latency = now - item->pop_time;
-    write_latency(_addr, item->GetClient()->GetIp(), latency);
-    if (item->algorithm_time > 0) {
-      write_algorithm_latency(_addr, item->GetClient()->GetIp(), latency, item->algorithm_time);
-    }
-    item->algorithm_time = item->pop_time = -1;
-  }
   std::unique_lock<std::mutex> cv_lock(_mtx);
-  std::string ip = item->GetClient()->GetIp();
+  std::string ip = item->GetIp();
   if (_pool_map.find(ip) == _pool_map.end()) {
-    _pool_map[ip] = new std::deque<PoolItem *>();
+    _pool_map[ip] = new std::deque<TClient *>();
   }
   _pool_map[ip]->push_back(item);
   cv_lock.unlock();
@@ -176,7 +145,7 @@ void ClientPool<TClient>::Push(typename ClientPool<TClient>::PoolItem *item) {
 
 // 从队列中删除一个client
 template<class TClient>
-void ClientPool<TClient>::Remove(typename ClientPool<TClient>::PoolItem *client) {
+void ClientPool<TClient>::Remove(TClient *client) {
   std::unique_lock<std::mutex> lock(_mtx);
   delete client;
   client = nullptr;
@@ -186,14 +155,16 @@ void ClientPool<TClient>::Remove(typename ClientPool<TClient>::PoolItem *client)
 
 // 从队列中取出一个client
 template<class TClient>
-typename ClientPool<TClient>::PoolItem * ClientPool<TClient>::GetClientFromPool(std::string ip) {
+TClient * ClientPool<TClient>::GetClientFromPool(std::string ip) {
   std::unique_lock<std::mutex> cv_lock(_mtx);
-  PoolItem * client = nullptr;
+  TClient * client = nullptr;
   if (_pool_map.find(ip) == _pool_map.end()) {
-    _pool_map[ip] = new std::deque<PoolItem *>();
+    _pool_map[ip] = new std::deque<TClient *>();
+    std::cout << "<GetClientFromPool> Create new pool for ip: " << ip << "\n";
   }
-  std::deque<PoolItem *> *_pool = _pool_map[ip];
+  std::deque<TClient *> *_pool = _pool_map[ip];
   if (!_pool->empty()) { // 如果队列不为空,则取出一个client
+    LOG(info) << "GetClientFromPool: " << _client_type << "pool_size = " << _pool->size() << " " << ip;
     client = _pool->front();
     _pool->pop_front();
   } else if (_curr_pool_size == _max_pool_size) { 
@@ -210,7 +181,7 @@ typename ClientPool<TClient>::PoolItem * ClientPool<TClient>::GetClientFromPool(
     client = _pool->front();
     _pool->pop_front();
   }
-  if (client && !client->GetClient()->IsAlive()) {
+  if (client && !client->IsAlive()) {
     delete client;
     client = nullptr;
     _curr_pool_size--;
@@ -220,7 +191,7 @@ typename ClientPool<TClient>::PoolItem * ClientPool<TClient>::GetClientFromPool(
 }
 
 template<class TClient>
-typename ClientPool<TClient>::PoolItem * ClientPool<TClient>::ProduceClient(std::string ip) {
+TClient * ClientPool<TClient>::ProduceClient(std::string ip) {
   std::unique_lock<std::mutex> lock(_mtx);
   TClient * client = nullptr;
   if (_curr_pool_size < _max_pool_size) {
@@ -229,7 +200,7 @@ typename ClientPool<TClient>::PoolItem * ClientPool<TClient>::ProduceClient(std:
       _curr_pool_size++;
       LOG(warning) << "ClientPool size " << _curr_pool_size << " " << _client_type;
       lock.unlock();
-      return new PoolItem(client);
+      return client;
     } catch (...) {
       lock.unlock();
       return nullptr;

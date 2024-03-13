@@ -16,7 +16,7 @@
 #include "../../gen-cpp/UniqueIdService.h"
 #include "../../gen-cpp/ComposePostService.h"
 #include "../../gen-cpp/social_network_types.h"
-#include "../MyClientPool.h"
+#include "../TempClientPool.h"
 #include "../ThriftClient.h"
 #include "../logger.h"
 #include "../tracing.h"
@@ -125,20 +125,20 @@ void UniqueIdHandler::UploadUniqueId(
 
   // Upload to compose post service
   auto compose_post_client_wrapper = _compose_client_pool->Pop();
-  if (!compose_post_client_wrapper || !compose_post_client_wrapper->GetClient()) {
+  if (!compose_post_client_wrapper) {
     ServiceException se;
     se.errorCode = ErrorCode::SE_THRIFT_CONN_ERROR;
     se.message = "Failed to connect to compose-post-service";
     throw se;
   }
-  auto compose_post_client = compose_post_client_wrapper->GetClient()->GetClient();
+  auto compose_post_client = compose_post_client_wrapper->GetClient();
   try {
     std::cout << "Handler.h:UploadUniqueId: " << req_id << " " << post_id << " " << post_type << std::endl;
     compose_post_client->UploadUniqueId(req_id, post_id, post_type, writer_text_map);    
   } catch (const std::exception &e) {
     _compose_client_pool->Push(compose_post_client_wrapper);
     LOG(error) << "Failed to upload unique-id to compose-post-service. Error:" << e.what()
-               << " ip " << compose_post_client_wrapper->GetClient()->GetIp();
+               << " ip " << compose_post_client_wrapper->GetIp();
     throw;
   }
   _compose_client_pool->Push(compose_post_client_wrapper);

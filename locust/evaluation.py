@@ -1,6 +1,10 @@
 import subprocess
+import os
 import time
 import pathlib
+
+from collect_and_download import *
+
 
 def load_trace(p):
     return list(map(int, pathlib.Path(p).read_text().splitlines()))
@@ -11,7 +15,7 @@ def dump_trace(trace, p):
 def deploy():
     pass
 
-def with_locust(temp_dir, locustfile, url, workers):
+def with_locust(output_folder, locustfile, url, workers):
     print('Starting Workers')
     args = [
         'locust',
@@ -27,10 +31,10 @@ def with_locust(temp_dir, locustfile, url, workers):
         'locust',
         '--master',
         '--expect-workers', f'{workers}',
-        '--headless',
+        # '--headless',
         '-f', locustfile,
         '-H', url,
-        '--csv', temp_dir/'locust',
+        '--csv', output_folder/'locust',
         '--csv-full-history',
         # '--stop-timeout', '30s',
     ]
@@ -39,7 +43,7 @@ def with_locust(temp_dir, locustfile, url, workers):
     time.sleep(1)
     return master_p, worker_ps
 
-def run_locust(locustfile, url):
+def generate_rps(rps=-1):
     request_log_file = open('request.log', 'w')
     print('Generating RPS trace')
     warmup_seconds = 10
@@ -51,23 +55,32 @@ def run_locust(locustfile, url):
             rps = 1
         warmup.append(rps)
     trace = warmup + trace
-    trace = list(map(lambda x: x // 10, trace[:40]))
-    dump_trace(trace, 'rps.txt')
-    
-    print('Running Locust')
-    temp_dir = pathlib.Path('output/temp')
-    temp_dir.mkdir(parents=True, exist_ok=True)
+    dump_trace(trace[:60], 'rps.txt')
 
-    p, worker_ps = with_locust(temp_dir, locustfile, url, workers=8)
+def run_locust(locustfile, url, output_folder, rps=-1):
+    generate_rps(rps)
+
+    print('Running Locust')
+
+    p, worker_ps = with_locust(output_folder, locustfile, url, workers=8)
     print('Locust started')
     p.wait()
-    print('Locust finished')
     for wp in worker_ps:
         wp.wait()
+    print('Locust finished')
+    
+def get_data(path='./', filename='data.zip'):
+    start_collect()
+    wait_for_completion()
+    download_data(path, filename)
 
-def get_data():
-    pass
+def run(algo='round-robin', rps=-1, times=0):
+    path = pathlib.Path(f'output/{algo}/RPS_{rps}/{times}/')
+    path.mkdir(parents=True, exist_ok=True)
+    # deploy(algo)
+    # os.system(f"(cd ../social-network/ && python3 scripts/init_social_graph.py)")
+    run_locust('./locustfile.py', 'http://node0:30001', path, rps=rps)
+    # get_data(path, f'{algo}-RPS_{rps}-{times}.zip')
 
-# deploy()
-run_locust('./locustfile.py', 'http://node0:30001')
-# get_data()
+if __name__ == '__main__':
+    run()
