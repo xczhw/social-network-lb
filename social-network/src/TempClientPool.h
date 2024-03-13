@@ -18,6 +18,19 @@ namespace social_network {
 
 template<class TClient>
 class ClientPool {
+class PoolItem {
+   public:
+    PoolItem(TClient *client) {
+      _client = client;
+      algorithm_time = -1;
+      pop_time = -1;
+    }
+    TClient * GetClient() { return _client; }
+    int64_t algorithm_time;
+    int64_t pop_time;
+   private:
+    TClient * _client;
+  };
 public:
   ClientPool(const std::string &client_type, const std::string &addr,
       int port, int min_size, int max_size, int timeout_ms, int keep_alive=0);
@@ -28,12 +41,12 @@ public:
   ClientPool(ClientPool&&) = default;
   ClientPool& operator=(ClientPool&&) = default;
 
-  TClient * Pop();
-  void Push(TClient *);
-  void Remove(TClient *);
+  PoolItem * Pop();
+  void Push(PoolItem *);
+  void Remove(PoolItem *);
 
 private:
-  std::deque<TClient *> _pool_map;
+  std::deque<PoolItem *> _pool_map;
   std::string _addr;
   std::string _client_type;
   int _port;
@@ -46,8 +59,8 @@ private:
   std::condition_variable _cv;
   IAlgorithm * _algorithm;
 
-  TClient * GetClientFromPool(std::string ip);
-  TClient * ProduceClient(std::string ip);
+  PoolItem * GetClientFromPool(std::string ip);
+  PoolItem * ProduceClient(std::string ip);
 
 };
 
@@ -68,7 +81,7 @@ ClientPool<TClient>::ClientPool(const std::string &client_type,
 
   for (int i = 0; i < min_pool_size; ++i) {
     TClient *client = new TClient(addr, port, _keep_alive);
-    _pool_map.push_back(client);
+    _pool_map.push_back(new PoolItem(client));
   }
 
   _curr_pool_size = min_pool_size;
@@ -91,8 +104,8 @@ ClientPool<TClient>::~ClientPool() {
 
 // 从队列中取出并记录一个client的conn
 template<class TClient>
-TClient * ClientPool<TClient>::Pop() {
-  TClient * client = nullptr;
+typename ClientPool<TClient>::PoolItem * ClientPool<TClient>::Pop() {
+  PoolItem * client = nullptr;
   // int64_t start = get_timestamp();
   // std::cout << "Pop(): algorithm start = " << start << std::endl;
   // std::string ip = _algorithm->execute();
@@ -105,11 +118,11 @@ TClient * ClientPool<TClient>::Pop() {
     std::cout << "Pop(): ProduceClient" << std::endl;
     client = ProduceClient("");
   }
-  if (client) {
+  if (client && client->GetClient()) {
     // client->algorithm_time = algorithm_time;
     // client->pop_time = get_timestamp();
     try {
-      client->Connect();
+      client->GetClient()->Connect();
       std::cout << "Pop(): Connect Success" << std::endl;
     } catch (...) {
       LOG(error) << "Failed to connect " + _client_type;
@@ -127,7 +140,7 @@ TClient * ClientPool<TClient>::Pop() {
 
 // 将client放回队列
 template<class TClient>
-void ClientPool<TClient>::Push(TClient *item) {
+void ClientPool<TClient>::Push(typename ClientPool<TClient>::PoolItem *item) {
   // 如果是通过算法取出的client,则记录延时
   std::unique_lock<std::mutex> cv_lock(_mtx);
   // std::string ip = item->GetIp();
@@ -141,7 +154,7 @@ void ClientPool<TClient>::Push(TClient *item) {
 
 // 从队列中删除一个client
 template<class TClient>
-void ClientPool<TClient>::Remove(TClient *client) {
+void ClientPool<TClient>::Remove(typename ClientPool<TClient>::PoolItem *client) {
   std::unique_lock<std::mutex> lock(_mtx);
   delete client;
   client = nullptr;
@@ -151,9 +164,9 @@ void ClientPool<TClient>::Remove(TClient *client) {
 
 // 从队列中取出一个client
 template<class TClient>
-TClient * ClientPool<TClient>::GetClientFromPool(std::string ip) {
+typename ClientPool<TClient>::PoolItem * ClientPool<TClient>::GetClientFromPool(std::string ip) {
   std::unique_lock<std::mutex> cv_lock(_mtx);
-  TClient * client = nullptr;
+  PoolItem * client = nullptr;
   // if (_pool_map.find(ip) == _pool_map.end()) {
   //   _pool_map[ip] = new std::deque<TClient *>();
   //   std::cout << "<GetClientFromPool> Create new pool for ip: " << ip << "\n";
@@ -177,7 +190,7 @@ TClient * ClientPool<TClient>::GetClientFromPool(std::string ip) {
     client = _pool_map.front();
     _pool_map.pop_front();
   }
-  if (client && !client->IsAlive()) {
+  if (client && !client->GetClient()->IsAlive()) {
     delete client;
     client = nullptr;
     _curr_pool_size--;
@@ -187,7 +200,7 @@ TClient * ClientPool<TClient>::GetClientFromPool(std::string ip) {
 }
 
 template<class TClient>
-TClient * ClientPool<TClient>::ProduceClient(std::string ip) {
+typename ClientPool<TClient>::PoolItem * ClientPool<TClient>::ProduceClient(std::string ip) {
   std::unique_lock<std::mutex> lock(_mtx);
   TClient * client = nullptr;
   if (_curr_pool_size < _max_pool_size) {
@@ -196,7 +209,7 @@ TClient * ClientPool<TClient>::ProduceClient(std::string ip) {
       _curr_pool_size++;
       LOG(warning) << "ClientPool size " << _curr_pool_size << " " << _client_type;
       lock.unlock();
-      return client;
+      return new PoolItem(client);
     } catch (...) {
       lock.unlock();
       return nullptr;

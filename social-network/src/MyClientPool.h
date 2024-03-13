@@ -126,8 +126,8 @@ typename ClientPool<TClient>::PoolItem * ClientPool<TClient>::Pop() {
   client = GetClientFromPool(ip);
   if (!client) // 如果取出失败,则创建一个新的client
   {
-    client = ProduceClient(ip);
     std::cout << "Pop(): ProduceClient" << std::endl;
+    client = ProduceClient(ip);
   }
   if (client && client->GetClient()) {
     client->algorithm_time = algorithm_time;
