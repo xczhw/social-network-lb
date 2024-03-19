@@ -19,6 +19,7 @@ random.seed(time.time())
 
 import urllib3
 urllib3.disable_warnings(urllib3.exceptions.InsecureRequestWarning)
+from utils import *
 
 image_dir  = Path('/users/xczhw/social-network-lb/social-network/wrk2/scripts/social-network/base64_images')
 image_data = {}
@@ -173,7 +174,7 @@ class SocialMediaUser(FastHttpUser):
     @events.request.add_listener
     def on_request(response_time, context, **kwargs):
         request_log_file.write(json.dumps({
-            'time': time.perf_counter(),
+            'time': get_time(),
             'latency': response_time / 1e3,
             'context': context,
         }) + '\n')
