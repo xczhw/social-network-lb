@@ -13,17 +13,6 @@ def create_if_not_exists(path):
 
 create_if_not_exists(DATA_DIR)
 
-def recv_until_eof(sock):
-    full_data = bytearray()
-    while True:
-        data, server = sock.recvfrom(4096)  # Adjust based on your network environment
-        # 将上次的片段和这次的数据拼接起来检查EOF
-        full_data.extend(data)
-        if data.endswith(b'<EOF>'):
-            full_data = full_data[:-5]
-            break
-    return full_data
-
 # 初始化k8s客户端
 config.load_incluster_config()
 v1 = client.CoreV1Api()

@@ -1,7 +1,8 @@
 from flask import Flask, send_file, jsonify, request
-import socket
+import requests
 import threading
 import zipfile
+import pathlib
 import time
 
 from utils import *
@@ -17,27 +18,14 @@ def collect_and_compress_data():
     ips = []
     for svc in SVC_NAMES:
         ips.extend(get_pod_ips(svc))
-    # 创建UDP socket
-    sock = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
-    sock.settimeout(2)  # 设置超时时间
 
     for ip, port, svc_name in ips:
-        try:
-            sock.sendto(b'collect', (ip, port))
-            data = recv_until_eof(sock)
-            # Directly save the received data (now without the EOF marker) as a zip file.
-            # if DATA_DIR/svc_name folder does not exist, create it
-            path = os.path.join(DATA_DIR, svc_name)
-            create_if_not_exists(path)
-            with open(os.path.join(path, f'{ip}.zip'), 'wb') as file:
-                file.write(data)
-        except socket.timeout:
-            print(f'No response from {svc_name}')
-        except Exception as e:
-            print(f'Error with {svc_name}: {e}')
+        response = requests.get(f'http://{ip}:{port}/download')
+        path = pathlib.Path(DATA_DIR) / svc_name
+        create_if_not_exists(path)
+        with open(path / f'{ip}.zip', 'wb') as f:
+            f.write(response.content)
 
-    sock.close()
-    
     collection_in_progress = False
     collection_complete = True
 
