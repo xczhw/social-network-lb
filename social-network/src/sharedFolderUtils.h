@@ -11,6 +11,8 @@
 #include <fstream>
 #include <string>
 
+#include "utils.h"
+
 // Custom Epoch (January 1, 2018 Midnight GMT = 2018-01-01T00:00:00Z)
 #define CUSTOM_EPOCH 1514764800000
 
@@ -32,9 +34,7 @@ void write_send_to(std::string svc, std::string send_to)
   // add to filename
   std::ofstream outfile(filename, std::ios_base::app);
   // time, send_to
-  outfile << std::to_string(std::chrono::duration_cast<std::chrono::milliseconds>(
-    std::chrono::system_clock::now().time_since_epoch()).count() - CUSTOM_EPOCH) << " " 
-    << send_to << std::endl;
+  outfile << get_timestamp() << " " << send_to << std::endl;
   outfile.close();
 }
 

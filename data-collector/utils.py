@@ -17,11 +17,11 @@ def recv_until_eof(sock):
     full_data = bytearray()
     while True:
         data, server = sock.recvfrom(4096)  # Adjust based on your network environment
-        if data.endswith(b'<EOF>'):  # Check if the end of the file marker is present
-            if len(data) > 5:
-                full_data.extend(data[:-5])
-            break
+        # 将上次的片段和这次的数据拼接起来检查EOF
         full_data.extend(data)
+        if data.endswith(b'<EOF>'):
+            full_data = full_data[:-5]
+            break
     return full_data
 
 # 初始化k8s客户端

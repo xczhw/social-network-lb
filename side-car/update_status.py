@@ -39,16 +39,16 @@ def get_pod_ips(service_name, namespace='social-network'):
     return pod_ips
 
 # 接收直到EOF
-def recv_until_eof(s):
-    data_parts = []
+def recv_until_eof(sock):
+    full_data = bytearray()
     while True:
-        data, _ = s.recvfrom(1024)
-        data_parts.append(data)
-        if data.decode().endswith('<EOF>'):
+        data, server = sock.recvfrom(4096)  # Adjust based on your network environment
+        # 将上次的片段和这次的数据拼接起来检查EOF
+        full_data.extend(data)
+        if data.endswith(b'<EOF>'):
+            full_data = full_data[:-5]
             break
-    data = b''.join(data_parts).decode()
-    data = data[:-len('<EOF>')]
-    return data
+    return full_data
 
 # 向指定ip发送请求
 def send_and_recv(message, ip, timeout=2):
