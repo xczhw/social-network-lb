@@ -1,6 +1,6 @@
 from kubernetes import client, config
 import time
-import socket
+import requests
 
 from utils import *
 
@@ -38,31 +38,10 @@ def get_pod_ips(service_name, namespace='social-network'):
     safe_write("\n".join(pod_ips), f"{DATAPATH}/{service_name}/pod_ips.txt")
     return pod_ips
 
-# 接收直到EOF
-def recv_until_eof(sock):
-    full_data = bytearray()
-    while True:
-        data, server = sock.recvfrom(4096)  # Adjust based on your network environment
-        # 将上次的片段和这次的数据拼接起来检查EOF
-        full_data.extend(data)
-        if data.endswith(b'<EOF>'):
-            full_data = full_data[:-5]
-            break
-    return full_data
-
 # 向指定ip发送请求
-def send_and_recv(message, ip, timeout=2):
-    with socket.socket(socket.AF_INET, socket.SOCK_DGRAM) as s:
-        s.settimeout(timeout)
-        try:
-            s.sendto(message.encode(), (ip, SERVICE_PORT))
-            data = recv_until_eof(s)
-            t = time.strftime("%Y-%m-%d %H:%M:%S", time.localtime())
-            print(f"{t} Send {message} to {ip}, response: {data}")
-        except socket.timeout:
-            data = "None"
-            print(f"Timeout for {ip}")
-    return data
+def send_and_recv(route, ip, timeout=2):
+    res = requests.get(f"http://{ip}:{SERVICE_PORT}/{route}", timeout=timeout)
+    return res.json()
 
 # 向服务中的所有pod发送请求
 def send_request_to_all_pod_in_svc(svc, message):
@@ -74,9 +53,12 @@ def send_request_to_all_pod_in_svc(svc, message):
     return response
 
 # 保存请求的响应到文件
-def save_response_to_file(response, svc, filename):
+def save_response_to_file(response, svc, filename, keyword=None):
     create_if_not_exists(f"{DATAPATH}/{svc}")
-    data = "\n".join([f"{ip} {response[ip]}" for ip in response])
+    if keyword:
+        data = "\n".join([f"{ip} {response[ip][keyword]}" for ip in response])
+    else:
+        data = "\n".join([f"{ip} {response[ip]}" for ip in response])
     safe_write(data, f"{DATAPATH}/{svc}/{filename}")
 
 # 定时更新服务状态
@@ -85,6 +67,6 @@ def update_status():
     while True:
         for svc in service_names:
             # 获取所有下游服务的cpu使用率
-            res = send_request_to_all_pod_in_svc(svc, "cpu_usage")
-            save_response_to_file(res, svc, "cpu_usage.txt")
+            res = send_request_to_all_pod_in_svc(svc, "info")
+            save_response_to_file(res, svc, "cpu_usage.txt", "cpu_usage")
             time.sleep(10)

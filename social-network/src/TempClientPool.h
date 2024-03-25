@@ -126,8 +126,8 @@ typename ClientPool<TClient>::PoolItem * ClientPool<TClient>::Pop() {
       client->GetClient()->Connect();
       // std::cout << "Pop(): Connect Success" << std::endl;
     } catch (...) {
-      LOG(error) << "Failed to connect " + _client_type;
       std::string ip = client->GetIp();
+      LOG(error) << "Failed to connect " + _client_type << ": " << ip;
       if (_pool_map.find(ip) == _pool_map.end()) {
         _pool_map[ip] = new std::deque<PoolItem *>();
       }

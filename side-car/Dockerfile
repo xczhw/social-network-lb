@@ -10,7 +10,7 @@ COPY . .
 # 安装构建依赖项和所需包
 RUN apt-get update \
     && apt-get install -y gcc python3-dev \
-    && pip3 install --no-cache-dir kubernetes psutil
+    && pip3 install --no-cache-dir kubernetes psutil flask
 
 # 容器启动时运行脚本
 CMD ["python3", "-u", "main.py"]
