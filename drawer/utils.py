@@ -1,4 +1,5 @@
 import zipfile
+from collections import defaultdict
 
 def unzip(path, filename):
     try:
@@ -8,3 +9,22 @@ def unzip(path, filename):
         print(e)
         print('Error unzipping', path, filename)
         pass
+
+def get_subdir(path):
+    return [item for item in path.iterdir() if item.is_dir()]
+
+
+def nested_defaultdict(levels, final_type=list):
+    if levels == 1:
+        return defaultdict(final_type)
+    else:
+        return defaultdict(lambda: nested_defaultdict(levels - 1, final_type))
+
+class PodData:   
+    def __init__(self):
+        # 使用defaultdict避免深层嵌套和多级字典检查
+        self.data = nested_defaultdict(5, final_type=list)
+
+    def add_entry(self, algo, rps, run_time, service_path, pod_name, data):
+        # 直接添加日志条目到对应的分类中
+        self.data[algo][rps][run_time][service_path][pod_name].append(data)

@@ -1,5 +1,4 @@
-#ifndef PICK2_H
-#define PICK2_H
+#pragma once
 
 #include <iostream>
 #include <sstream>
@@ -63,8 +62,9 @@ std::string Pick2::execute()
     double statu1 = std::stod(ip_to_status -> at(ip1)); 
     double statu2 = std::stod(ip_to_status -> at(ip2));
     std::string ip = statu1 < statu2 ? ip1 : ip2;
+    std::stringstream ss;
+    ss << ip1 << ": " << statu1 << " " << ip2 << ": " << statu2 << " chose " << ip;
+    write_send_to_log(svc, ss.str());
     std::cout << "Pick2 execute " << ip << std::endl;
     return ip;
 }
-
-#endif //Pick2_H

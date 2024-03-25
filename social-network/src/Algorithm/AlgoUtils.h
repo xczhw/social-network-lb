@@ -1,14 +1,17 @@
-#ifndef ALGOUTILS_H
-#define ALGOUTILS_H
+#pragma once
 
 #include <iostream>
 #include <vector>
 #include <fstream>
+#include <sstream>
 
 #include <fcntl.h>
 
 #include <errno.h>
 #include <unistd.h>
+
+#include "../path_definitions.h"
+#include "../utils.h"
 
 std::vector<std::string>* safe_read(std::string file_name) {
     // 确保文件存在，没有则等待5秒钟
@@ -72,5 +75,12 @@ std::vector<std::string>* get_ips(std::string svc) {
     return ips;
 }
 
-
-#endif // ALGOUTILS_H
+void write_send_to_log(std::string svc, std::string send_to_log)
+{
+  std::string filename = paths::LOGPATH + svc + "/send_to_log.txt";
+  // add to filename
+  std::ofstream outfile(filename, std::ios_base::app);
+  // time, send_to
+  outfile << get_timestamp() << " " << send_to_log << std::endl;
+  outfile.close();
+}

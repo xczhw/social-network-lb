@@ -46,7 +46,7 @@
               },
               {
                 "name": "side-car",
-                "image": "node0:5000/sidecar:latest@sha256:7d9d94ad99fabfbf51c18cfcf2a919f87160350ca664e55c0db8f8c5456c3a3c",
+                "image": "node0:5000/sidecar:latest@sha256:aa17d2e9b37a8f16fda66f37abb0d2412991483a8913d0dedb16e71d94fdc528",
                 "env": [
                   {
                     "name": "SERVICE_PORT",
@@ -139,7 +139,7 @@
               },
               {
                 "name": "side-car",
-                "image": "node0:5000/sidecar:latest@sha256:7d9d94ad99fabfbf51c18cfcf2a919f87160350ca664e55c0db8f8c5456c3a3c",
+                "image": "node0:5000/sidecar:latest@sha256:aa17d2e9b37a8f16fda66f37abb0d2412991483a8913d0dedb16e71d94fdc528",
                 "env": [
                   {
                     "name": "SERVICE_PORT",

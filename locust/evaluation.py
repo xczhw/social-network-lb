@@ -78,12 +78,15 @@ def get_data(path='./', filename='data.zip'):
 
 def run(algo='round-robin', rps=-1, times=0):
     for t in range(times):
-        path = pathlib.Path(f'output/{algo}/RPS_{rps}/{get_time()}/')
+        start_time = get_time()
+        path = pathlib.Path(f'output/{algo}/RPS_{rps}/{start_time}/')
         path.mkdir(parents=True, exist_ok=True)
         # deploy(algo)
         # os.system(f"(cd ../social-network/ && python3 scripts/init_social_graph.py)")
         run_locust('./locustfile.py', 'http://node0:30001', path, rps=rps)
+        end_time = get_time()
         get_data(path, f'{algo}-RPS_{rps}-{get_time()}.zip')
+        os.system(f"mv output/{algo}/RPS_{rps}/{start_time} output/{algo}/RPS_{rps}/{start_time}_{end_time}")
         time.sleep(10)
 
 if __name__ == '__main__':

@@ -12,9 +12,7 @@
 #include <string>
 
 #include "utils.h"
-
-// Custom Epoch (January 1, 2018 Midnight GMT = 2018-01-01T00:00:00Z)
-#define CUSTOM_EPOCH 1514764800000
+#include "path_definitions.h
 
 namespace social_network {
 
@@ -30,7 +28,7 @@ void safe_write(std::string filename, std::string content)
 // 记录每次请求发送到哪个ip
 void write_send_to(std::string svc, std::string send_to)
 {
-  std::string filename = "/share/data/" + svc + "/send_to.txt";
+  std::string filename = paths::LOGPATH + svc + "/send_to.txt";
   // add to filename
   std::ofstream outfile(filename, std::ios_base::app);
   // time, send_to
@@ -41,7 +39,7 @@ void write_send_to(std::string svc, std::string send_to)
 // 记录每次请求的延时
 void write_latency(std::string svc, std::string ip, int64_t latency)
 {
-  std::string filename = "/share/data/" + svc + "/latency.txt";
+  std::string filename = paths::LOGPATH + svc + "/latency.txt";
   // add to filename
   std::ofstream outfile(filename, std::ios_base::app);
   // time, latency
@@ -53,7 +51,7 @@ void write_latency(std::string svc, std::string ip, int64_t latency)
 
 void write_algorithm_latency(std::string svc, std::string ip, int64_t latency, int64_t algorithm_time)
 {
-  std::string filename = "/share/data/" + svc + "/algorithm_latency.txt";
+  std::string filename = paths::LOGPATH + svc + "/algorithm_latency.txt";
   // add to filename
   std::ofstream outfile(filename, std::ios_base::app);
   // time, latency
