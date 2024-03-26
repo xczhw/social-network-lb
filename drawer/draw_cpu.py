@@ -31,11 +31,10 @@ def clean_data(input_data: PodData):
     for algo, rps_data in input_data.data.items():
         for rps, run_time_data in rps_data.items():
             for run_time, service_path_data in run_time_data.items():
-                t = run_time.split('_')
                 for service_path, pod_name_data in service_path_data.items():
                     for pod_name, data in pod_name_data.items():
                         for d in data:
-                            if (d[0] < int(t[0])) or (len(t) > 1 and d[0] > int(t[1])):
+                            if not time_in_range(d[0], run_time):
                                 continue
                             cleaned_data.add_entry(algo, rps, run_time, service_path, pod_name, d)
     return cleaned_data
@@ -57,8 +56,10 @@ def draw(input_data: PodData):
                     plt.savefig(current_dir/'output'/algo/f'RPS_{rps}'/run_time/service_path/'cpu_usage.png')
                     print(f'Saved {algo}/RPS_{rps}/{run_time}/{service_path}/cpu_usage.png')
 
-
-if __name__ == '__main__':
+def draw_cpu():
     data = get_data()
     data = clean_data(data)
     draw(data)
+
+if __name__ == '__main__':
+    draw_cpu()

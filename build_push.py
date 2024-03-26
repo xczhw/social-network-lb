@@ -45,6 +45,30 @@ def build_data_collector():
         raise Exception("datacollector sha256 not found")
     return sha256
 
+def run_viewer(session_name="kube_top_log"):
+    script_path = "kube_viewer/viewer.py"
+    # 检查是否存在指定名称的 screen 会话
+    check_command = f"screen -ls | grep {session_name}"
+    try:
+        # 如果下面的命令成功，说明会话存在
+        subprocess.check_output(check_command, shell=True, text=True)
+        # 删除现有的 screen 会话
+        kill_command = f"screen -S {session_name} -X quit"
+        subprocess.check_call(kill_command, shell=True)
+        print(f"Existing screen session '{session_name}' has been terminated.")
+    except subprocess.CalledProcessError:
+        # 如果会话不存在，就会抛出异常，这里不做任何操作
+        print(f"No existing screen session named '{session_name}'.")
+
+    # 创建一个新的 screen 会话，并在其中运行指定的脚本
+    create_command = f"screen -S {session_name} -d -m bash -c 'python3 {script_path}; exec bash'"
+    try:
+        subprocess.check_call(create_command, shell=True)
+        print(f"Script {script_path} is now running in a new screen session called '{session_name}'")
+    except subprocess.CalledProcessError as e:
+        print(f"An error occurred while starting the script in a new screen session: {e}")
+
+
 if __name__ == '__main__':
     args = os.sys.argv
     print(args)
@@ -62,3 +86,5 @@ if __name__ == '__main__':
             "datacollector": f'{HOST}/datacollector:latest@sha256:{datacollector_sha256}'
         }, f)
     os.system("(cd deploy && bash deploy.sh)")
+
+    run_viewer()
