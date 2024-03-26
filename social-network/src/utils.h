@@ -1,5 +1,4 @@
-#ifndef SOCIAL_NETWORK_MICROSERVICES_UTILS_H
-#define SOCIAL_NETWORK_MICROSERVICES_UTILS_H
+#pragma once
 
 #include <string>
 #include <fstream>
@@ -12,6 +11,7 @@
 #define CUSTOM_EPOCH 1514764800000
 
 namespace social_network{
+
 using json = nlohmann::json;
 using std::chrono::milliseconds;
 using std::chrono::duration_cast;
@@ -39,4 +39,3 @@ int64_t get_timestamp() {
 
 } //namespace social_network
 
-#endif //SOCIAL_NETWORK_MICROSERVICES_UTILS_H

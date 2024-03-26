@@ -12,7 +12,7 @@
 #include <string>
 
 #include "utils.h"
-#include "path_definitions.h
+#include "path_definitions.h"
 
 namespace social_network {
 
@@ -25,9 +25,22 @@ void safe_write(std::string filename, std::string content)
   // TODO: add lock
 }
 
+void create_if_not_exists(const std::string &folder_path) {
+  if (access(folder_path.c_str(), F_OK) != -1) {
+    return;
+  }
+  std::string command = "mkdir -p " + folder_path;
+  int ret = system(command.c_str());
+  if (ret != 0) {
+    LOG(error) << "Failed to create folder " << folder_path;
+  }
+}
+
 // 记录每次请求发送到哪个ip
 void write_send_to(std::string svc, std::string send_to)
 {
+  social_network::create_if_not_exists(paths::LOGPATH + svc);
+  LOG(info) << "write_send_to " << svc << " " << send_to;
   std::string filename = paths::LOGPATH + svc + "/send_to.txt";
   // add to filename
   std::ofstream outfile(filename, std::ios_base::app);
@@ -36,9 +49,21 @@ void write_send_to(std::string svc, std::string send_to)
   outfile.close();
 }
 
+void write_send_to_log(std::string svc, std::string send_to_log)
+{
+  social_network::create_if_not_exists(paths::LOGPATH + svc);
+  std::string filename = paths::LOGPATH + svc + "/send_to_log.txt";
+  // add to filename
+  std::ofstream outfile(filename, std::ios_base::app);
+  // time, send_to
+  outfile << get_timestamp() << " " << send_to_log << std::endl;
+  outfile.close();
+}
+
 // 记录每次请求的延时
 void write_latency(std::string svc, std::string ip, int64_t latency)
 {
+  social_network::create_if_not_exists(paths::LOGPATH + svc);
   std::string filename = paths::LOGPATH + svc + "/latency.txt";
   // add to filename
   std::ofstream outfile(filename, std::ios_base::app);
@@ -51,6 +76,7 @@ void write_latency(std::string svc, std::string ip, int64_t latency)
 
 void write_algorithm_latency(std::string svc, std::string ip, int64_t latency, int64_t algorithm_time)
 {
+  social_network::create_if_not_exists(paths::LOGPATH + svc);
   std::string filename = paths::LOGPATH + svc + "/algorithm_latency.txt";
   // add to filename
   std::ofstream outfile(filename, std::ios_base::app);

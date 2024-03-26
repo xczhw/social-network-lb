@@ -22,6 +22,7 @@ def log_sys_info():
         pass
     while True:
         info = get_sys_info()
+        info['time'] = get_time()
         with open(f'{LOGPATH}/sys_info.jsonl', 'a') as f:
             f.write(json.dumps(info) + '\n')
         time.sleep(1)

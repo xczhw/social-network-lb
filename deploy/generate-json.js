@@ -97,7 +97,7 @@ function multi_deployment_service(name, nodeNames, {containers, serviceType, por
   ];
 }
 
-function cpp(nodeName, name, command) {
+function cpp(nodeName, name, command, replicas = 1) {
   return deployment_service(name, {
     nodeName,
     containers: [
@@ -133,7 +133,7 @@ function cpp(nodeName, name, command) {
     ports: [
       {port: 9090},
     ],
-  });
+  }, replicas);
 }
 
 function memcached(nodeName, name) {
@@ -273,7 +273,7 @@ const doc1 = {
       ],
     }),
 
-    ...cpp(worker3, 'compose-post-service', 'ComposePostService', 10),
+    ...cpp(worker3, 'compose-post-service', 'ComposePostService', 3),
     ...redis(worker3, 'compose-post-redis'),
 
     ...cpp(worker1, 'home-timeline-service', 'HomeTimelineService'),

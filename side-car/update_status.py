@@ -55,11 +55,14 @@ def send_request_to_all_pod_in_svc(svc, message):
 # 保存请求的响应到文件
 def save_response_to_file(response, svc, filename, keyword=None):
     create_if_not_exists(f"{DATAPATH}/{svc}")
+    create_if_not_exists(f"{LOGPATH}/{svc}")
     if keyword:
         data = "\n".join([f"{ip} {response[ip][keyword]}" for ip in response])
     else:
         data = "\n".join([f"{ip} {response[ip]}" for ip in response])
+    data += "\n"
     safe_write(data, f"{DATAPATH}/{svc}/{filename}")
+    safe_write(data, f"{LOGPATH}/{svc}/{filename}", mode='a')
 
 # 定时更新服务状态
 def update_status():

@@ -1,4 +1,5 @@
 import os
+import time
 import fcntl
 import psutil
 import zipfile
@@ -43,3 +44,7 @@ def create_zip_file(directory, zip_filename):
                 # Relative path for the file within the zip
                 relative_path = os.path.relpath(file_path, directory)
                 zipf.write(file_path, relative_path)
+
+CUSTOM_EPOCH=1514764800000
+def get_time():
+    return int((time.time() * 1000) - CUSTOM_EPOCH)

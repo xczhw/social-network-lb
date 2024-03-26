@@ -10,8 +10,8 @@
 #include <errno.h>
 #include <unistd.h>
 
-#include "../path_definitions.h"
-#include "../utils.h"
+#include "../sharedFolderUtils.h"
+using namespace social_network;
 
 std::vector<std::string>* safe_read(std::string file_name) {
     // 确保文件存在，没有则等待5秒钟
@@ -73,14 +73,4 @@ std::vector<std::string>* safe_read(std::string file_name) {
 std::vector<std::string>* get_ips(std::string svc) {
     std::vector<std::string> *ips = safe_read("/share/data/" + svc + "/pod_ips.txt");
     return ips;
-}
-
-void write_send_to_log(std::string svc, std::string send_to_log)
-{
-  std::string filename = paths::LOGPATH + svc + "/send_to_log.txt";
-  // add to filename
-  std::ofstream outfile(filename, std::ios_base::app);
-  // time, send_to
-  outfile << get_timestamp() << " " << send_to_log << std::endl;
-  outfile.close();
 }

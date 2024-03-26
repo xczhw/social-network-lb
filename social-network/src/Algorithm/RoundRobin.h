@@ -1,5 +1,4 @@
-#ifndef ROUNDROBIN_H
-#define ROUNDROBIN_H
+#pragma once
 
 #include <iostream>
 #include "IAlgorithm.h"
@@ -19,8 +18,12 @@ public:
             return svc;
         index = std::min(index, (int)ips->size() - 1);
         std::string ip = ips -> at(index);
-        LOG(info) << "RoundRobin execute " << ip << std::endl;
+        // LOG(info) << "RoundRobin execute " << ip << std::endl;
         index = (index + 1) % ips->size();
+
+        std::stringstream ss;
+        ss << "RoundRobin execute " << ip << " index: " << index << " ips size: " << ips->size();
+        write_send_to_log(svc, ss.str());
         return ip;
     }
 private:
@@ -29,7 +32,7 @@ private:
 
 RoundRobin::RoundRobin(std::string svc)
 {
-    std::cout << "RoundRobin constructor" << std::endl;
+    // std::cout << "RoundRobin constructor" << std::endl;
     this->svc = svc;
     this->ips = get_ips(svc);
     this->index = 0;
@@ -37,8 +40,6 @@ RoundRobin::RoundRobin(std::string svc)
 
 void RoundRobin::update()
 {
-    std::cout << "RoundRobin update" << std::endl;
+    // std::cout << "RoundRobin update" << std::endl;
     this->ips = get_ips(svc);
 }
-
-#endif //ROUNDROBIN_H

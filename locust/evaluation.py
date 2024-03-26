@@ -77,6 +77,8 @@ def get_data(path='./', filename='data.zip'):
     download_data(path, filename)
 
 def run(algo='round-robin', rps=-1, times=0):
+    if os.path.exists('output'):
+        os.system('rm -rf output')
     for t in range(times):
         start_time = get_time()
         path = pathlib.Path(f'output/{algo}/RPS_{rps}/{start_time}/')
