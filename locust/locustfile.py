@@ -21,7 +21,9 @@ import urllib3
 urllib3.disable_warnings(urllib3.exceptions.InsecureRequestWarning)
 from utils import *
 
-image_dir  = Path('/users/xczhw/social-network-lb/social-network/wrk2/scripts/social-network/base64_images')
+base_path = Path(__file__).resolve().parent
+
+image_dir  = base_path / 'base64_images'
 image_data = {}
 image_names = []
 
@@ -163,7 +165,7 @@ def compose_random_user():
 
 mean_iat = 1  # seconds
 
-request_log_file = open('request.log', 'a')
+request_log_file = open(base_path / 'request.log', 'a')
 
 class SocialMediaUser(FastHttpUser):
     def wait_time(self):
@@ -253,7 +255,7 @@ class SocialMediaUser(FastHttpUser):
             logging.warning('compose_post resp.status = %d, text=%s' %(r.status_code,
                 r.text))
 
-RPS = list(map(int, Path('rps.txt').read_text().splitlines()))
+RPS = list(map(int, Path(base_path / 'rps.txt').read_text().splitlines()))
 
 
 class CustomShape(LoadTestShape):

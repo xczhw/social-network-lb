@@ -1,17 +1,18 @@
 import subprocess
 import os
 import time
-import pathlib
+from pathlib import Path
 
 from collect_and_download import *
 from utils import *
 
+base_path = Path(__file__).resolve().parent
 
 def load_trace(p):
-    return list(map(int, pathlib.Path(p).read_text().splitlines()))
+    return list(map(int, Path(p).read_text().splitlines()))
 
 def dump_trace(trace, p):
-    pathlib.Path(p).write_text('\n'.join(map(str, trace)) + '\n')
+    Path(p).write_text('\n'.join(map(str, trace)) + '\n')
 
 def deploy():
     pass
@@ -48,7 +49,7 @@ def generate_rps(output_folder, rps=-1):
     request_log_file = open(output_folder/'request.log', 'w')
     print('Generating RPS trace')
     warmup_seconds = 10
-    trace = load_trace('./traces/diurnal-2.txt')
+    trace = load_trace(base_path / 'traces/diurnal-2.txt') if rps == -1 else [rps] * 60
     warmup = []
     for i in range(warmup_seconds):
         rps = round(trace[0] * 1.1 ** ((i - warmup_seconds) / 5))  # x1.1 every 5 seconds, see section A.7 in the paper
@@ -57,7 +58,7 @@ def generate_rps(output_folder, rps=-1):
         warmup.append(rps)
     trace = warmup + trace
     # trace = [x // 10 for x in trace]
-    dump_trace(trace[:60], 'rps.txt')
+    dump_trace(trace[:60], base_path / 'rps.txt')
 
 def run_locust(locustfile, url, output_folder, rps=-1):
     generate_rps(output_folder, rps)
@@ -71,7 +72,7 @@ def run_locust(locustfile, url, output_folder, rps=-1):
         wp.wait()
     print('Locust finished')
     
-def get_data(path='./', filename='data.zip'):
+def get_data(path, filename='data.zip'):
     start_collect()
     wait_for_completion()
     download_data(path, filename)
@@ -81,14 +82,16 @@ def run(algo='round-robin', rps=-1, times=0):
         os.system('rm -rf output')
     for t in range(times):
         start_time = get_time()
-        path = pathlib.Path(f'output/{algo}/RPS_{rps}/{start_time}/')
+        path = base_path / Path(f'output/{algo}/RPS_{rps}/{start_time}/')
         path.mkdir(parents=True, exist_ok=True)
         # deploy(algo)
         # os.system(f"(cd ../social-network/ && python3 scripts/init_social_graph.py)")
-        run_locust('./locustfile.py', 'http://node0:30001', path, rps=rps)
+        
+        run_locust(base_path / 'locustfile.py', 'http://node0:30001', path, rps=rps)
         end_time = get_time()
+        print("***Path", path)
         get_data(path, f'{algo}-RPS_{rps}-{get_time()}.zip')
-        os.system(f"mv output/{algo}/RPS_{rps}/{start_time} output/{algo}/RPS_{rps}/{start_time}_{end_time}")
+        os.system(f"mv {base_path}/output/{algo}/RPS_{rps}/{start_time} {base_path}/output/{algo}/RPS_{rps}/{start_time}_{end_time}")
         time.sleep(10)
 
 if __name__ == '__main__':

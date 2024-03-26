@@ -2,13 +2,14 @@ import requests
 import time
 import zipfile
 import io
-import pathlib
 import shutil
 
+from pathlib import Path
 from utils import *
 
 # Flask应用的外部访问地址和端口
 base_url = 'http://node0:30002'
+base_path = Path(__file__).resolve().parent
 
 # 向Flask应用发送请求以开始数据收集
 def start_collect():
@@ -36,13 +37,16 @@ def wait_for_completion():
         time.sleep(5)  # 等待5秒后再次检查状态
 
 # 数据收集完成后，下载数据
-def download_data(save_path=pathlib.Path('downloaded_data'), filename='data.zip'):
+def download_data(save_path=Path(base_path / 'downloaded_data'), filename='data.zip'):
     download_response = requests.get(f'{base_url}/download', params={'filename': filename})
     if download_response.status_code == 200:
         # 解压缩从服务端接收的ZIP数据
         zip_file = zipfile.ZipFile(io.BytesIO(download_response.content))
         zip_file.extractall(save_path)  # 解压数据到 'downloaded_data' 目录
-        force_move('request.log', save_path/'request.log')
+        print('from', base_path/'request.log', 'to', save_path/'request.log')
+        force_move(base_path/'request.log', save_path/'request.log')
+        force_move(base_path.parent/'kube_viewer/output/pod_logs.jsonl', save_path/'pod_logs.jsonl')
+        force_move(base_path.parent/'kube_viewer/output/node_logs.jsonl', save_path/'node_logs.jsonl')
         print('Data downloaded and extracted successfully.')
     else:
         print('Failed to download data:', download_response.text)
