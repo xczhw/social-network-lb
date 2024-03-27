@@ -34,7 +34,7 @@
                 "env": [
                   {
                     "name": "ALGORITHM",
-                    "value": "round-robin"
+                    "value": "random"
                   }
                 ],
                 "volumeMounts": [
@@ -54,7 +54,7 @@
                   },
                   {
                     "name": "ALGORITHM",
-                    "value": "round-robin"
+                    "value": "random"
                   }
                 ],
                 "volumeMounts": [
@@ -127,7 +127,7 @@
                 "env": [
                   {
                     "name": "ALGORITHM",
-                    "value": "round-robin"
+                    "value": "random"
                   }
                 ],
                 "volumeMounts": [
@@ -147,7 +147,7 @@
                   },
                   {
                     "name": "ALGORITHM",
-                    "value": "round-robin"
+                    "value": "random"
                   }
                 ],
                 "volumeMounts": [

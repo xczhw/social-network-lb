@@ -11,7 +11,7 @@ def get_data():
     base_path = current_dir / 'output'
     data = RunData()
     for algo in ['round-robin', 'random', 'weighted']:
-        for rps in [-1]:
+        for rps in [-1, 10]:
             rps_path = base_path / algo / f'RPS_{rps}'
             if not rps_path.exists():
                 continue

@@ -89,7 +89,6 @@ def run(algo='round-robin', rps=-1, times=0):
         
         run_locust(base_path / 'locustfile.py', 'http://node0:30001', path, rps=rps)
         end_time = get_time()
-        print("***Path", path)
         get_data(path, f'{algo}-RPS_{rps}-{get_time()}.zip')
         os.system(f"mv {base_path}/output/{algo}/RPS_{rps}/{start_time} {base_path}/output/{algo}/RPS_{rps}/{start_time}_{end_time}")
         time.sleep(10)

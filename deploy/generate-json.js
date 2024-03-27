@@ -105,7 +105,7 @@ function cpp(nodeName, name, command, replicas = 1) {
         image: image_cpp,
         command: [command],
         env: env({
-          ALGORITHM: 'round-robin',
+          ALGORITHM: 'random',
         }),
         volumeMounts: [
           {
@@ -119,7 +119,7 @@ function cpp(nodeName, name, command, replicas = 1) {
         image: image_side_car,
         env: env({
           SERVICE_PORT: '5050',
-          ALGORITHM: 'round-robin',
+          ALGORITHM: 'random',
         }),
         volumeMounts: [
           {
