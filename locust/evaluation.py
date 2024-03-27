@@ -95,4 +95,4 @@ def run(algo='round-robin', rps=-1, times=0):
         time.sleep(10)
 
 if __name__ == '__main__':
-    run(times=3)
+    run(times=3, rps=10)

@@ -27,7 +27,7 @@
             "containers": [
               {
                 "name": "write-home-timeline-service",
-                "image": "node0:5000/deathstarbench:latest@sha256:51ebd3557e991d16914a14b57e7ab5d49386dd0fb0071e2ba03339789310bd46",
+                "image": "node0:5000/deathstarbench:latest@sha256:b7c5c45a5f3fb8c2f09d6579c6f47a212df00e5146b49ecd6de820bc88f6aa7e",
                 "command": [
                   "WriteHomeTimelineService"
                 ],
@@ -46,7 +46,7 @@
               },
               {
                 "name": "side-car",
-                "image": "node0:5000/sidecar:latest@sha256:6111b72cca7ca268ca230564367b4fccbb1da03f2566ddaa3237f4a98302d678",
+                "image": "node0:5000/sidecar:latest@sha256:8673133a872292471cbbb1ea387e304241ca51534c66e5504d8d672c87275265",
                 "env": [
                   {
                     "name": "SERVICE_PORT",
@@ -120,7 +120,7 @@
             "containers": [
               {
                 "name": "write-user-timeline-service",
-                "image": "node0:5000/deathstarbench:latest@sha256:51ebd3557e991d16914a14b57e7ab5d49386dd0fb0071e2ba03339789310bd46",
+                "image": "node0:5000/deathstarbench:latest@sha256:b7c5c45a5f3fb8c2f09d6579c6f47a212df00e5146b49ecd6de820bc88f6aa7e",
                 "command": [
                   "WriteUserTimelineService"
                 ],
@@ -139,7 +139,7 @@
               },
               {
                 "name": "side-car",
-                "image": "node0:5000/sidecar:latest@sha256:6111b72cca7ca268ca230564367b4fccbb1da03f2566ddaa3237f4a98302d678",
+                "image": "node0:5000/sidecar:latest@sha256:8673133a872292471cbbb1ea387e304241ca51534c66e5504d8d672c87275265",
                 "env": [
                   {
                     "name": "SERVICE_PORT",

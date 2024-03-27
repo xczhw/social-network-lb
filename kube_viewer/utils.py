@@ -59,6 +59,10 @@ def get_pod_ips():
 def get_pod_info():
     command = "kubectl top pod"
     output = get_cmd_output(command)
+    while output is None:
+        output = get_cmd_output(command)
+        time.sleep(1)
+
     timestamp = get_time()
     pod_ips = get_pod_ips()
 
@@ -81,6 +85,9 @@ def get_pod_info():
 def get_node_info():
     command = "kubectl top node"
     output = get_cmd_output(command)
+    while output is None:
+        output = get_cmd_output(command)
+        time.sleep(1)
     timestamp = get_time()
 
     lines = output.strip().split('\n')[1:]

@@ -27,6 +27,13 @@ def nested_defaultdict(levels, final_type=list):
     else:
         return defaultdict(lambda: nested_defaultdict(levels - 1, final_type))
 
+class RunData:
+    def __init__(self):
+        self.data = nested_defaultdict(3, final_type=list)
+
+    def add_entry(self, algo, rps, run_time, data):
+        self.data[algo][rps][run_time].append(data)
+
 class PodData:   
     def __init__(self):
         # 使用defaultdict避免深层嵌套和多级字典检查

@@ -4,7 +4,11 @@ import os
 import json
 import subprocess
 
+from pathlib import Path
+
 HOST = "node0:5000"
+
+base_path = Path(__file__).resolve().parent
 
 def find_sha256(image_name):
     result = subprocess.run(
@@ -44,9 +48,8 @@ def build_data_collector():
     if sha256 is None:
         raise Exception("datacollector sha256 not found")
     return sha256
-
-def run_viewer(session_name="kube_top_log"):
-    script_path = "kube_viewer/viewer.py"
+    
+def del_viewer(session_name="kube_top_log"):
     # 检查是否存在指定名称的 screen 会话
     check_command = f"screen -ls | grep {session_name}"
     try:
@@ -56,10 +59,16 @@ def run_viewer(session_name="kube_top_log"):
         kill_command = f"screen -S {session_name} -X quit"
         subprocess.check_call(kill_command, shell=True)
         print(f"Existing screen session '{session_name}' has been terminated.")
+        if (base_path / 'kube_viewer' / 'output').exists:
+            os.system(f"rm -rf {base_path / 'kube_viewer' / 'output'}")
     except subprocess.CalledProcessError:
         # 如果会话不存在，就会抛出异常，这里不做任何操作
         print(f"No existing screen session named '{session_name}'.")
 
+def run_viewer(session_name="kube_top_log"):
+    script_path = "kube_viewer/viewer.py"
+    
+    del_viewer(session_name)
     # 创建一个新的 screen 会话，并在其中运行指定的脚本
     create_command = f"screen -S {session_name} -d -m bash -c 'python3 {script_path}; exec bash'"
     try:
@@ -74,6 +83,7 @@ if __name__ == '__main__':
     print(args)
     if len(args) > 1 and args[1] == '--rm':
         os.system(f"(cd deploy && bash rm.sh)")
+        del_viewer()
         exit(0)
 
     sidecar_sha256 = build_side_car()

@@ -3,10 +3,10 @@
 
 const fs = require('fs');
 
-const worker1 = 'autothrottle-2';
-const worker2 = 'autothrottle-3';
-const worker3 = 'autothrottle-4';
-const worker4 = 'autothrottle-5';
+const worker1 = 'node1';
+const worker2 = 'node2';
+const worker3 = 'node1';
+const worker4 = 'node2';
 
 var image = JSON.parse(fs.readFileSync('./image.json', 'utf8'));
 const image_cpp = image['deathstarbench'];
@@ -31,7 +31,6 @@ function env(o) {
   return Object.entries(o).map(([name, value]) => ({name, value}));
 }
 
-// TODO: 把nodeName删除
 function deployment(name, {nodeName, containers, podLabels}, replicas = 1) {
   return {
     apiVersion: 'apps/v1',
@@ -273,7 +272,7 @@ const doc1 = {
       ],
     }),
 
-    ...cpp(worker3, 'compose-post-service', 'ComposePostService', 3),
+    ...cpp(worker3, 'compose-post-service', 'ComposePostService', 4),
     ...redis(worker3, 'compose-post-redis'),
 
     ...cpp(worker1, 'home-timeline-service', 'HomeTimelineService'),

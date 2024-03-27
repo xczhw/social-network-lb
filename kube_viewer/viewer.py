@@ -1,12 +1,15 @@
 
 import json
-from pathlib import Path
+import os
 import time
 
 from utils import *
+from pathlib import Path
 
 def main():
     base_path = Path(__file__).resolve().parent / 'output'
+    if base_path.exists():
+        os.system(f'rm -rf {base_path}')
     base_path.mkdir(parents=True, exist_ok=True)
 
     pod_log_path = base_path / 'pod_logs.jsonl'
