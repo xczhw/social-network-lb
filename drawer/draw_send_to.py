@@ -57,7 +57,10 @@ def draw(input_data: PodData):
                                 if d[1] not in tot:
                                     tot[d[1]] = 0
                                 tot[d[1]] += 1
-                            plt.bar(tot.keys(), tot.values(), label=aim_pod)
+                            bars = plt.bar(tot.keys(), tot.values(), label=aim_pod)
+                            for bar in bars:
+                                height = bar.get_height()
+                                plt.text(bar.get_x() + bar.get_width()/2, height, height, ha='center', va='bottom')
                         plt.legend()
                         plt.savefig(current_dir/'output'/algo/f'RPS_{rps}'/run_time/service_path/pod_name/'send_to.png')
                         print(f'Saved {algo}/RPS_{rps}/{run_time}/{service_path}/{pod_name}/send_to.png')

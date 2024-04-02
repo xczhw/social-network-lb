@@ -4,6 +4,8 @@ import os
 from draw_cpu import draw_cpu
 from draw_latency import draw_latency
 from draw_send_to import draw_send_to
+from draw_pod_cpu import draw_pod_cpu
+from draw_all_pod_cpu import draw_all_pod_cpu
 
 def unzip_output():
     base_path = Path(__file__).parent.resolve() / 'output'
@@ -38,12 +40,17 @@ def move_output():
             os.system(f'rm -rf "{output_path}"')
             os.system(f'mv "{locust_output_path}" "{output_path}"')
         else:
-            print('Aborted.')
+            # merge output folder
+            os.system(f'cp -r "{locust_output_path}" "{current_dir}"')
+            os.system(f'rm -rf "{locust_output_path}"')
 
 if __name__ == '__main__':
     move_output()
     unzip_output()
+    
     draw_cpu()
     draw_latency()
     draw_send_to()
+    draw_pod_cpu()
+    draw_all_pod_cpu()
     
