@@ -19,7 +19,7 @@
 #include "../../gen-cpp/MediaService.h"
 #include "../../gen-cpp/MediaFilterService.h"
 #include "../../gen-cpp/ComposePostService.h"
-#include "../TempClientPool.h"
+#include "../MyClientPool.h"
 #include "../ThriftClient.h"
 #include "../logger.h"
 #include "../tracing.h"
