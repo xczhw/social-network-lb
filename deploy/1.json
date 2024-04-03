@@ -31,6 +31,7 @@
             }
           },
           "spec": {
+            "nodeName": "node3.test.rl4networking-pg0.utah.cloudlab.us",
             "containers": [
               {
                 "name": "jaeger",
@@ -102,6 +103,7 @@
             }
           },
           "spec": {
+            "nodeName": "node1.test.rl4networking-pg0.utah.cloudlab.us",
             "containers": [
               {
                 "name": "nginx-thrift",
@@ -172,10 +174,11 @@
             }
           },
           "spec": {
+            "nodeName": "node1.test.rl4networking-pg0.utah.cloudlab.us",
             "containers": [
               {
                 "name": "data-collector",
-                "image": "node0:5000/datacollector:latest@sha256:8d23075d1ad5d8af77b18b20edfc4348d5022f580b2156038da90dcaadf74be2"
+                "image": "node0:5000/datacollector:latest@sha256:7ed1058757f3cfcf6886dfff319bdd017a37f3c76dd61f6d0d754a9bdaaec960"
               }
             ],
             "volumes": [
@@ -232,17 +235,18 @@
             }
           },
           "spec": {
+            "nodeName": "node3.test.rl4networking-pg0.utah.cloudlab.us",
             "containers": [
               {
                 "name": "compose-post-service",
-                "image": "node0:5000/deathstarbench:latest@sha256:deb8b6d19e68726136c1bb75d3432cccf9e1ad2dc56401713878da56d9e50eb4",
+                "image": "node0:5000/deathstarbench:latest@sha256:7f2c56801e03da159330569dace62e7791cdf01b3c986bf97be4f0eabce36746",
                 "command": [
                   "ComposePostService"
                 ],
                 "env": [
                   {
                     "name": "ALGORITHM",
-                    "value": "random"
+                    "value": "round-robin"
                   }
                 ],
                 "volumeMounts": [
@@ -254,7 +258,7 @@
               },
               {
                 "name": "side-car",
-                "image": "node0:5000/sidecar:latest@sha256:ec983c932620b9a9d3089bb9645878862d436458e3aaf4c81aaa9c67f5484adb",
+                "image": "node0:5000/sidecar:latest@sha256:cc9281751b4303aa2d4811f95ae2a30f37b4edae80fbe5716a3f0c4215fb211a",
                 "env": [
                   {
                     "name": "SERVICE_PORT",
@@ -262,7 +266,7 @@
                   },
                   {
                     "name": "ALGORITHM",
-                    "value": "random"
+                    "value": "round-robin"
                   }
                 ],
                 "volumeMounts": [
@@ -325,6 +329,7 @@
             }
           },
           "spec": {
+            "nodeName": "node3.test.rl4networking-pg0.utah.cloudlab.us",
             "containers": [
               {
                 "name": "compose-post-redis",
@@ -388,17 +393,18 @@
             }
           },
           "spec": {
+            "nodeName": "node1.test.rl4networking-pg0.utah.cloudlab.us",
             "containers": [
               {
                 "name": "home-timeline-service",
-                "image": "node0:5000/deathstarbench:latest@sha256:deb8b6d19e68726136c1bb75d3432cccf9e1ad2dc56401713878da56d9e50eb4",
+                "image": "node0:5000/deathstarbench:latest@sha256:7f2c56801e03da159330569dace62e7791cdf01b3c986bf97be4f0eabce36746",
                 "command": [
                   "HomeTimelineService"
                 ],
                 "env": [
                   {
                     "name": "ALGORITHM",
-                    "value": "random"
+                    "value": "round-robin"
                   }
                 ],
                 "volumeMounts": [
@@ -410,7 +416,7 @@
               },
               {
                 "name": "side-car",
-                "image": "node0:5000/sidecar:latest@sha256:ec983c932620b9a9d3089bb9645878862d436458e3aaf4c81aaa9c67f5484adb",
+                "image": "node0:5000/sidecar:latest@sha256:cc9281751b4303aa2d4811f95ae2a30f37b4edae80fbe5716a3f0c4215fb211a",
                 "env": [
                   {
                     "name": "SERVICE_PORT",
@@ -418,7 +424,7 @@
                   },
                   {
                     "name": "ALGORITHM",
-                    "value": "random"
+                    "value": "round-robin"
                   }
                 ],
                 "volumeMounts": [
@@ -481,6 +487,7 @@
             }
           },
           "spec": {
+            "nodeName": "node3.test.rl4networking-pg0.utah.cloudlab.us",
             "containers": [
               {
                 "name": "home-timeline-redis",
@@ -544,17 +551,18 @@
             }
           },
           "spec": {
+            "nodeName": "node3.test.rl4networking-pg0.utah.cloudlab.us",
             "containers": [
               {
                 "name": "media-service",
-                "image": "node0:5000/deathstarbench:latest@sha256:deb8b6d19e68726136c1bb75d3432cccf9e1ad2dc56401713878da56d9e50eb4",
+                "image": "node0:5000/deathstarbench:latest@sha256:7f2c56801e03da159330569dace62e7791cdf01b3c986bf97be4f0eabce36746",
                 "command": [
                   "MediaService"
                 ],
                 "env": [
                   {
                     "name": "ALGORITHM",
-                    "value": "random"
+                    "value": "round-robin"
                   }
                 ],
                 "volumeMounts": [
@@ -566,7 +574,7 @@
               },
               {
                 "name": "side-car",
-                "image": "node0:5000/sidecar:latest@sha256:ec983c932620b9a9d3089bb9645878862d436458e3aaf4c81aaa9c67f5484adb",
+                "image": "node0:5000/sidecar:latest@sha256:cc9281751b4303aa2d4811f95ae2a30f37b4edae80fbe5716a3f0c4215fb211a",
                 "env": [
                   {
                     "name": "SERVICE_PORT",
@@ -574,7 +582,7 @@
                   },
                   {
                     "name": "ALGORITHM",
-                    "value": "random"
+                    "value": "round-robin"
                   }
                 ],
                 "volumeMounts": [
@@ -637,17 +645,18 @@
             }
           },
           "spec": {
+            "nodeName": "node2.test.rl4networking-pg0.utah.cloudlab.us",
             "containers": [
               {
                 "name": "post-storage-service",
-                "image": "node0:5000/deathstarbench:latest@sha256:deb8b6d19e68726136c1bb75d3432cccf9e1ad2dc56401713878da56d9e50eb4",
+                "image": "node0:5000/deathstarbench:latest@sha256:7f2c56801e03da159330569dace62e7791cdf01b3c986bf97be4f0eabce36746",
                 "command": [
                   "PostStorageService"
                 ],
                 "env": [
                   {
                     "name": "ALGORITHM",
-                    "value": "random"
+                    "value": "round-robin"
                   }
                 ],
                 "volumeMounts": [
@@ -659,7 +668,7 @@
               },
               {
                 "name": "side-car",
-                "image": "node0:5000/sidecar:latest@sha256:ec983c932620b9a9d3089bb9645878862d436458e3aaf4c81aaa9c67f5484adb",
+                "image": "node0:5000/sidecar:latest@sha256:cc9281751b4303aa2d4811f95ae2a30f37b4edae80fbe5716a3f0c4215fb211a",
                 "env": [
                   {
                     "name": "SERVICE_PORT",
@@ -667,7 +676,7 @@
                   },
                   {
                     "name": "ALGORITHM",
-                    "value": "random"
+                    "value": "round-robin"
                   }
                 ],
                 "volumeMounts": [
@@ -730,6 +739,7 @@
             }
           },
           "spec": {
+            "nodeName": "node3.test.rl4networking-pg0.utah.cloudlab.us",
             "containers": [
               {
                 "name": "post-storage-memcached",
@@ -798,6 +808,7 @@
             }
           },
           "spec": {
+            "nodeName": "node3.test.rl4networking-pg0.utah.cloudlab.us",
             "containers": [
               {
                 "name": "post-storage-mongodb",
@@ -860,17 +871,18 @@
             }
           },
           "spec": {
+            "nodeName": "node3.test.rl4networking-pg0.utah.cloudlab.us",
             "containers": [
               {
                 "name": "social-graph-service",
-                "image": "node0:5000/deathstarbench:latest@sha256:deb8b6d19e68726136c1bb75d3432cccf9e1ad2dc56401713878da56d9e50eb4",
+                "image": "node0:5000/deathstarbench:latest@sha256:7f2c56801e03da159330569dace62e7791cdf01b3c986bf97be4f0eabce36746",
                 "command": [
                   "SocialGraphService"
                 ],
                 "env": [
                   {
                     "name": "ALGORITHM",
-                    "value": "random"
+                    "value": "round-robin"
                   }
                 ],
                 "volumeMounts": [
@@ -882,7 +894,7 @@
               },
               {
                 "name": "side-car",
-                "image": "node0:5000/sidecar:latest@sha256:ec983c932620b9a9d3089bb9645878862d436458e3aaf4c81aaa9c67f5484adb",
+                "image": "node0:5000/sidecar:latest@sha256:cc9281751b4303aa2d4811f95ae2a30f37b4edae80fbe5716a3f0c4215fb211a",
                 "env": [
                   {
                     "name": "SERVICE_PORT",
@@ -890,7 +902,7 @@
                   },
                   {
                     "name": "ALGORITHM",
-                    "value": "random"
+                    "value": "round-robin"
                   }
                 ],
                 "volumeMounts": [
@@ -953,6 +965,7 @@
             }
           },
           "spec": {
+            "nodeName": "node3.test.rl4networking-pg0.utah.cloudlab.us",
             "containers": [
               {
                 "name": "social-graph-mongodb",
@@ -1015,6 +1028,7 @@
             }
           },
           "spec": {
+            "nodeName": "node3.test.rl4networking-pg0.utah.cloudlab.us",
             "containers": [
               {
                 "name": "social-graph-redis",
@@ -1078,17 +1092,18 @@
             }
           },
           "spec": {
+            "nodeName": "node3.test.rl4networking-pg0.utah.cloudlab.us",
             "containers": [
               {
                 "name": "text-service",
-                "image": "node0:5000/deathstarbench:latest@sha256:deb8b6d19e68726136c1bb75d3432cccf9e1ad2dc56401713878da56d9e50eb4",
+                "image": "node0:5000/deathstarbench:latest@sha256:7f2c56801e03da159330569dace62e7791cdf01b3c986bf97be4f0eabce36746",
                 "command": [
                   "TextService"
                 ],
                 "env": [
                   {
                     "name": "ALGORITHM",
-                    "value": "random"
+                    "value": "round-robin"
                   }
                 ],
                 "volumeMounts": [
@@ -1100,7 +1115,7 @@
               },
               {
                 "name": "side-car",
-                "image": "node0:5000/sidecar:latest@sha256:ec983c932620b9a9d3089bb9645878862d436458e3aaf4c81aaa9c67f5484adb",
+                "image": "node0:5000/sidecar:latest@sha256:cc9281751b4303aa2d4811f95ae2a30f37b4edae80fbe5716a3f0c4215fb211a",
                 "env": [
                   {
                     "name": "SERVICE_PORT",
@@ -1108,7 +1123,7 @@
                   },
                   {
                     "name": "ALGORITHM",
-                    "value": "random"
+                    "value": "round-robin"
                   }
                 ],
                 "volumeMounts": [
@@ -1171,17 +1186,18 @@
             }
           },
           "spec": {
+            "nodeName": "node3.test.rl4networking-pg0.utah.cloudlab.us",
             "containers": [
               {
                 "name": "unique-id-service",
-                "image": "node0:5000/deathstarbench:latest@sha256:deb8b6d19e68726136c1bb75d3432cccf9e1ad2dc56401713878da56d9e50eb4",
+                "image": "node0:5000/deathstarbench:latest@sha256:7f2c56801e03da159330569dace62e7791cdf01b3c986bf97be4f0eabce36746",
                 "command": [
                   "UniqueIdService"
                 ],
                 "env": [
                   {
                     "name": "ALGORITHM",
-                    "value": "random"
+                    "value": "round-robin"
                   }
                 ],
                 "volumeMounts": [
@@ -1193,7 +1209,7 @@
               },
               {
                 "name": "side-car",
-                "image": "node0:5000/sidecar:latest@sha256:ec983c932620b9a9d3089bb9645878862d436458e3aaf4c81aaa9c67f5484adb",
+                "image": "node0:5000/sidecar:latest@sha256:cc9281751b4303aa2d4811f95ae2a30f37b4edae80fbe5716a3f0c4215fb211a",
                 "env": [
                   {
                     "name": "SERVICE_PORT",
@@ -1201,7 +1217,7 @@
                   },
                   {
                     "name": "ALGORITHM",
-                    "value": "random"
+                    "value": "round-robin"
                   }
                 ],
                 "volumeMounts": [
@@ -1264,17 +1280,18 @@
             }
           },
           "spec": {
+            "nodeName": "node3.test.rl4networking-pg0.utah.cloudlab.us",
             "containers": [
               {
                 "name": "url-shorten-service",
-                "image": "node0:5000/deathstarbench:latest@sha256:deb8b6d19e68726136c1bb75d3432cccf9e1ad2dc56401713878da56d9e50eb4",
+                "image": "node0:5000/deathstarbench:latest@sha256:7f2c56801e03da159330569dace62e7791cdf01b3c986bf97be4f0eabce36746",
                 "command": [
                   "UrlShortenService"
                 ],
                 "env": [
                   {
                     "name": "ALGORITHM",
-                    "value": "random"
+                    "value": "round-robin"
                   }
                 ],
                 "volumeMounts": [
@@ -1286,7 +1303,7 @@
               },
               {
                 "name": "side-car",
-                "image": "node0:5000/sidecar:latest@sha256:ec983c932620b9a9d3089bb9645878862d436458e3aaf4c81aaa9c67f5484adb",
+                "image": "node0:5000/sidecar:latest@sha256:cc9281751b4303aa2d4811f95ae2a30f37b4edae80fbe5716a3f0c4215fb211a",
                 "env": [
                   {
                     "name": "SERVICE_PORT",
@@ -1294,7 +1311,7 @@
                   },
                   {
                     "name": "ALGORITHM",
-                    "value": "random"
+                    "value": "round-robin"
                   }
                 ],
                 "volumeMounts": [
@@ -1357,17 +1374,18 @@
             }
           },
           "spec": {
+            "nodeName": "node3.test.rl4networking-pg0.utah.cloudlab.us",
             "containers": [
               {
                 "name": "user-mention-service",
-                "image": "node0:5000/deathstarbench:latest@sha256:deb8b6d19e68726136c1bb75d3432cccf9e1ad2dc56401713878da56d9e50eb4",
+                "image": "node0:5000/deathstarbench:latest@sha256:7f2c56801e03da159330569dace62e7791cdf01b3c986bf97be4f0eabce36746",
                 "command": [
                   "UserMentionService"
                 ],
                 "env": [
                   {
                     "name": "ALGORITHM",
-                    "value": "random"
+                    "value": "round-robin"
                   }
                 ],
                 "volumeMounts": [
@@ -1379,7 +1397,7 @@
               },
               {
                 "name": "side-car",
-                "image": "node0:5000/sidecar:latest@sha256:ec983c932620b9a9d3089bb9645878862d436458e3aaf4c81aaa9c67f5484adb",
+                "image": "node0:5000/sidecar:latest@sha256:cc9281751b4303aa2d4811f95ae2a30f37b4edae80fbe5716a3f0c4215fb211a",
                 "env": [
                   {
                     "name": "SERVICE_PORT",
@@ -1387,7 +1405,7 @@
                   },
                   {
                     "name": "ALGORITHM",
-                    "value": "random"
+                    "value": "round-robin"
                   }
                 ],
                 "volumeMounts": [
@@ -1450,17 +1468,18 @@
             }
           },
           "spec": {
+            "nodeName": "node3.test.rl4networking-pg0.utah.cloudlab.us",
             "containers": [
               {
                 "name": "user-service",
-                "image": "node0:5000/deathstarbench:latest@sha256:deb8b6d19e68726136c1bb75d3432cccf9e1ad2dc56401713878da56d9e50eb4",
+                "image": "node0:5000/deathstarbench:latest@sha256:7f2c56801e03da159330569dace62e7791cdf01b3c986bf97be4f0eabce36746",
                 "command": [
                   "UserService"
                 ],
                 "env": [
                   {
                     "name": "ALGORITHM",
-                    "value": "random"
+                    "value": "round-robin"
                   }
                 ],
                 "volumeMounts": [
@@ -1472,7 +1491,7 @@
               },
               {
                 "name": "side-car",
-                "image": "node0:5000/sidecar:latest@sha256:ec983c932620b9a9d3089bb9645878862d436458e3aaf4c81aaa9c67f5484adb",
+                "image": "node0:5000/sidecar:latest@sha256:cc9281751b4303aa2d4811f95ae2a30f37b4edae80fbe5716a3f0c4215fb211a",
                 "env": [
                   {
                     "name": "SERVICE_PORT",
@@ -1480,7 +1499,7 @@
                   },
                   {
                     "name": "ALGORITHM",
-                    "value": "random"
+                    "value": "round-robin"
                   }
                 ],
                 "volumeMounts": [
@@ -1543,6 +1562,7 @@
             }
           },
           "spec": {
+            "nodeName": "node3.test.rl4networking-pg0.utah.cloudlab.us",
             "containers": [
               {
                 "name": "user-memcached",
@@ -1611,6 +1631,7 @@
             }
           },
           "spec": {
+            "nodeName": "node3.test.rl4networking-pg0.utah.cloudlab.us",
             "containers": [
               {
                 "name": "user-mongodb",
@@ -1673,17 +1694,18 @@
             }
           },
           "spec": {
+            "nodeName": "node3.test.rl4networking-pg0.utah.cloudlab.us",
             "containers": [
               {
                 "name": "user-timeline-service",
-                "image": "node0:5000/deathstarbench:latest@sha256:deb8b6d19e68726136c1bb75d3432cccf9e1ad2dc56401713878da56d9e50eb4",
+                "image": "node0:5000/deathstarbench:latest@sha256:7f2c56801e03da159330569dace62e7791cdf01b3c986bf97be4f0eabce36746",
                 "command": [
                   "UserTimelineService"
                 ],
                 "env": [
                   {
                     "name": "ALGORITHM",
-                    "value": "random"
+                    "value": "round-robin"
                   }
                 ],
                 "volumeMounts": [
@@ -1695,7 +1717,7 @@
               },
               {
                 "name": "side-car",
-                "image": "node0:5000/sidecar:latest@sha256:ec983c932620b9a9d3089bb9645878862d436458e3aaf4c81aaa9c67f5484adb",
+                "image": "node0:5000/sidecar:latest@sha256:cc9281751b4303aa2d4811f95ae2a30f37b4edae80fbe5716a3f0c4215fb211a",
                 "env": [
                   {
                     "name": "SERVICE_PORT",
@@ -1703,7 +1725,7 @@
                   },
                   {
                     "name": "ALGORITHM",
-                    "value": "random"
+                    "value": "round-robin"
                   }
                 ],
                 "volumeMounts": [
@@ -1766,6 +1788,7 @@
             }
           },
           "spec": {
+            "nodeName": "node3.test.rl4networking-pg0.utah.cloudlab.us",
             "containers": [
               {
                 "name": "user-timeline-mongodb",
@@ -1828,6 +1851,7 @@
             }
           },
           "spec": {
+            "nodeName": "node3.test.rl4networking-pg0.utah.cloudlab.us",
             "containers": [
               {
                 "name": "user-timeline-redis",
@@ -1891,6 +1915,7 @@
             }
           },
           "spec": {
+            "nodeName": "node3.test.rl4networking-pg0.utah.cloudlab.us",
             "containers": [
               {
                 "name": "write-home-timeline-rabbitmq",
@@ -1959,6 +1984,7 @@
             }
           },
           "spec": {
+            "nodeName": "node3.test.rl4networking-pg0.utah.cloudlab.us",
             "containers": [
               {
                 "name": "write-user-timeline-rabbitmq",
@@ -2029,10 +2055,31 @@
             }
           },
           "spec": {
+            "nodeName": "node1.test.rl4networking-pg0.utah.cloudlab.us",
             "containers": [
               {
                 "name": "media-filter-service",
                 "image": "hypercube/social-network-ml-media-filter:latest@sha256:ece820ae1156eab2c6b41eae07ecac524960d47bcdd4e063e9d3520399dcac05"
+              },
+              {
+                "name": "side-car",
+                "image": "node0:5000/sidecar:latest@sha256:cc9281751b4303aa2d4811f95ae2a30f37b4edae80fbe5716a3f0c4215fb211a",
+                "env": [
+                  {
+                    "name": "SERVICE_PORT",
+                    "value": "5050"
+                  },
+                  {
+                    "name": "ALGORITHM",
+                    "value": "round-robin"
+                  }
+                ],
+                "volumeMounts": [
+                  {
+                    "name": "shared-data",
+                    "mountPath": "/share"
+                  }
+                ]
               }
             ],
             "volumes": [
@@ -2071,10 +2118,31 @@
             }
           },
           "spec": {
+            "nodeName": "node2.test.rl4networking-pg0.utah.cloudlab.us",
             "containers": [
               {
                 "name": "media-filter-service",
                 "image": "hypercube/social-network-ml-media-filter:latest@sha256:ece820ae1156eab2c6b41eae07ecac524960d47bcdd4e063e9d3520399dcac05"
+              },
+              {
+                "name": "side-car",
+                "image": "node0:5000/sidecar:latest@sha256:cc9281751b4303aa2d4811f95ae2a30f37b4edae80fbe5716a3f0c4215fb211a",
+                "env": [
+                  {
+                    "name": "SERVICE_PORT",
+                    "value": "5050"
+                  },
+                  {
+                    "name": "ALGORITHM",
+                    "value": "round-robin"
+                  }
+                ],
+                "volumeMounts": [
+                  {
+                    "name": "shared-data",
+                    "mountPath": "/share"
+                  }
+                ]
               }
             ],
             "volumes": [
@@ -2113,10 +2181,31 @@
             }
           },
           "spec": {
+            "nodeName": "node3.test.rl4networking-pg0.utah.cloudlab.us",
             "containers": [
               {
                 "name": "media-filter-service",
                 "image": "hypercube/social-network-ml-media-filter:latest@sha256:ece820ae1156eab2c6b41eae07ecac524960d47bcdd4e063e9d3520399dcac05"
+              },
+              {
+                "name": "side-car",
+                "image": "node0:5000/sidecar:latest@sha256:cc9281751b4303aa2d4811f95ae2a30f37b4edae80fbe5716a3f0c4215fb211a",
+                "env": [
+                  {
+                    "name": "SERVICE_PORT",
+                    "value": "5050"
+                  },
+                  {
+                    "name": "ALGORITHM",
+                    "value": "round-robin"
+                  }
+                ],
+                "volumeMounts": [
+                  {
+                    "name": "shared-data",
+                    "mountPath": "/share"
+                  }
+                ]
               }
             ],
             "volumes": [
@@ -2171,6 +2260,7 @@
             }
           },
           "spec": {
+            "nodeName": "node3.test.rl4networking-pg0.utah.cloudlab.us",
             "containers": [
               {
                 "name": "text-filter-service",

@@ -48,6 +48,7 @@ public:
 
 private:
   std::map<std::string, std::deque<PoolItem *> *> _pool_map;
+  std::map<std::string, int> _curr_pool_size_map;
   std::string _addr;
   std::string _client_type;
   int _port;
@@ -79,14 +80,17 @@ ClientPool<TClient>::ClientPool(const std::string &client_type,
   std::string algo = std::getenv("ALGORITHM");
   _algorithm = AlgorithmFactory::createAlgorithm(algo, addr);
   _pool_map = std::map<std::string, std::deque<PoolItem *> *>();
+  // _curr_pool_size_map = std::map<std::string, int>();
 
   for (int i = 0; i < min_pool_size; ++i) {
     TClient *client = new TClient(addr, port, _keep_alive);
     std::string ip = client->GetIp();
     if (_pool_map.find(ip) == _pool_map.end()) {
       _pool_map[ip] = new std::deque<PoolItem *>();
+      // _curr_pool_size_map[ip] = 0;
     }
     _pool_map[ip]->push_back(new PoolItem(client));
+    // _curr_pool_size_map[ip]++;
   }
 
   _curr_pool_size = min_pool_size;
@@ -126,16 +130,18 @@ typename ClientPool<TClient>::PoolItem * ClientPool<TClient>::Pop() {
       client->GetClient()->Connect();
       // std::cout << "Pop(): Connect Success" << std::endl;
     } catch (...) {
-      LOG(error) << "Failed to connect " + _client_type;
       std::string ip = client->GetIp();
+      LOG(error) << "Failed to connect " + _client_type << ": " << ip;
       if (_pool_map.find(ip) == _pool_map.end()) {
         _pool_map[ip] = new std::deque<PoolItem *>();
+        // _curr_pool_size_map[ip] = 0;
       }
       _pool_map[ip]->push_back(client);
       throw;
     }
   }
   write_send_to(_addr, ip);
+  // write_queue_size(_addr, _curr_pool_size_map, _pool_map);
   return client;
 }
 
@@ -178,7 +184,8 @@ typename ClientPool<TClient>::PoolItem * ClientPool<TClient>::GetClientFromPool(
   std::unique_lock<std::mutex> cv_lock(_mtx);
   PoolItem * client = nullptr;
   if (_pool_map.find(ip) == _pool_map.end()) {
-  _pool_map[ip] = new std::deque<PoolItem *>();
+    _pool_map[ip] = new std::deque<PoolItem *>();
+    // _curr_pool_size_map[ip] = 0;
   }
    std::deque<PoolItem *> *_pool = _pool_map[ip];
   if (!_pool->empty()) { // 如果队列不为空,则取出一个client
@@ -215,6 +222,7 @@ typename ClientPool<TClient>::PoolItem * ClientPool<TClient>::ProduceClient(std:
     try {
       client = new TClient(ip, _port, _keep_alive);
       _curr_pool_size++;
+      // _curr_pool_size_map[ip]++;
       LOG(warning) << "ClientPool size " << _curr_pool_size << " " << _client_type;
       lock.unlock();
       return new PoolItem(client);

@@ -87,4 +87,19 @@ void write_algorithm_latency(std::string svc, std::string ip, int64_t latency, i
   outfile.close();
 }
 
+void write_queue_size(std::string svc, std::map<std::string, int> &curr_pool_size_map, std::map<std::string, std::deque<std::string> *> &pool_map)
+{
+  social_network::create_if_not_exists(paths::LOGPATH + svc);
+  std::string filename = paths::LOGPATH + svc + "/queue_size.txt";
+  // add to filename
+  std::ofstream outfile(filename, std::ios_base::app);
+  // time, queue_size
+  outfile << std::to_string(std::chrono::duration_cast<std::chrono::milliseconds>(
+    std::chrono::system_clock::now().time_since_epoch()).count() - CUSTOM_EPOCH) << " ";
+  for (auto &kv : curr_pool_size_map) {
+    outfile << kv.first << " " << kv.second << " " << pool_map[kv.first]->size() << " ";
+  }
+  outfile << std::endl;
+  outfile.close();
+
 } //namespace social_network

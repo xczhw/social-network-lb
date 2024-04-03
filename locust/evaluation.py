@@ -78,8 +78,6 @@ def get_data(path, filename='data.zip'):
     download_data(path, filename)
 
 def run(algo='round-robin', rps=-1, times=0):
-    if os.path.exists('output'):
-        os.system('rm -rf output')
     for t in range(times):
         start_time = get_time()
         path = base_path / Path(f'output/{algo}/RPS_{rps}/{start_time}/')
@@ -94,4 +92,8 @@ def run(algo='round-robin', rps=-1, times=0):
         time.sleep(10)
 
 if __name__ == '__main__':
-    run(times=3, rps=10)
+    if os.path.exists('output'):
+        os.system('rm -rf output')
+    # for rps in [-1, 10, 20, 30, 40, 50, 60]:
+    for rps in [10]:
+        run(algo='round-robin', times=3, rps=rps)

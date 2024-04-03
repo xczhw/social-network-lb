@@ -60,10 +60,10 @@ def draw(input_data: PodData):
                     plt.close()
                     print(f'Saved {save_path/"pod_cpu_usage.png"}')
 
-def draw_pod_cpu():
+def draw_que_len():
     data = get_data()
     data = clean_data(data)
     draw(data)
 
 if __name__ == '__main__':
-    draw_pod_cpu()
+    draw_que_len()

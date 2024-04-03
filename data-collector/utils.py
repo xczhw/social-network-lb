@@ -5,7 +5,7 @@ import time
 import os
 
 DATA_DIR = 'collected_data'
-SVC_NAMES = ['unique-id-service', 'compose-post-service']
+SVC_NAMES = ['media-service', 'media-filter-service']
 
 def create_if_not_exists(path):
     if not os.path.exists(path):

@@ -24,17 +24,18 @@
             }
           },
           "spec": {
+            "nodeName": "node3.test.rl4networking-pg0.utah.cloudlab.us",
             "containers": [
               {
                 "name": "write-home-timeline-service",
-                "image": "node0:5000/deathstarbench:latest@sha256:deb8b6d19e68726136c1bb75d3432cccf9e1ad2dc56401713878da56d9e50eb4",
+                "image": "node0:5000/deathstarbench:latest@sha256:7f2c56801e03da159330569dace62e7791cdf01b3c986bf97be4f0eabce36746",
                 "command": [
                   "WriteHomeTimelineService"
                 ],
                 "env": [
                   {
                     "name": "ALGORITHM",
-                    "value": "random"
+                    "value": "round-robin"
                   }
                 ],
                 "volumeMounts": [
@@ -46,7 +47,7 @@
               },
               {
                 "name": "side-car",
-                "image": "node0:5000/sidecar:latest@sha256:ec983c932620b9a9d3089bb9645878862d436458e3aaf4c81aaa9c67f5484adb",
+                "image": "node0:5000/sidecar:latest@sha256:cc9281751b4303aa2d4811f95ae2a30f37b4edae80fbe5716a3f0c4215fb211a",
                 "env": [
                   {
                     "name": "SERVICE_PORT",
@@ -54,7 +55,7 @@
                   },
                   {
                     "name": "ALGORITHM",
-                    "value": "random"
+                    "value": "round-robin"
                   }
                 ],
                 "volumeMounts": [
@@ -117,17 +118,18 @@
             }
           },
           "spec": {
+            "nodeName": "node3.test.rl4networking-pg0.utah.cloudlab.us",
             "containers": [
               {
                 "name": "write-user-timeline-service",
-                "image": "node0:5000/deathstarbench:latest@sha256:deb8b6d19e68726136c1bb75d3432cccf9e1ad2dc56401713878da56d9e50eb4",
+                "image": "node0:5000/deathstarbench:latest@sha256:7f2c56801e03da159330569dace62e7791cdf01b3c986bf97be4f0eabce36746",
                 "command": [
                   "WriteUserTimelineService"
                 ],
                 "env": [
                   {
                     "name": "ALGORITHM",
-                    "value": "random"
+                    "value": "round-robin"
                   }
                 ],
                 "volumeMounts": [
@@ -139,7 +141,7 @@
               },
               {
                 "name": "side-car",
-                "image": "node0:5000/sidecar:latest@sha256:ec983c932620b9a9d3089bb9645878862d436458e3aaf4c81aaa9c67f5484adb",
+                "image": "node0:5000/sidecar:latest@sha256:cc9281751b4303aa2d4811f95ae2a30f37b4edae80fbe5716a3f0c4215fb211a",
                 "env": [
                   {
                     "name": "SERVICE_PORT",
@@ -147,7 +149,7 @@
                   },
                   {
                     "name": "ALGORITHM",
-                    "value": "random"
+                    "value": "round-robin"
                   }
                 ],
                 "volumeMounts": [

@@ -67,6 +67,9 @@ def save_response_to_file(response, svc, filename, keyword=None):
 # 定时更新服务状态
 def update_status():
     service_names = get_svc_list()
+    if not service_names or len(service_names) == 0:
+        print("No downstream service found")
+        return
     while True:
         for svc in service_names:
             # 获取所有下游服务的cpu使用率

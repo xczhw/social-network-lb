@@ -19,7 +19,7 @@
 #include "../../gen-cpp/MediaService.h"
 #include "../../gen-cpp/MediaFilterService.h"
 #include "../../gen-cpp/ComposePostService.h"
-#include "../ClientPool.h"
+#include "../TempClientPool.h"
 #include "../ThriftClient.h"
 #include "../logger.h"
 #include "../tracing.h"
@@ -129,7 +129,7 @@ void MediaHandler::UploadMedia(
               throw se;
             }
             std::vector<bool> return_filter;
-            auto media_filter_client = media_filter_client_wrapper->GetClient();
+            auto media_filter_client = media_filter_client_wrapper->GetClient()->GetClient();
             try {
               media_filter_client->UploadMedia(return_filter, req_id, media_types, medium, writer_text_map);
             } catch (...) {
@@ -199,7 +199,7 @@ void MediaHandler::UploadMedia(
       se.message = "Failed to connected to compose-post-service";
       throw se;
     }
-    auto compose_post_client = compose_post_client_wrapper->GetClient();
+    auto compose_post_client = compose_post_client_wrapper->GetClient()->GetClient();
     try {
       compose_post_client->UploadMedia(req_id, media, writer_text_map);
     } catch (...) {

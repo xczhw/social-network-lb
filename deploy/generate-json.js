@@ -3,10 +3,10 @@
 
 const fs = require('fs');
 
-const worker1 = 'node1';
-const worker2 = 'node2';
-const worker3 = 'node1';
-const worker4 = 'node2';
+const worker1 = 'node1.test.rl4networking-pg0.utah.cloudlab.us';
+const worker2 = 'node2.test.rl4networking-pg0.utah.cloudlab.us';
+const worker3 = 'node3.test.rl4networking-pg0.utah.cloudlab.us';
+const worker4 = 'node1.test.rl4networking-pg0.utah.cloudlab.us';
 
 var image = JSON.parse(fs.readFileSync('./image.json', 'utf8'));
 const image_cpp = image['deathstarbench'];
@@ -15,6 +15,7 @@ const image_data_collector = image['datacollector'];
 const image_nginx = 'hypercube/social-network-ml-nginx:latest@sha256:6ac95749cb7aff055735ce490c7e702d1dabf8b6262c87d52d49b8ef4377833a';
 const image_media_filter = 'hypercube/social-network-ml-media-filter:latest@sha256:ece820ae1156eab2c6b41eae07ecac524960d47bcdd4e063e9d3520399dcac05';
 const image_text_filter = 'hypercube/social-network-ml-text-filter:latest@sha256:6f541847637a92e331f1088b78dcdf77acbe6242960994aabf1ced51dc308117';
+const algo = 'round-robin';
 
 const dnsmasq = {
   name: 'dnsmasq',
@@ -50,7 +51,7 @@ function deployment(name, {nodeName, containers, podLabels}, replicas = 1) {
           labels: podLabels || {name},
         },
         spec: {
-          // nodeName,
+          nodeName,
           containers,
           volumes: [
             {
@@ -105,7 +106,7 @@ function cpp(nodeName, name, command, replicas = 1) {
         image: image_cpp,
         command: [command],
         env: env({
-          ALGORITHM: 'random',
+          ALGORITHM: algo,
         }),
         volumeMounts: [
           {
@@ -119,7 +120,7 @@ function cpp(nodeName, name, command, replicas = 1) {
         image: image_side_car,
         env: env({
           SERVICE_PORT: '5050',
-          ALGORITHM: 'random',
+          ALGORITHM: algo,
         }),
         volumeMounts: [
           {
@@ -314,6 +315,20 @@ const doc1 = {
           name: 'media-filter-service',
           image: image_media_filter,
         },
+        {
+          name: 'side-car',
+          image: image_side_car,
+          env: env({
+            SERVICE_PORT: '5050',
+            ALGORITHM: algo
+          }),
+          volumeMounts: [
+            {
+              name: 'shared-data',
+              mountPath: '/share',
+            },
+          ],
+        }
       ],
       ports: [
         {port: 40000},
