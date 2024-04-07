@@ -13,8 +13,8 @@ base_path = Path(__file__).resolve().parent
 def find_sha256(image_name):
     result = subprocess.run(
         ["docker", "images", '--digests'],
-        stdout=subprocess.PIPE,  # 捕获标准输出
-        text=True  # 返回的输出作为字符串处理
+        stdout=subprocess.PIPE,  # cache stdio
+        text=True  # the returned output save as string.
     )
     for line in result.stdout.split('\n'):
         if image_name in line and 'latest' in line:
@@ -69,7 +69,7 @@ def run_viewer(session_name="kube_top_log"):
     script_path = "kube_viewer/viewer.py"
     
     del_viewer(session_name)
-    # 创建一个新的 screen 会话，并在其中运行指定的脚本
+    # create a new screen and run script here
     create_command = f"screen -S {session_name} -d -m bash -c 'python3 {script_path}; exec bash'"
     try:
         subprocess.check_call(create_command, shell=True)

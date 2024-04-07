@@ -102,4 +102,5 @@ void write_queue_size(std::string svc, std::map<std::string, int> &curr_pool_siz
   outfile << std::endl;
   outfile.close();
 
-} //namespace social_network
+} 
+}//namespace social_network
