@@ -1,0 +1,154 @@
+{
+  "apiVersion": "v1",
+  "kind": "List",
+  "items": [
+    {
+      "apiVersion": "apps/v1",
+      "kind": "Deployment",
+      "metadata": {
+        "namespace": "social-network",
+        "name": "write-home-timeline-service"
+      },
+      "spec": {
+        "replicas": 1,
+        "selector": {
+          "matchLabels": {
+            "name": "write-home-timeline-service"
+          }
+        },
+        "template": {
+          "metadata": {
+            "name": "write-home-timeline-service",
+            "labels": {
+              "name": "write-home-timeline-service"
+            }
+          },
+          "spec": {
+            "nodeName": "node3.test.lb-benchmark-pg0.utah.cloudlab.us",
+            "containers": [
+              {
+                "name": "write-home-timeline-service",
+                "image": "node0:5000/deathstarbench:latest@sha256:4a6423f4d7c118e2bd46ed3301e866ab427c8df7eda31cbb66497b415ccd6960",
+                "command": [
+                  "WriteHomeTimelineService"
+                ],
+                "env": [
+                  {
+                    "name": "ALGORITHM",
+                    "value": "round-robin"
+                  }
+                ],
+                "volumeMounts": [
+                  {
+                    "name": "shared-data",
+                    "mountPath": "/share"
+                  }
+                ]
+              }
+            ],
+            "volumes": [
+              {
+                "name": "shared-data",
+                "emptyDir": {}
+              }
+            ],
+            "restartPolicy": "Always",
+            "enableServiceLinks": false
+          }
+        }
+      }
+    },
+    {
+      "apiVersion": "v1",
+      "kind": "Service",
+      "metadata": {
+        "namespace": "social-network",
+        "name": "write-home-timeline-service"
+      },
+      "spec": {
+        "ports": [
+          {
+            "port": 9090
+          }
+        ],
+        "selector": {
+          "name": "write-home-timeline-service"
+        }
+      }
+    },
+    {
+      "apiVersion": "apps/v1",
+      "kind": "Deployment",
+      "metadata": {
+        "namespace": "social-network",
+        "name": "write-user-timeline-service"
+      },
+      "spec": {
+        "replicas": 1,
+        "selector": {
+          "matchLabels": {
+            "name": "write-user-timeline-service"
+          }
+        },
+        "template": {
+          "metadata": {
+            "name": "write-user-timeline-service",
+            "labels": {
+              "name": "write-user-timeline-service"
+            }
+          },
+          "spec": {
+            "nodeName": "node3.test.lb-benchmark-pg0.utah.cloudlab.us",
+            "containers": [
+              {
+                "name": "write-user-timeline-service",
+                "image": "node0:5000/deathstarbench:latest@sha256:4a6423f4d7c118e2bd46ed3301e866ab427c8df7eda31cbb66497b415ccd6960",
+                "command": [
+                  "WriteUserTimelineService"
+                ],
+                "env": [
+                  {
+                    "name": "ALGORITHM",
+                    "value": "round-robin"
+                  }
+                ],
+                "volumeMounts": [
+                  {
+                    "name": "shared-data",
+                    "mountPath": "/share"
+                  }
+                ]
+              }
+            ],
+            "volumes": [
+              {
+                "name": "shared-data",
+                "emptyDir": {}
+              }
+            ],
+            "restartPolicy": "Always",
+            "enableServiceLinks": false
+          }
+        }
+      }
+    },
+    {
+      "apiVersion": "v1",
+      "kind": "Service",
+      "metadata": {
+        "namespace": "social-network",
+        "name": "write-user-timeline-service"
+      },
+      "spec": {
+        "ports": [
+          {
+            "port": 9090
+          }
+        ],
+        "selector": {
+          "name": "write-user-timeline-service"
+        }
+      }
+    }
+  ]
+}
