@@ -8,3 +8,4 @@ kubectl config set-context --current --namespace=default
 kubectl delete -f 3.yaml
 kubectl delete -f 2.json
 kubectl delete -f 1.json
+kubectl delete -f 0-ns.json

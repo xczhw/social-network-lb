@@ -5,6 +5,7 @@ apt install nodejs -y > /dev/null
 
 # generate json files and apply
 node generate-json.js
+kubectl apply -f 0-ns.json
 kubectl apply -f 1.json
 kubectl apply -f 2.json
 kubectl apply -f 3.yaml

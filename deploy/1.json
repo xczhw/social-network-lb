@@ -3,20 +3,10 @@
   "kind": "List",
   "items": [
     {
-      "apiVersion": "v1",
-      "kind": "Namespace",
-      "metadata": {
-        "name": "social-network",
-        "labels": {
-          "istio-injection": "enabled"
-        }
-      }
-    },
-    {
       "apiVersion": "apps/v1",
       "kind": "Deployment",
       "metadata": {
-        "namespace": "social-network",
+        "namespace": "default",
         "name": "jaeger"
       },
       "spec": {
@@ -63,7 +53,7 @@
       "apiVersion": "v1",
       "kind": "Service",
       "metadata": {
-        "namespace": "social-network",
+        "namespace": "default",
         "name": "jaeger"
       },
       "spec": {
@@ -88,7 +78,7 @@
       "apiVersion": "apps/v1",
       "kind": "Deployment",
       "metadata": {
-        "namespace": "social-network",
+        "namespace": "default",
         "name": "nginx-thrift"
       },
       "spec": {
@@ -139,7 +129,7 @@
       "apiVersion": "v1",
       "kind": "Service",
       "metadata": {
-        "namespace": "social-network",
+        "namespace": "default",
         "name": "nginx-thrift"
       },
       "spec": {
@@ -159,7 +149,7 @@
       "apiVersion": "apps/v1",
       "kind": "Deployment",
       "metadata": {
-        "namespace": "social-network",
+        "namespace": "default",
         "name": "compose-post-service"
       },
       "spec": {
@@ -181,7 +171,7 @@
             "containers": [
               {
                 "name": "compose-post-service",
-                "image": "node0:5000/deathstarbench:latest@sha256:4a6423f4d7c118e2bd46ed3301e866ab427c8df7eda31cbb66497b415ccd6960",
+                "image": "node0:5000/deathstarbench:latest@sha256:0949ee38f8dcd91d3aa0fc57dc04bb142f6c396d970e07b60264bd9ce8343512",
                 "command": [
                   "ComposePostService"
                 ],
@@ -215,7 +205,7 @@
       "apiVersion": "v1",
       "kind": "Service",
       "metadata": {
-        "namespace": "social-network",
+        "namespace": "default",
         "name": "compose-post-service"
       },
       "spec": {
@@ -233,7 +223,7 @@
       "apiVersion": "apps/v1",
       "kind": "Deployment",
       "metadata": {
-        "namespace": "social-network",
+        "namespace": "default",
         "name": "compose-post-redis"
       },
       "spec": {
@@ -279,7 +269,7 @@
       "apiVersion": "v1",
       "kind": "Service",
       "metadata": {
-        "namespace": "social-network",
+        "namespace": "default",
         "name": "compose-post-redis"
       },
       "spec": {
@@ -297,7 +287,7 @@
       "apiVersion": "apps/v1",
       "kind": "Deployment",
       "metadata": {
-        "namespace": "social-network",
+        "namespace": "default",
         "name": "home-timeline-service"
       },
       "spec": {
@@ -319,7 +309,7 @@
             "containers": [
               {
                 "name": "home-timeline-service",
-                "image": "node0:5000/deathstarbench:latest@sha256:4a6423f4d7c118e2bd46ed3301e866ab427c8df7eda31cbb66497b415ccd6960",
+                "image": "node0:5000/deathstarbench:latest@sha256:0949ee38f8dcd91d3aa0fc57dc04bb142f6c396d970e07b60264bd9ce8343512",
                 "command": [
                   "HomeTimelineService"
                 ],
@@ -353,7 +343,7 @@
       "apiVersion": "v1",
       "kind": "Service",
       "metadata": {
-        "namespace": "social-network",
+        "namespace": "default",
         "name": "home-timeline-service"
       },
       "spec": {
@@ -371,7 +361,7 @@
       "apiVersion": "apps/v1",
       "kind": "Deployment",
       "metadata": {
-        "namespace": "social-network",
+        "namespace": "default",
         "name": "home-timeline-redis"
       },
       "spec": {
@@ -417,7 +407,7 @@
       "apiVersion": "v1",
       "kind": "Service",
       "metadata": {
-        "namespace": "social-network",
+        "namespace": "default",
         "name": "home-timeline-redis"
       },
       "spec": {
@@ -435,7 +425,7 @@
       "apiVersion": "apps/v1",
       "kind": "Deployment",
       "metadata": {
-        "namespace": "social-network",
+        "namespace": "default",
         "name": "media-service"
       },
       "spec": {
@@ -457,7 +447,7 @@
             "containers": [
               {
                 "name": "media-service",
-                "image": "node0:5000/deathstarbench:latest@sha256:4a6423f4d7c118e2bd46ed3301e866ab427c8df7eda31cbb66497b415ccd6960",
+                "image": "node0:5000/deathstarbench:latest@sha256:0949ee38f8dcd91d3aa0fc57dc04bb142f6c396d970e07b60264bd9ce8343512",
                 "command": [
                   "MediaService"
                 ],
@@ -491,7 +481,7 @@
       "apiVersion": "v1",
       "kind": "Service",
       "metadata": {
-        "namespace": "social-network",
+        "namespace": "default",
         "name": "media-service"
       },
       "spec": {
@@ -509,7 +499,7 @@
       "apiVersion": "apps/v1",
       "kind": "Deployment",
       "metadata": {
-        "namespace": "social-network",
+        "namespace": "default",
         "name": "post-storage-service"
       },
       "spec": {
@@ -531,7 +521,7 @@
             "containers": [
               {
                 "name": "post-storage-service",
-                "image": "node0:5000/deathstarbench:latest@sha256:4a6423f4d7c118e2bd46ed3301e866ab427c8df7eda31cbb66497b415ccd6960",
+                "image": "node0:5000/deathstarbench:latest@sha256:0949ee38f8dcd91d3aa0fc57dc04bb142f6c396d970e07b60264bd9ce8343512",
                 "command": [
                   "PostStorageService"
                 ],
@@ -565,7 +555,7 @@
       "apiVersion": "v1",
       "kind": "Service",
       "metadata": {
-        "namespace": "social-network",
+        "namespace": "default",
         "name": "post-storage-service"
       },
       "spec": {
@@ -583,7 +573,7 @@
       "apiVersion": "apps/v1",
       "kind": "Deployment",
       "metadata": {
-        "namespace": "social-network",
+        "namespace": "default",
         "name": "post-storage-memcached"
       },
       "spec": {
@@ -634,7 +624,7 @@
       "apiVersion": "v1",
       "kind": "Service",
       "metadata": {
-        "namespace": "social-network",
+        "namespace": "default",
         "name": "post-storage-memcached"
       },
       "spec": {
@@ -652,7 +642,7 @@
       "apiVersion": "apps/v1",
       "kind": "Deployment",
       "metadata": {
-        "namespace": "social-network",
+        "namespace": "default",
         "name": "post-storage-mongodb"
       },
       "spec": {
@@ -697,7 +687,7 @@
       "apiVersion": "v1",
       "kind": "Service",
       "metadata": {
-        "namespace": "social-network",
+        "namespace": "default",
         "name": "post-storage-mongodb"
       },
       "spec": {
@@ -715,7 +705,7 @@
       "apiVersion": "apps/v1",
       "kind": "Deployment",
       "metadata": {
-        "namespace": "social-network",
+        "namespace": "default",
         "name": "social-graph-service"
       },
       "spec": {
@@ -737,7 +727,7 @@
             "containers": [
               {
                 "name": "social-graph-service",
-                "image": "node0:5000/deathstarbench:latest@sha256:4a6423f4d7c118e2bd46ed3301e866ab427c8df7eda31cbb66497b415ccd6960",
+                "image": "node0:5000/deathstarbench:latest@sha256:0949ee38f8dcd91d3aa0fc57dc04bb142f6c396d970e07b60264bd9ce8343512",
                 "command": [
                   "SocialGraphService"
                 ],
@@ -771,7 +761,7 @@
       "apiVersion": "v1",
       "kind": "Service",
       "metadata": {
-        "namespace": "social-network",
+        "namespace": "default",
         "name": "social-graph-service"
       },
       "spec": {
@@ -789,7 +779,7 @@
       "apiVersion": "apps/v1",
       "kind": "Deployment",
       "metadata": {
-        "namespace": "social-network",
+        "namespace": "default",
         "name": "social-graph-mongodb"
       },
       "spec": {
@@ -834,7 +824,7 @@
       "apiVersion": "v1",
       "kind": "Service",
       "metadata": {
-        "namespace": "social-network",
+        "namespace": "default",
         "name": "social-graph-mongodb"
       },
       "spec": {
@@ -852,7 +842,7 @@
       "apiVersion": "apps/v1",
       "kind": "Deployment",
       "metadata": {
-        "namespace": "social-network",
+        "namespace": "default",
         "name": "social-graph-redis"
       },
       "spec": {
@@ -898,7 +888,7 @@
       "apiVersion": "v1",
       "kind": "Service",
       "metadata": {
-        "namespace": "social-network",
+        "namespace": "default",
         "name": "social-graph-redis"
       },
       "spec": {
@@ -916,7 +906,7 @@
       "apiVersion": "apps/v1",
       "kind": "Deployment",
       "metadata": {
-        "namespace": "social-network",
+        "namespace": "default",
         "name": "text-service"
       },
       "spec": {
@@ -938,7 +928,7 @@
             "containers": [
               {
                 "name": "text-service",
-                "image": "node0:5000/deathstarbench:latest@sha256:4a6423f4d7c118e2bd46ed3301e866ab427c8df7eda31cbb66497b415ccd6960",
+                "image": "node0:5000/deathstarbench:latest@sha256:0949ee38f8dcd91d3aa0fc57dc04bb142f6c396d970e07b60264bd9ce8343512",
                 "command": [
                   "TextService"
                 ],
@@ -972,7 +962,7 @@
       "apiVersion": "v1",
       "kind": "Service",
       "metadata": {
-        "namespace": "social-network",
+        "namespace": "default",
         "name": "text-service"
       },
       "spec": {
@@ -990,7 +980,7 @@
       "apiVersion": "apps/v1",
       "kind": "Deployment",
       "metadata": {
-        "namespace": "social-network",
+        "namespace": "default",
         "name": "unique-id-service"
       },
       "spec": {
@@ -1012,7 +1002,7 @@
             "containers": [
               {
                 "name": "unique-id-service",
-                "image": "node0:5000/deathstarbench:latest@sha256:4a6423f4d7c118e2bd46ed3301e866ab427c8df7eda31cbb66497b415ccd6960",
+                "image": "node0:5000/deathstarbench:latest@sha256:0949ee38f8dcd91d3aa0fc57dc04bb142f6c396d970e07b60264bd9ce8343512",
                 "command": [
                   "UniqueIdService"
                 ],
@@ -1046,7 +1036,7 @@
       "apiVersion": "v1",
       "kind": "Service",
       "metadata": {
-        "namespace": "social-network",
+        "namespace": "default",
         "name": "unique-id-service"
       },
       "spec": {
@@ -1064,7 +1054,7 @@
       "apiVersion": "apps/v1",
       "kind": "Deployment",
       "metadata": {
-        "namespace": "social-network",
+        "namespace": "default",
         "name": "url-shorten-service"
       },
       "spec": {
@@ -1086,7 +1076,7 @@
             "containers": [
               {
                 "name": "url-shorten-service",
-                "image": "node0:5000/deathstarbench:latest@sha256:4a6423f4d7c118e2bd46ed3301e866ab427c8df7eda31cbb66497b415ccd6960",
+                "image": "node0:5000/deathstarbench:latest@sha256:0949ee38f8dcd91d3aa0fc57dc04bb142f6c396d970e07b60264bd9ce8343512",
                 "command": [
                   "UrlShortenService"
                 ],
@@ -1120,7 +1110,7 @@
       "apiVersion": "v1",
       "kind": "Service",
       "metadata": {
-        "namespace": "social-network",
+        "namespace": "default",
         "name": "url-shorten-service"
       },
       "spec": {
@@ -1138,7 +1128,7 @@
       "apiVersion": "apps/v1",
       "kind": "Deployment",
       "metadata": {
-        "namespace": "social-network",
+        "namespace": "default",
         "name": "user-mention-service"
       },
       "spec": {
@@ -1160,7 +1150,7 @@
             "containers": [
               {
                 "name": "user-mention-service",
-                "image": "node0:5000/deathstarbench:latest@sha256:4a6423f4d7c118e2bd46ed3301e866ab427c8df7eda31cbb66497b415ccd6960",
+                "image": "node0:5000/deathstarbench:latest@sha256:0949ee38f8dcd91d3aa0fc57dc04bb142f6c396d970e07b60264bd9ce8343512",
                 "command": [
                   "UserMentionService"
                 ],
@@ -1194,7 +1184,7 @@
       "apiVersion": "v1",
       "kind": "Service",
       "metadata": {
-        "namespace": "social-network",
+        "namespace": "default",
         "name": "user-mention-service"
       },
       "spec": {
@@ -1212,7 +1202,7 @@
       "apiVersion": "apps/v1",
       "kind": "Deployment",
       "metadata": {
-        "namespace": "social-network",
+        "namespace": "default",
         "name": "user-service"
       },
       "spec": {
@@ -1234,7 +1224,7 @@
             "containers": [
               {
                 "name": "user-service",
-                "image": "node0:5000/deathstarbench:latest@sha256:4a6423f4d7c118e2bd46ed3301e866ab427c8df7eda31cbb66497b415ccd6960",
+                "image": "node0:5000/deathstarbench:latest@sha256:0949ee38f8dcd91d3aa0fc57dc04bb142f6c396d970e07b60264bd9ce8343512",
                 "command": [
                   "UserService"
                 ],
@@ -1268,7 +1258,7 @@
       "apiVersion": "v1",
       "kind": "Service",
       "metadata": {
-        "namespace": "social-network",
+        "namespace": "default",
         "name": "user-service"
       },
       "spec": {
@@ -1286,7 +1276,7 @@
       "apiVersion": "apps/v1",
       "kind": "Deployment",
       "metadata": {
-        "namespace": "social-network",
+        "namespace": "default",
         "name": "user-memcached"
       },
       "spec": {
@@ -1337,7 +1327,7 @@
       "apiVersion": "v1",
       "kind": "Service",
       "metadata": {
-        "namespace": "social-network",
+        "namespace": "default",
         "name": "user-memcached"
       },
       "spec": {
@@ -1355,7 +1345,7 @@
       "apiVersion": "apps/v1",
       "kind": "Deployment",
       "metadata": {
-        "namespace": "social-network",
+        "namespace": "default",
         "name": "user-mongodb"
       },
       "spec": {
@@ -1400,7 +1390,7 @@
       "apiVersion": "v1",
       "kind": "Service",
       "metadata": {
-        "namespace": "social-network",
+        "namespace": "default",
         "name": "user-mongodb"
       },
       "spec": {
@@ -1418,7 +1408,7 @@
       "apiVersion": "apps/v1",
       "kind": "Deployment",
       "metadata": {
-        "namespace": "social-network",
+        "namespace": "default",
         "name": "user-timeline-service"
       },
       "spec": {
@@ -1440,7 +1430,7 @@
             "containers": [
               {
                 "name": "user-timeline-service",
-                "image": "node0:5000/deathstarbench:latest@sha256:4a6423f4d7c118e2bd46ed3301e866ab427c8df7eda31cbb66497b415ccd6960",
+                "image": "node0:5000/deathstarbench:latest@sha256:0949ee38f8dcd91d3aa0fc57dc04bb142f6c396d970e07b60264bd9ce8343512",
                 "command": [
                   "UserTimelineService"
                 ],
@@ -1474,7 +1464,7 @@
       "apiVersion": "v1",
       "kind": "Service",
       "metadata": {
-        "namespace": "social-network",
+        "namespace": "default",
         "name": "user-timeline-service"
       },
       "spec": {
@@ -1492,7 +1482,7 @@
       "apiVersion": "apps/v1",
       "kind": "Deployment",
       "metadata": {
-        "namespace": "social-network",
+        "namespace": "default",
         "name": "user-timeline-mongodb"
       },
       "spec": {
@@ -1537,7 +1527,7 @@
       "apiVersion": "v1",
       "kind": "Service",
       "metadata": {
-        "namespace": "social-network",
+        "namespace": "default",
         "name": "user-timeline-mongodb"
       },
       "spec": {
@@ -1555,7 +1545,7 @@
       "apiVersion": "apps/v1",
       "kind": "Deployment",
       "metadata": {
-        "namespace": "social-network",
+        "namespace": "default",
         "name": "user-timeline-redis"
       },
       "spec": {
@@ -1601,7 +1591,7 @@
       "apiVersion": "v1",
       "kind": "Service",
       "metadata": {
-        "namespace": "social-network",
+        "namespace": "default",
         "name": "user-timeline-redis"
       },
       "spec": {
@@ -1619,7 +1609,7 @@
       "apiVersion": "apps/v1",
       "kind": "Deployment",
       "metadata": {
-        "namespace": "social-network",
+        "namespace": "default",
         "name": "write-home-timeline-rabbitmq"
       },
       "spec": {
@@ -1670,7 +1660,7 @@
       "apiVersion": "v1",
       "kind": "Service",
       "metadata": {
-        "namespace": "social-network",
+        "namespace": "default",
         "name": "write-home-timeline-rabbitmq"
       },
       "spec": {
@@ -1688,7 +1678,7 @@
       "apiVersion": "apps/v1",
       "kind": "Deployment",
       "metadata": {
-        "namespace": "social-network",
+        "namespace": "default",
         "name": "write-user-timeline-rabbitmq"
       },
       "spec": {
@@ -1739,7 +1729,7 @@
       "apiVersion": "v1",
       "kind": "Service",
       "metadata": {
-        "namespace": "social-network",
+        "namespace": "default",
         "name": "write-user-timeline-rabbitmq"
       },
       "spec": {
@@ -1757,7 +1747,7 @@
       "apiVersion": "apps/v1",
       "kind": "Deployment",
       "metadata": {
-        "namespace": "social-network",
+        "namespace": "default",
         "name": "media-filter-service-1"
       },
       "spec": {
@@ -1800,7 +1790,7 @@
       "apiVersion": "apps/v1",
       "kind": "Deployment",
       "metadata": {
-        "namespace": "social-network",
+        "namespace": "default",
         "name": "media-filter-service-2"
       },
       "spec": {
@@ -1843,7 +1833,7 @@
       "apiVersion": "apps/v1",
       "kind": "Deployment",
       "metadata": {
-        "namespace": "social-network",
+        "namespace": "default",
         "name": "media-filter-service-3"
       },
       "spec": {
@@ -1886,7 +1876,7 @@
       "apiVersion": "v1",
       "kind": "Service",
       "metadata": {
-        "namespace": "social-network",
+        "namespace": "default",
         "name": "media-filter-service"
       },
       "spec": {
@@ -1904,7 +1894,7 @@
       "apiVersion": "apps/v1",
       "kind": "Deployment",
       "metadata": {
-        "namespace": "social-network",
+        "namespace": "default",
         "name": "text-filter-service"
       },
       "spec": {
@@ -1945,7 +1935,7 @@
       "apiVersion": "v1",
       "kind": "Service",
       "metadata": {
-        "namespace": "social-network",
+        "namespace": "default",
         "name": "text-filter-service"
       },
       "spec": {

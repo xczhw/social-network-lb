@@ -6,7 +6,7 @@
       "apiVersion": "apps/v1",
       "kind": "Deployment",
       "metadata": {
-        "namespace": "social-network",
+        "namespace": "default",
         "name": "write-home-timeline-service"
       },
       "spec": {
@@ -28,7 +28,7 @@
             "containers": [
               {
                 "name": "write-home-timeline-service",
-                "image": "node0:5000/deathstarbench:latest@sha256:4a6423f4d7c118e2bd46ed3301e866ab427c8df7eda31cbb66497b415ccd6960",
+                "image": "node0:5000/deathstarbench:latest@sha256:0949ee38f8dcd91d3aa0fc57dc04bb142f6c396d970e07b60264bd9ce8343512",
                 "command": [
                   "WriteHomeTimelineService"
                 ],
@@ -62,7 +62,7 @@
       "apiVersion": "v1",
       "kind": "Service",
       "metadata": {
-        "namespace": "social-network",
+        "namespace": "default",
         "name": "write-home-timeline-service"
       },
       "spec": {
@@ -80,7 +80,7 @@
       "apiVersion": "apps/v1",
       "kind": "Deployment",
       "metadata": {
-        "namespace": "social-network",
+        "namespace": "default",
         "name": "write-user-timeline-service"
       },
       "spec": {
@@ -102,7 +102,7 @@
             "containers": [
               {
                 "name": "write-user-timeline-service",
-                "image": "node0:5000/deathstarbench:latest@sha256:4a6423f4d7c118e2bd46ed3301e866ab427c8df7eda31cbb66497b415ccd6960",
+                "image": "node0:5000/deathstarbench:latest@sha256:0949ee38f8dcd91d3aa0fc57dc04bb142f6c396d970e07b60264bd9ce8343512",
                 "command": [
                   "WriteUserTimelineService"
                 ],
@@ -136,7 +136,7 @@
       "apiVersion": "v1",
       "kind": "Service",
       "metadata": {
-        "namespace": "social-network",
+        "namespace": "default",
         "name": "write-user-timeline-service"
       },
       "spec": {

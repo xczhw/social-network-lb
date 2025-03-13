@@ -14,6 +14,7 @@ const image_nginx = 'hypercube/social-network-ml-nginx:latest@sha256:6ac95749cb7
 const image_media_filter = 'hypercube/social-network-ml-media-filter:latest@sha256:ece820ae1156eab2c6b41eae07ecac524960d47bcdd4e063e9d3520399dcac05';
 const image_text_filter = 'hypercube/social-network-ml-text-filter:latest@sha256:6f541847637a92e331f1088b78dcdf77acbe6242960994aabf1ced51dc308117';
 const algo = 'round-robin';
+const ns = 'default';
 
 const dnsmasq = {
   name: 'dnsmasq',
@@ -35,7 +36,7 @@ function deployment(name, {nodeName, containers, podLabels}, replicas = 1) {
     apiVersion: 'apps/v1',
     kind: 'Deployment',
     metadata: {
-      namespace: 'social-network',
+      namespace: ns,
       name,
     },
     spec: {
@@ -70,7 +71,7 @@ function service(name, {serviceType, ports, selector}) {
     apiVersion: 'v1',
     kind: 'Service',
     metadata: {
-      namespace: 'social-network',
+      namespace: ns,
       name,
     },
     spec: {
@@ -193,22 +194,21 @@ function rabbitmq(nodeName, name, cookie) {
   });
 }
 
+const doc0 = {
+  apiVersion: 'v1',
+  kind: 'Namespace',
+  metadata: {
+    name: 'social-network',
+    labels: {
+    "istio-injection": "enabled"
+    }
+  }
+}
+
 const doc1 = {
   apiVersion: 'v1',
   kind: 'List',
   items: [
-
-    {
-      apiVersion: 'v1',
-      kind: 'Namespace',
-      metadata: {
-        name: 'social-network',
-        labels: {
-        "istio-injection": "enabled"
-        }
-      },
-    },
-
     ...deployment_service('jaeger', {
       nodeName: worker3,
       containers: [
@@ -314,5 +314,6 @@ const doc2 = {
   ],
 };
 
+fs.writeFileSync('./0-ns.json', JSON.stringify(doc0, null, 2) + '\n');
 fs.writeFileSync('./1.json', JSON.stringify(doc1, null, 2) + '\n');
 fs.writeFileSync('./2.json', JSON.stringify(doc2, null, 2) + '\n');
